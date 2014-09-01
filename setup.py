@@ -4,7 +4,7 @@ Setup script for QIdle
 """
 import sys
 from setuptools import setup, find_packages
-from qidle import __version__
+from qidle import version
 
 try:
     from pyqt_distutils.build_ui import build_ui
@@ -32,7 +32,7 @@ if sys.platform == 'linux':
 
 setup(
     name='QIdle',
-    version=__version__,
+    version=version,
     packages=[p for p in find_packages() if 'test' not in p],
     keywords=['Python; IDLE; IDE'],
     data_files=data_files,
@@ -46,4 +46,3 @@ setup(
     entry_points={'gui_scripts': ['QIdle = qidle.main:main']},
     cmdclass=cmdclass
 )
-
