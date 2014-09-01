@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>folder-new.png</file>
+    <file>folder-open.png</file>
+    <file>Preferences-system.png</file>
+    <file>system-run.png</file>
+    <file>dialog-information.png</file>
+    <file>document-new.png</file>
+    <file>document-open.png</file>
+    <file>document-save-as.png</file>
+    <file>document-save.png</file>
+    <file>edit-clear.png</file>
+    <file>help.png</file>
+    <file>media-playback-start.png</file>
+  </qresource>
+</RCC>

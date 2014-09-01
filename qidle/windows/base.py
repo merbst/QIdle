@@ -114,6 +114,8 @@ class WindowBase(QtWidgets.QMainWindow):
         self.ui.menuWindows.addSeparator()
         for win in open_windows:
             action = QtWidgets.QAction(self)
+            if win == self:
+                action.setDisabled(True)
             action.setText(win.windowTitle())
             action.setData(win)
             action.triggered.connect(self._show_window_from_action)
