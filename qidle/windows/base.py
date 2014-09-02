@@ -1,6 +1,7 @@
 import weakref
 from pyqode.core.widgets import MenuRecentFiles
 from pyqode.qt import QtCore, QtWidgets, QtGui
+import sys
 from qidle.forms import win_script_ui
 from qidle.settings import Settings
 
@@ -104,8 +105,13 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def zoom_height(self):
         desktop = QtWidgets.QApplication.instance().desktop()
-        difference = self.frameGeometry().height() - self.geometry().height()
-        self.resize(self.width(), desktop.availableGeometry().height() - difference)
+        if sys.platform == 'win32':
+            difference = (self.frameGeometry().height() -
+                          self.geometry().height())
+        else:
+            difference = 0
+        self.resize(self.width(), desktop.availableGeometry(self).height() -
+                    difference)
         self.move(self.pos().x(), 0)
 
     def update_windows_menu(self, open_windows):
