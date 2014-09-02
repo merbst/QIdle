@@ -102,15 +102,10 @@ class WindowBase(QtWidgets.QMainWindow):
             super().closeEvent(ev)
             self.closed.emit(self)
 
-    def _remember_height(self):
-        self._height = self.height()
-
     def zoom_height(self):
-        if self._height != self.height():
-            print("zomm height", self.height())
-            desktop = QtWidgets.QApplication.instance().desktop()
-            self.resize(self.width(), desktop.availableGeometry().height())
-            QtCore.QTimer.singleShot(100, self._remember_height)
+        desktop = QtWidgets.QApplication.instance().desktop()
+        difference = self.frameGeometry().height() - self.geometry().height()
+        self.resize(self.width(), desktop.availableGeometry().height() - difference)
         self.move(self.pos().x(), 0)
 
     def update_windows_menu(self, open_windows):
