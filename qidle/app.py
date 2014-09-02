@@ -43,9 +43,6 @@ class Application:
         active_window = self.qapp.activeWindow()
         if active_window:
             active_window.save_state()
-            if path and active_window.path == 'Untitled' and \
-                not active_window.ui.codeEdit.dirty:
-                    QtCore.QTimer.singleShot(1, active_window.close)
 
         window = ScripWindow(self)
         window.closed.connect(self._on_window_closed)
