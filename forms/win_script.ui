@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>QIdle</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qidle.qrc">
+    <normaloff>:/icons/pyqode.png</normaloff>:/icons/pyqode.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -81,7 +85,7 @@
      <x>0</x>
      <y>0</y>
      <width>948</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

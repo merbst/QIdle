@@ -60,6 +60,7 @@ class WindowBase(QtWidgets.QMainWindow):
     def __init__(self, ui, app):
         super().__init__()
         self._app = weakref.ref(app)
+        self._height = None
         # path of the script, 'Untitled' if new file not saved to disk.
         self.path = None
         self.ui = ui
@@ -101,10 +102,16 @@ class WindowBase(QtWidgets.QMainWindow):
             super().closeEvent(ev)
             self.closed.emit(self)
 
+    def _remember_height(self):
+        self._height = self.height()
+
     def zoom_height(self):
-        zoom_h = QtWidgets.QApplication.instance().desktop().height()
-        if zoom_h != self.height():
-            self.resize(self.width(), zoom_h)
+        if self._height != self.height():
+            print("zomm height", self.height())
+            desktop = QtWidgets.QApplication.instance().desktop()
+            self.resize(self.width(), desktop.availableGeometry().height())
+            QtCore.QTimer.singleShot(100, self._remember_height)
+        self.move(self.pos().x(), 0)
 
     def update_windows_menu(self, open_windows):
         self.ui.menuWindows.clear()

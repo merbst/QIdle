@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Dev/QIdle/forms/win_script.ui'
+# Form implementation generated from reading ui file '/home/colin/Dev/misc/QIdle/forms/win_script.ui'
 #
-# Created: Mon Sep  1 23:06:15 2014
+# Created: Tue Sep  2 14:53:17 2014
 #      by: PyQt5 UI code generator 5.3.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(948, 752)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/pyqode.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -60,7 +63,7 @@ class Ui_MainWindow(object):
         self.dockWidgetShell.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetShell)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 948, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 948, 25))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -187,7 +190,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "QIdle"))
         self.dockWidgetClassExplorer.setWindowTitle(_translate("MainWindow", "Class explorer"))
         self.dockWidgetProgramOutput.setWindowTitle(_translate("MainWindow", "Program output"))
         self.dockWidgetShell.setWindowTitle(_translate("MainWindow", "Shell"))
@@ -217,5 +220,5 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
 
-from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit
+from pyqode.python.widgets import PyCodeEdit, PyInteractiveConsole
 from . import qidle_rc

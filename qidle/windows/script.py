@@ -2,7 +2,7 @@ import difflib
 import os
 import sys
 
-from pyqode.qt import QtWidgets
+from pyqode.qt import QtGui, QtWidgets
 from pyqode.python.backend import server
 
 from qidle import version_major, version_minor, version
@@ -70,7 +70,7 @@ class ScripWindow(WindowBase):
             self.save_state()
 
     def restore_state(self):
-        self.restoreGeometry(Settings().script_window_geometry)
+        # self.restoreGeometry(Settings().script_window_geometry)
         self.restoreState(Settings().script_window_state)
 
     def save_state(self):
@@ -149,6 +149,8 @@ class ScripWindow(WindowBase):
 
     def run_script(self):
         self.ui.actionRun.setText('Stop')
+        self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
+            'media-playback-stop'))
         path = self.ui.codeEdit.file.path
         self.ui.textEditPgmOutput.start_process(
             sys.executable, [path] + Settings().get_run_config_for_file(path),
@@ -156,6 +158,8 @@ class ScripWindow(WindowBase):
 
     def stop_script(self):
         self.ui.actionRun.setText('Run')
+        self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
+            'media-playback-start'))
         self.ui.textEditPgmOutput.stop_process()
 
     def on_action_run_triggered(self):
