@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>terminal.png</file>
+    <file>view-tree.png</file>
     <file>pyqode.png</file>
     <file>folder-new.png</file>
     <file>folder-open.png</file>

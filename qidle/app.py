@@ -6,7 +6,7 @@ import os
 import sys
 from pyqode.core.widgets import RecentFilesManager
 
-from pyqode.qt import QtWidgets, QtCore
+from PyQt4 import QtGui, QtCore
 from qidle.windows import ScripWindow
 
 
@@ -18,7 +18,7 @@ class Application:
     """
     def __init__(self):
         self.windows = []
-        self.qapp = QtWidgets.QApplication(sys.argv)
+        self.qapp = QtGui.QApplication(sys.argv)
         self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
 
     def update_windows_menu(self):

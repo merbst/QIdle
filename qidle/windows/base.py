@@ -1,13 +1,13 @@
 import weakref
 from pyqode.core.widgets import MenuRecentFiles
-from pyqode.qt import QtCore, QtWidgets, QtGui
+from PyQt4 import QtCore, QtGui, QtGui
 import sys
 from qidle.forms import win_script_ui
 from qidle.settings import Settings
 
 
-class WindowBase(QtWidgets.QMainWindow):
-    closed = QtCore.Signal(QtWidgets.QMainWindow)
+class WindowBase(QtGui.QMainWindow):
+    closed = QtCore.Signal(QtGui.QMainWindow)
 
     @property
     def app(self):
@@ -46,11 +46,11 @@ class WindowBase(QtWidgets.QMainWindow):
     def _setup_windows_menu(self, ui):
         ui.actionZoom_height.triggered.connect(self.zoom_height)
         ui.menuTools.addActions(self.createPopupMenu().actions())
-        action_prev_window = QtWidgets.QAction(self)
+        action_prev_window = QtGui.QAction(self)
         action_prev_window.setShortcut('Alt+Up')
         action_prev_window.triggered.connect(self._show_prev_window)
         self.addAction(action_prev_window)
-        action_next_window = QtWidgets.QAction(self)
+        action_next_window = QtGui.QAction(self)
         action_next_window.setShortcut('Alt+Down')
         action_next_window.triggered.connect(self._show_next_window)
         self.addAction(action_next_window)
@@ -104,7 +104,7 @@ class WindowBase(QtWidgets.QMainWindow):
             self.closed.emit(self)
 
     def zoom_height(self):
-        desktop = QtWidgets.QApplication.instance().desktop()
+        desktop = QtGui.QApplication.instance().desktop()
         if sys.platform == 'win32':
             difference = (self.frameGeometry().height() -
                           self.geometry().height())
@@ -121,7 +121,7 @@ class WindowBase(QtWidgets.QMainWindow):
         self.ui.menuWindows.addMenu(self.ui.menuTools)
         self.ui.menuWindows.addSeparator()
         for win in open_windows:
-            action = QtWidgets.QAction(self)
+            action = QtGui.QAction(self)
             if win == self:
                 action.setDisabled(True)
             action.setText(win.windowTitle())
@@ -134,14 +134,14 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def _show_window_from_action(self):
         window = self.sender().data()
-        QtWidgets.QApplication.instance().setActiveWindow(window)
+        QtGui.QApplication.instance().setActiveWindow(window)
 
     def _on_new_file_triggered(self):
         self.save_state()
         self.app.create_script_window()
 
     def _on_open_file_triggered(self):
-        path, _ = QtWidgets.QFileDialog.getOpenFileName(
+        path = QtGui.QFileDialog.getOpenFileName(
             self, 'Open script', filter='Python files (*.py)')
         if path:
             self.app.create_script_window(path)

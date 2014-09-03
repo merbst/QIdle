@@ -3,8 +3,8 @@ Provides an easy way to access the application settings.
 
 """
 import json
-from pyqode.qt import QtCore
-from pyqode.qt.QtGui import QKeySequence
+from PyQt4 import QtCore
+from PyQt4.QtGui import QKeySequence
 
 
 class Settings:

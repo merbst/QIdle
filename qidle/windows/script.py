@@ -1,8 +1,7 @@
-import difflib
 import os
 import sys
 
-from pyqode.qt import QtGui, QtWidgets
+from PyQt4 import QtGui
 from pyqode.python.backend import server
 
 from qidle import version_major, version_minor, version
@@ -17,6 +16,7 @@ class ScripWindow(WindowBase):
         super().__init__(self.ui, app)
         self.ui.codeEdit.backend.start(
             server.__file__, sys.executable)
+        self.ui.classExplorer.set_editor(self.ui.codeEdit)
         self.ui.dockWidgetClassExplorer.hide()
         self.ui.dockWidgetShell.hide()
         self.restore_state()
@@ -40,21 +40,35 @@ class ScripWindow(WindowBase):
         self.ui.actionRun.triggered.connect(self.on_action_run_triggered)
         self.ui.textEditPgmOutput.process_finished.connect(self.stop_script)
 
+        for a in self.createPopupMenu().actions():
+            if a.text() == 'Class explorer':
+                a.setIcon(QtGui.QIcon(':/icons/view-tree.png'))
+                self.ui.toolBarTools.addAction(a)
+            if a.text() == 'Shell':
+                a.setIcon(QtGui.QIcon.fromTheme(
+                    'terminal',
+                    QtGui.QIcon(':/icons/terminal.png')))
+                self.ui.toolBarTools.addAction(a)
+            if a.text() == 'Program output':
+                a.setIcon(QtGui.QIcon.fromTheme(
+                    'media-playback-start',
+                    QtGui.QIcon(':/icons/media-playback-start.png')))
+
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
-            mbox = QtWidgets.QMessageBox(self)
+            mbox = QtGui.QMessageBox(self)
             mbox.setText("The document has been modified.")
             mbox.setInformativeText("Do you want to save your changes?")
             mbox.setStandardButtons(
-                QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard |
-                QtWidgets.QMessageBox.Cancel)
-            mbox.setIcon(QtWidgets.QMessageBox.Warning)
-            mbox.setDefaultButton(QtWidgets.QMessageBox.Save)
+                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard |
+                QtGui.QMessageBox.Cancel)
+            mbox.setIcon(QtGui.QMessageBox.Warning)
+            mbox.setDefaultButton(QtGui.QMessageBox.Save)
             ret = mbox.exec_()
-            if ret == QtWidgets.QMessageBox.Cancel:
+            if ret == QtGui.QMessageBox.Cancel:
                 ev.ignore()
             else:
-                if ret == QtWidgets.QMessageBox.Save:
+                if ret == QtGui.QMessageBox.Save:
                     if self.save():
                         ev.accept()
                     else:
@@ -111,7 +125,7 @@ class ScripWindow(WindowBase):
         self.app.update_windows_menu()
 
     def save_as(self):
-        path, status = QtWidgets.QFileDialog.getSaveFileName(
+        path, status = QtGui.QFileDialog.getSaveFileName(
             self, 'Save file as', filter='Python files (*.py)')
         if path:
             if os.path.splitext(path)[1] == '':
@@ -140,9 +154,9 @@ class ScripWindow(WindowBase):
     def configure_run(self):
         path = self.ui.codeEdit.file.path
         args = Settings().get_run_config_for_file(path)
-        text, status = QtWidgets.QInputDialog.getText(
+        text, status = QtGui.QInputDialog.getText(
             self, 'Run configuration', 'Script arguments:',
-            QtWidgets.QLineEdit.Normal, ' '.join(args))
+            QtGui.QLineEdit.Normal, ' '.join(args))
         if status:
             args = text.split(' ')
             Settings().set_run_config_for_file(path, args)

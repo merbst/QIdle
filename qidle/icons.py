@@ -3,7 +3,7 @@ This module contains the icon definitions, taking icon theme into account on
 linux.
 
 """
-from pyqode.qt import QtGui
+from PyQt4 import QtGui
 
 
 def icon(theme, path):
