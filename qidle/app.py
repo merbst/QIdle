@@ -39,7 +39,7 @@ class Application:
             for w in self.windows:
                 if w.path == path:
                     self.qapp.setActiveWindow(w)
-                    return
+                    return w
         active_window = self.qapp.activeWindow()
         if active_window:
             active_window.save_state()
