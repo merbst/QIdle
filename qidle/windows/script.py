@@ -84,14 +84,12 @@ class ScripWindow(WindowBase):
             self.save_state()
 
     def restore_state(self):
+        pass
         # self.restoreGeometry(Settings().script_window_geometry)
-        self.restoreState(Settings().script_window_state)
+        # self.restoreState(Settings().script_window_state)
 
     def save_state(self):
-        s = Settings()
-        s.script_window_geometry = self.saveGeometry()
-        s.script_window_state = self.saveState(
-            version_major * 1000 + version_minor)
+        pass
 
     def new(self):
         base_title = 'Untitled'
