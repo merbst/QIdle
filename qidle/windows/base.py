@@ -142,7 +142,8 @@ class WindowBase(QtGui.QMainWindow):
 
     def _on_open_file_triggered(self):
         path = QtGui.QFileDialog.getOpenFileName(
-            self, 'Open script', filter='Python files (*.py)')
+            self, 'Open script', self.path,
+            filter='Python files (*.py)')
         if path:
             self.app.create_script_window(path)
 
