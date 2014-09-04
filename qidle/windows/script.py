@@ -128,7 +128,7 @@ class ScripWindow(WindowBase):
         self.app.update_windows_menu()
 
     def save_as(self):
-        path, status = QtGui.QFileDialog.getSaveFileName(
+        path = QtGui.QFileDialog.getSaveFileName(
             self, 'Save file as', filter='Python files (*.py)')
         if path:
             if os.path.splitext(path)[1] == '':
