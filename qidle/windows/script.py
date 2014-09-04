@@ -42,9 +42,9 @@ class ScripWindow(WindowBase):
         self.ui.actionRun.triggered.connect(self.on_action_run_triggered)
         self.ui.textEditPgmOutput.process_finished.connect(self.stop_script)
         self.ui.textEditPgmOutput.open_file_requested.connect(
-            self._open_requested)
+            self._goto_requested)
         mode = self.ui.codeEdit.modes.get('GoToAssignmentsMode')
-        mode.out_of_doc.connect(self._open_requested)
+        mode.out_of_doc.connect(self._goto_requested)
 
         for a in self.createPopupMenu().actions():
             if a.text() == 'Class explorer':
@@ -59,6 +59,8 @@ class ScripWindow(WindowBase):
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
+
+        self.ui.codeEdit.cursorPositionChanged.connect(self._update_status_bar)
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
@@ -191,7 +193,7 @@ class ScripWindow(WindowBase):
         elif self.ui.actionRun.text() == 'Stop':
             self.stop_script()
 
-    def _open_requested(self, obj, line=0):
+    def _goto_requested(self, obj, line=0):
         if isinstance(obj, str):
             path = obj
             line = line
@@ -208,3 +210,8 @@ class ScripWindow(WindowBase):
             widget = window.ui.codeEdit
         TextHelper(widget).goto_line(line, col)
         widget.setFocus(True)
+
+    def _update_status_bar(self):
+        l, c = TextHelper(self.ui.codeEdit).cursor_position()
+        self.lbl_cursor_pos.setText('%d:%d' % (l + 1, c + 1))
+        self.lbl_encoding.setText(self.ui.codeEdit.file.encoding)

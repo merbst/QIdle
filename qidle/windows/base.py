@@ -1,8 +1,7 @@
-import weakref
-from pyqode.core.widgets import MenuRecentFiles
-from PyQt4 import QtCore, QtGui, QtGui
 import sys
-from qidle.forms import win_script_ui
+import weakref
+from PyQt4 import QtCore, QtGui
+from pyqode.core.widgets import MenuRecentFiles
 from qidle.settings import Settings
 
 
@@ -15,6 +14,27 @@ class WindowBase(QtGui.QMainWindow):
         :rtype: qidle.app.Application
         """
         return self._app()
+
+    def __init__(self, ui, app):
+        super().__init__()
+        self._app = weakref.ref(app)
+        self._height = None
+        # path of the script, 'Untitled' if new file not saved to disk.
+        self.path = None
+        self.ui = ui
+        self.ui.setupUi(self)
+        self._setup_mnu_file(app, ui)
+        self._setup_windows_menu(ui)
+        self._setup_help_menu()
+        self._setup_status_bar()
+
+    def _setup_status_bar(self):
+        self.lbl_cursor_pos = QtGui.QLabel()
+        self.lbl_cursor_pos.setText('na')
+        self.statusBar().addPermanentWidget(self.lbl_cursor_pos)
+        self.lbl_encoding = QtGui.QLabel()
+        self.lbl_encoding.setText('na')
+        self.statusBar().addPermanentWidget(self.lbl_encoding)
 
     def _setup_mnu_file(self, app, ui):
         self.ui.menuFile.clear()
@@ -57,18 +77,6 @@ class WindowBase(QtGui.QMainWindow):
 
     def _setup_help_menu(self):
         self.ui.actionPython_docs.triggered.connect(self._show_python_docs)
-
-    def __init__(self, ui, app):
-        super().__init__()
-        self._app = weakref.ref(app)
-        self._height = None
-        # path of the script, 'Untitled' if new file not saved to disk.
-        self.path = None
-        self.ui = ui
-        self.ui.setupUi(self)
-        self._setup_mnu_file(app, ui)
-        self._setup_windows_menu(ui)
-        self._setup_help_menu()
 
     def configure_shortcuts(self):
         self.addActions(self.ui.menuFile.actions())
@@ -142,8 +150,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def _on_open_file_triggered(self):
         path = QtGui.QFileDialog.getOpenFileName(
-            self, 'Open script', self.path,
-            filter='Python files (*.py)')
+            self, 'Open script', self.path, filter='Python files (*.py)')
         if path:
             self.app.create_script_window(path)
 
