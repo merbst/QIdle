@@ -7,8 +7,10 @@ class ClassExplorer(QtGui.QTreeWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._analyser = None
-
+        self._expanded_items = []
         self.itemDoubleClicked.connect(self.on_item_double_clicked)
+        self.itemExpanded.connect(self._expanded_items.append)
+        self.itemCollapsed.connect(self._expanded_items.remove)
 
     def set_editor(self, editor):
         self._editor = editor
@@ -26,10 +28,15 @@ class ClassExplorer(QtGui.QTreeWidget):
     def on_changed(self):
         analyser = self._analyser
         assert isinstance(analyser, DocumentAnalyserMode)
-        # todo: store expanded nodes
+        to_expand = [item.text(0) for item in self._expanded_items]
+        self._expanded_items.clear()
         self.clear()
         self.addTopLevelItems(analyser.to_tree_widget_items())
-        # todo: expand previously expanded nodes
+        # restore expanded items
+        for text in to_expand:
+            items = self.findItems(text, QtCore.Qt.MatchExactly)
+            for item in items:
+                self.expandItem(item)
 
     def on_item_double_clicked(self, item):
         d = item.data(0, QtCore.Qt.UserRole)
