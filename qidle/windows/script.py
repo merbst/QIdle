@@ -2,6 +2,7 @@ import os
 import sys
 
 from PyQt4 import QtGui
+from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
 
 from qidle import version_major, version_minor, version
@@ -39,6 +40,10 @@ class ScripWindow(WindowBase):
         self.ui.actionConfigureRun.triggered.connect(self.configure_run)
         self.ui.actionRun.triggered.connect(self.on_action_run_triggered)
         self.ui.textEditPgmOutput.process_finished.connect(self.stop_script)
+        self.ui.textEditPgmOutput.open_file_requested.connect(
+            self._open_requested)
+        mode = self.ui.codeEdit.modes.get('GoToAssignmentsMode')
+        mode.out_of_doc.connect(self._open_requested)
 
         for a in self.createPopupMenu().actions():
             if a.text() == 'Class explorer':
@@ -182,3 +187,21 @@ class ScripWindow(WindowBase):
             self.ui.textEditPgmOutput.setFocus(True)
         elif self.ui.actionRun.text() == 'Stop':
             self.stop_script()
+
+    def _open_requested(self, obj, line=0):
+        if isinstance(obj, str):
+            path = obj
+            line = line
+            col = 0
+        else:
+            # assignment
+            path = obj.module_path
+            line = obj.line
+            col = obj.column
+        if path == self.ui.codeEdit.file.path:
+            widget = self.ui.codeEdit
+        else:
+            window = self.app.create_script_window(path)
+            widget = window.ui.codeEdit
+        TextHelper(widget).goto_line(line, col)
+        widget.setFocus(True)
