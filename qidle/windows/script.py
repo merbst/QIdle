@@ -5,10 +5,11 @@ from PyQt4 import QtGui
 from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
 
-from qidle import version_major, version_minor, version
-from qidle.windows.base import WindowBase
+from qidle import version
+from qidle.dialogs import ScripConfigDialog
 from qidle.forms import win_script_ui
 from qidle.settings import Settings
+from qidle.windows.base import WindowBase
 
 
 class ScripWindow(WindowBase):
@@ -156,22 +157,24 @@ class ScripWindow(WindowBase):
 
     def configure_run(self):
         path = self.ui.codeEdit.file.path
-        args = Settings().get_run_config_for_file(path)
-        text, status = QtGui.QInputDialog.getText(
-            self, 'Run configuration', 'Script arguments:',
-            QtGui.QLineEdit.Normal, ' '.join(args))
-        if status:
-            args = text.split(' ')
-            Settings().set_run_config_for_file(path, args)
+        ScripConfigDialog.edit_config(self, path)
 
     def run_script(self):
         self.ui.actionRun.setText('Stop')
         self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
             'media-playback-stop'))
         path = self.ui.codeEdit.file.path
+        cfg = Settings().get_run_config_for_file(path)
+        opts = []
+        if len(cfg['interpreter_options']):
+            opts += cfg['interpreter_options']
+        opts += [cfg['script']]
+        if len(cfg['script_parameters']):
+            opts += cfg['script_parameters']
         self.ui.textEditPgmOutput.start_process(
-            sys.executable, [path] + Settings().get_run_config_for_file(path),
-            cwd=os.path.dirname(path))
+            cfg['interpreter'], opts,
+            cwd=cfg['working_dir'],
+            env=cfg['env_vars'])
 
     def stop_script(self):
         self.ui.actionRun.setText('Run')

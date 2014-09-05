@@ -16,4 +16,3 @@ class Shell(RichIPythonWidget):
         kernel_client.start_channels()
         self.kernel_manager = kernel_manager
         self.kernel_client = kernel_client
-

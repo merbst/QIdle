@@ -5,12 +5,12 @@ Provides an easy way to access the application settings.
 import json
 from PyQt4 import QtCore
 from PyQt4.QtGui import QKeySequence
+import sys
 
 
 class Settings:
     def __init__(self):
-        self._settings = QtCore.QSettings()
-        # self._settings.clear()
+        self._settings = QtCore.QSettings('QIdle', 'QIdle')
 
     @property
     def script_window_geometry(self):
@@ -84,7 +84,16 @@ class Settings:
             dic = self.run_configs
             config = dic[filename]
         except KeyError:
-            config = []
+            config = {
+                'script': filename,
+                'script_parameters': [],
+                'interpreter': sys.executable,
+                'interpreter_options': [],
+                'working_dir': None,
+                'env_vars': {
+                    'PYTHONUNBUFFERED': '1'
+                }
+            }
             self.set_run_config_for_file(filename, config)
         return config
 
