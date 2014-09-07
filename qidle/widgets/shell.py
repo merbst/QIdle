@@ -9,13 +9,19 @@ from IPython.qt.inprocess import QtInProcessKernelManager
 class Shell(RichIPythonWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        kernel_manager = QtInProcessKernelManager()
-        kernel_manager.start_kernel()
-        # kernel = kernel_manager.kernel
-        kernel_client = kernel_manager.client()
-        kernel_client.start_channels()
-        self.kernel_manager = kernel_manager
-        self.kernel_client = kernel_client
+        self._initialized = False
+
+    def showEvent(self, e):
+        if not self._initialized:
+            kernel_manager = QtInProcessKernelManager()
+            kernel_manager.start_kernel()
+            # kernel = kernel_manager.kernel
+            kernel_client = kernel_manager.client()
+            kernel_client.start_channels()
+            self.kernel_manager = kernel_manager
+            self.kernel_client = kernel_client
+            self._initialized = True
+        super().showEvent(e)
 
     def sizeHint(self):
         sh = super().sizeHint()

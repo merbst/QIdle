@@ -1,8 +1,12 @@
+"""
+Base implementation for windows.
+"""
 import sys
 import weakref
 from PyQt4 import QtCore, QtGui
 from pyqode.core.widgets import MenuRecentFiles
-from qidle.settings import Settings
+from qidle.preferences import Preferences
+from qidle.dialogs import DlgPreferences
 
 
 class WindowBase(QtGui.QMainWindow):
@@ -27,6 +31,7 @@ class WindowBase(QtGui.QMainWindow):
         self._setup_windows_menu(ui)
         self._setup_help_menu()
         self._setup_status_bar()
+        ui.actionConfigure_IDLE.triggered.connect(self.edit_preferences)
 
     def _setup_status_bar(self):
         self.lbl_cursor_pos = QtGui.QLabel()
@@ -78,14 +83,14 @@ class WindowBase(QtGui.QMainWindow):
     def _setup_help_menu(self):
         self.ui.actionPython_docs.triggered.connect(self._show_python_docs)
 
-    def configure_shortcuts(self):
+    def _configure_shortcuts(self):
         self.addActions(self.ui.menuFile.actions())
         # menu edit already added
         self.addActions(self.ui.menuRun.actions())
         self.addActions(self.ui.menuOptions.actions())
         self.addActions(self.ui.menuWindows.actions())
         self.addActions(self.ui.menuHelp.actions())
-        key_bindings = Settings().key_bindings
+        key_bindings = Preferences().key_bindings.dict()
         for action in self.actions():
             try:
                 key_sequence = key_bindings[action.objectName()]
@@ -139,6 +144,9 @@ class WindowBase(QtGui.QMainWindow):
 
     def update_recents_menu(self):
         self.menu_recents.update_actions()
+
+    def edit_preferences(self):
+        DlgPreferences.edit_preferences(self)
 
     def _show_window_from_action(self):
         window = self.sender().data()

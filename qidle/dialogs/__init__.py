@@ -1,1 +1,2 @@
-from .config import ScripConfigDialog
+from .config import DlgScriptRunConfig
+from .preferences import DlgPreferences

@@ -55,7 +55,7 @@ class Application:
         window.show()
         self.qapp.setActiveWindow(window)
         window.raise_()
-        window.configure_shortcuts()
+        window._configure_shortcuts()
         return window
 
     def _on_window_closed(self, window):

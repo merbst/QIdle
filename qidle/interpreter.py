@@ -28,3 +28,5 @@ def detect_system_interpreters():
                      path = os.path.abspath(os.path.join(path, os.pardir))
                 executables.add(os.path.join(path, 'python.exe'))
     return list(set(executables))
+
+

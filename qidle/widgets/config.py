@@ -54,7 +54,7 @@ class RunConfigWidget(QtGui.QWidget):
         self.ui.pickerScript.path = config['script']
         self.ui.lineEditScriptParams.setText(
             ' '.join(config['script_parameters']))
-        # todo when we have an interpreter settings dialog
+        # todo when we have an interpreter preferences dialog
         interpreter = config['interpreter']
         interpreter_options = config['interpreter_options']
         working_dir = config['working_dir']

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>application-x-python.png</file>
     <file>terminal.png</file>
     <file>view-tree.png</file>
     <file>pyqode.png</file>

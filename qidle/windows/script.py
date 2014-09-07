@@ -6,9 +6,9 @@ from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
 
 from qidle import version
-from qidle.dialogs import ScripConfigDialog
+from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
-from qidle.settings import Settings
+from qidle.preferences import Preferences
 from qidle.windows.base import WindowBase
 
 
@@ -153,20 +153,25 @@ class ScripWindow(WindowBase):
         if self.path == 'Untitled':
             return self.save_as()
         else:
-            self.ui.codeEdit.file.save()
+            try:
+                self.ui.codeEdit.file.save()
+            except OSError as e:
+                QtGui.QMessageBox.warning(
+                    self, 'Failed to save file',
+                    'Failed to save file.\n\n%s' % e)
             self.app.remember_path(self.ui.codeEdit.file.path)
             return True
 
     def configure_run(self):
         path = self.ui.codeEdit.file.path
-        ScripConfigDialog.edit_config(self, path)
+        DlgScriptRunConfig.edit_config(self, path)
 
     def run_script(self):
         self.ui.actionRun.setText('Stop')
         self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
             'media-playback-stop'))
         path = self.ui.codeEdit.file.path
-        cfg = Settings().get_run_config_for_file(path)
+        cfg = Preferences().cache.get_run_config_for_file(path)
         opts = []
         if len(cfg['interpreter_options']):
             opts += cfg['interpreter_options']
@@ -204,10 +209,14 @@ class ScripWindow(WindowBase):
             line = obj.line
             col = obj.column
         if path == self.ui.codeEdit.file.path:
+            window = self
             widget = self.ui.codeEdit
         else:
             window = self.app.create_script_window(path)
             widget = window.ui.codeEdit
+        self.app.qapp.setActiveWindow(window)
+        window.raise_()
+        self.app.qapp.processEvents()
         TextHelper(widget).goto_line(line, col)
         widget.setFocus(True)
 

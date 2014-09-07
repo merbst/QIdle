@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Dev/misc/QIdle/forms/widget_run_cfg.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/widget_run_cfg.ui'
 #
-# Created: Fri Sep  5 12:09:17 2014
+# Created: Sun Sep  7 17:49:47 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,7 @@ class Ui_Form(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(558, 381)
         self.formLayout = QtGui.QFormLayout(Form)
-        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
         self.formLayout.setObjectName(_fromUtf8("formLayout"))
         self.label = QtGui.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
@@ -46,6 +46,11 @@ class Ui_Form(object):
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_3)
         self.comboBoxInterpreter = QtGui.QComboBox(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.comboBoxInterpreter.sizePolicy().hasHeightForWidth())
+        self.comboBoxInterpreter.setSizePolicy(sizePolicy)
         self.comboBoxInterpreter.setObjectName(_fromUtf8("comboBoxInterpreter"))
         self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.comboBoxInterpreter)
         self.label_4 = QtGui.QLabel(Form)
