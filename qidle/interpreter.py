@@ -3,6 +3,7 @@ This module contains utility function related to python interpreters
 """
 import glob
 import os
+import pip
 import platform
 import re
 
@@ -30,3 +31,10 @@ def detect_system_interpreters():
     return list(set(executables))
 
 
+def get_installed_packages(*args):
+    packages = []
+    for dist in pip.get_installed_distributions(skip=['python']):
+        name = dist.key
+        version = dist.version
+        packages.append((name, version, dist.location))
+    return True, packages

@@ -114,6 +114,7 @@ class ScripWindow(WindowBase):
         # disabled till save as
         self.ui.actionRun.setDisabled(True)
         self.ui.actionConfigureRun.setDisabled(True)
+        self._update_status_bar()
 
     def open(self, path):
         self.ui.codeEdit.file.open(path)

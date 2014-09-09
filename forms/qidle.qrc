@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>interpreter-sys.png</file>
+    <file>interpreter-venv.png</file>
+    <file>loader.gif</file>
     <file>application-x-python.png</file>
     <file>terminal.png</file>
     <file>view-tree.png</file>

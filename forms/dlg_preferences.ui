@@ -80,7 +80,7 @@
         </property>
         <property name="icon">
          <iconset resource="qidle.qrc">
-          <normaloff>:/icons/application-x-python.png</normaloff>:/icons/application-x-python.png</iconset>
+          <normaloff>:/icons/interpreter-sys.png</normaloff>:/icons/interpreter-sys.png</iconset>
         </property>
        </item>
       </widget>

@@ -5,7 +5,7 @@ This module contains the preferences dialog implementation.
 from PyQt4 import QtGui, QtCore
 from qidle.forms.dlg_preferences_ui import Ui_Dialog
 from qidle.widgets.preferences import (
-    PageAppearance, PageGeneral
+    PageAppearance, PageGeneral, PageInterpreters
 )
 
 
@@ -18,14 +18,23 @@ class DlgPreferences(QtGui.QDialog):
         # general
         page = PageGeneral(self.ui.pages)
         self.ui.pages.addWidget(page)
-        general = self.ui.categories.findItems('General', QtCore.Qt.MatchExactly)[0]
+        general = self.ui.categories.findItems(
+            'General', QtCore.Qt.MatchExactly)[0]
         general.setData(0, QtCore.Qt.UserRole, page)
         self.ui.pages.setCurrentIndex(0)
 
         # appearance
         page = PageAppearance(self.ui.pages)
         self.ui.pages.addWidget(page)
-        general = self.ui.categories.findItems('Appearance', QtCore.Qt.MatchExactly)[0]
+        general = self.ui.categories.findItems(
+            'Appearance', QtCore.Qt.MatchExactly)[0]
+        general.setData(0, QtCore.Qt.UserRole, page)
+
+        # appearance
+        page = PageInterpreters(self.ui.pages)
+        self.ui.pages.addWidget(page)
+        general = self.ui.categories.findItems(
+            'Interpreters', QtCore.Qt.MatchExactly)[0]
         general.setData(0, QtCore.Qt.UserRole, page)
 
         # show general settings

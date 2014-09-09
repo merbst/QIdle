@@ -3,9 +3,11 @@ Provides an easy way to access the application preferences.
 
 """
 import json
+import os
 import sys
 from PyQt4 import QtCore
 from PyQt4.QtGui import QKeySequence
+from qidle.interpreter import detect_system_interpreters
 
 
 class Section:
@@ -121,6 +123,21 @@ class Cache(Section):
         dic = self.run_configs
         dic[filename] = config
         self.run_configs = dic
+
+    def get_interpreters(self):
+        return eval(self.get_value('interpreters', str(
+            [(inter, 'system') for inter in detect_system_interpreters()])))
+
+    def set_interpreters(self, value):
+        self.set_value('interpreters', str(value))
+
+    def default_interpreter(self):
+        return self.get_value('default_interpreter',
+                              os.path.realpath(sys.executable))
+
+    def set_default_interpreter(self, interpreter):
+        self.set_value('default_interpreter', interpreter)
+
 
 class Preferences(QtCore.QSettings):
     def __init__(self):

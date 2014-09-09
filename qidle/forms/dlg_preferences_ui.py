@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/dlg_preferences.ui'
 #
-# Created: Sun Sep  7 18:26:36 2014
+# Created: Tue Sep  9 14:40:32 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,7 +52,7 @@ class Ui_Dialog(object):
         item_1 = QtGui.QTreeWidgetItem(item_0)
         item_0 = QtGui.QTreeWidgetItem(self.categories)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/application-x-python.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/interpreter-sys.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item_0.setIcon(0, icon)
         self.categories.header().setVisible(False)
         self.horizontalLayout.addWidget(self.categories)
