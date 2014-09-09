@@ -1,7 +1,8 @@
 import os
-from PyQt4 import QtGui
 import sys
+from PyQt4 import QtGui
 from qidle.forms import widget_run_cfg_ui
+from qidle.widgets.utils import load_interpreters
 
 
 class RunConfigWidget(QtGui.QWidget):
@@ -29,9 +30,10 @@ class RunConfigWidget(QtGui.QWidget):
     def _get_env_vars(self):
         env_vars = {}
         for i in range(self.ui.tableWidgetEnvVars.rowCount()):
-            name = self.ui.tableWidgetEnvVars.item(i, 0).text()
-            val = self.ui.tableWidgetEnvVars.item(i, 1).text()
-            env_vars[name] = val
+            name_item = self.ui.tableWidgetEnvVars.item(i, 0)
+            val_item = self.ui.tableWidgetEnvVars.item(i, 1)
+            if name_item and val_item:
+                env_vars[name_item.text()] = val_item.text()
         return env_vars
 
     def set_config(self, config):
@@ -54,9 +56,10 @@ class RunConfigWidget(QtGui.QWidget):
         self.ui.pickerScript.path = config['script']
         self.ui.lineEditScriptParams.setText(
             ' '.join(config['script_parameters']))
-        # todo when we have an interpreter preferences dialog
         interpreter = config['interpreter']
+        load_interpreters(self.ui.comboBoxInterpreter, default=interpreter)
         interpreter_options = config['interpreter_options']
+        self.ui.lineEdidInterpreterOpts.setText(' '.join(interpreter_options))
         working_dir = config['working_dir']
         if working_dir is None:
             working_dir = os.path.dirname(config['script'])
@@ -75,7 +78,7 @@ class RunConfigWidget(QtGui.QWidget):
             'script_parameters':
                 self.ui.lineEditScriptParams.text().split(' ') if
                 self.ui.lineEditScriptParams.text() else '',
-            'interpreter': sys.executable,
+            'interpreter': self.ui.comboBoxInterpreter.currentText(),
             'interpreter_options':
                 self.ui.lineEdidInterpreterOpts.text().split(' ') if
                 self.ui.lineEdidInterpreterOpts.text() else '',

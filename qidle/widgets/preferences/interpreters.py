@@ -5,39 +5,41 @@ from pyqode.core.backend import NotConnected
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
 from qidle.interpreter import get_installed_packages
-from qidle.preferences import Preferences
 from qidle.widgets.preferences.base import Page
+from qidle.widgets.utils import load_interpreters
 from qidle.forms.preferences import page_interpreters_ui
 
 
 class PageInterpreters(Page):
+    """
+    Page for interpreter settings, the user can choose the default interpreter
+    that will be used when running new scripts/projects. The user can also
+    add local interpreters or create a virtual environments.
+
+    This page also offer a view of the installed package and let the user
+    install, uninstall and update any package.
+
+    The list of packages for a specific interpreter is collected by a
+    background process which uses pip.get_installed_distributions. So for this
+    to work, pip must be installed on the target interpreter sites-package.
+    """
     def __init__(self, parent=None):
         self.ui = page_interpreters_ui.Ui_Form()
-        super().__init__(self.ui, parent)
         self.movie = QtGui.QMovie(':/icons/loader.gif')
-        self.ui.lblMovie.setMovie(self.movie)
         self.backend = None
-        self.normal_icon = QtGui.QIcon(':/icons/interpreter-sys.png')
-        self.venv_icon = QtGui.QIcon(':/icons/interpreter-venv.png')
-        self._load_interpreters()
-        self._refresh_packages(0)
+        super().__init__(self.ui, parent)
+        self.ui.lblMovie.setMovie(self.movie)
         self.ui.combo_interpreters.currentIndexChanged.connect(
             self._refresh_packages)
+        self.menu_cfg = QtGui.QMenu(self.ui.bt_cfg)
+        self.action_add_local = self.menu_cfg.addAction('add local')
+        self.action_create_virtualenv = self.menu_cfg.addAction(
+            'create virtual env')
+        self.action_remove_interpreter = self.menu_cfg.addAction('remove')
+        self.ui.bt_cfg.setMenu(self.menu_cfg)
 
     def __del__(self):
         self._stop_backend()
-
-    def _load_interpreters(self):
-        default = Preferences().cache.default_interpreter()
-        default_index = 0
-        for interpreter, itype in sorted(
-                Preferences().cache.get_interpreters()):
-            index = self.ui.combo_interpreters.count()
-            icon = self.normal_icon if 'virtualenv' else self.venv_icon
-            self.ui.combo_interpreters.addItem(icon, interpreter)
-            if interpreter == default:
-                default_index = index
-        self.ui.combo_interpreters.setCurrentIndex(default_index)
 
     def _stop_backend(self):
         if self.backend is not None:
@@ -77,7 +79,7 @@ class PageInterpreters(Page):
 
     def _enable_buttons(self, enable):
         self.ui.combo_interpreters.setEnabled(enable)
-        self.ui.bt_configure.setEnabled(enable)
+        self.ui.bt_cfg.setEnabled(enable)
         self.ui.bt_install_package.setEnabled(enable)
         self.ui.bt_uninstall_package.setEnabled(enable)
         self.ui.bt_upgrade_package.setEnabled(enable)
@@ -97,7 +99,19 @@ class PageInterpreters(Page):
                 get_installed_packages, 'refresh_packages',
                 on_receive=self._on_refresh_finished)
         except NotConnected:
-            QtCore.QTimer.singleShot(100, self._send_request)
+            if self.backend.exit_code:
+                # backend stopped working, may happen if pip or another
+                # package is missing for the target interpreter's
+                # site-packages
+                QtGui.QMessageBox.warning(
+                    self, 'Refresh failed',
+                    'Failed to refresh packages list. \n'
+                    'Make sure you installed pip for the target interpreter: '
+                    '%s' % self.ui.combo_interpreters.currentText())
+                self._on_refresh_finished(False, None)
+            else:
+                # waiting for the backend to start, retry in a few milliseconds
+                QtCore.QTimer.singleShot(100, self._send_request)
 
     def _stop_movie(self):
         self.movie.stop()
@@ -117,7 +131,8 @@ class PageInterpreters(Page):
                 self.ui.table_packages.setItem(i, c, item)
 
     def reset(self):
-        pass
+        load_interpreters(self.ui.combo_interpreters)
+        self._refresh_packages(0)
 
     def restore_defaults(self):
         pass

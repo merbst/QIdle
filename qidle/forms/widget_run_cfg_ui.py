@@ -125,4 +125,4 @@ class Ui_Form(object):
         item = self.tableWidgetEnvVars.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Value", None))
 
-from qidle.widgets.utils import FilePicker
+from qidle.widgets.picker import FilePicker

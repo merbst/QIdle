@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/preferences/page_interpreters.ui'
+# Form implementation generated from reading ui file '/home/colin/QIdle/forms/preferences/page_interpreters.ui'
 #
-# Created: Tue Sep  9 15:17:26 2014
+# Created: Tue Sep  9 23:20:50 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,13 +38,13 @@ class Ui_Form(object):
         self.combo_interpreters = QtGui.QComboBox(self.groupBox)
         self.combo_interpreters.setObjectName(_fromUtf8("combo_interpreters"))
         self.horizontalLayout.addWidget(self.combo_interpreters)
-        self.bt_configure = QtGui.QToolButton(self.groupBox)
+        self.bt_cfg = QtGui.QToolButton(self.groupBox)
         icon = QtGui.QIcon.fromTheme(_fromUtf8("system-run"))
-        self.bt_configure.setIcon(icon)
-        self.bt_configure.setPopupMode(QtGui.QToolButton.InstantPopup)
-        self.bt_configure.setArrowType(QtCore.Qt.NoArrow)
-        self.bt_configure.setObjectName(_fromUtf8("bt_configure"))
-        self.horizontalLayout.addWidget(self.bt_configure)
+        self.bt_cfg.setIcon(icon)
+        self.bt_cfg.setPopupMode(QtGui.QToolButton.InstantPopup)
+        self.bt_cfg.setArrowType(QtCore.Qt.NoArrow)
+        self.bt_cfg.setObjectName(_fromUtf8("bt_add_interpreter"))
+        self.horizontalLayout.addWidget(self.bt_cfg)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         self.groupBox_2 = QtGui.QGroupBox(Form)
@@ -97,11 +97,11 @@ class Ui_Form(object):
         self.verticalLayout_2.addItem(spacerItem)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
-        self.verticalLayout.addWidget(self.groupBox_2)
-        self.widgetInfos = QtGui.QWidget(Form)
+        self.widgetInfos = QtGui.QWidget(self.groupBox_2)
         self.widgetInfos.setObjectName(_fromUtf8("widgetInfos"))
         self.gridLayout_2 = QtGui.QGridLayout(self.widgetInfos)
         self.gridLayout_2.setMargin(0)
+        self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.layout_infos = QtGui.QHBoxLayout()
         self.layout_infos.setContentsMargins(-1, 0, -1, -1)
@@ -116,7 +116,8 @@ class Ui_Form(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.layout_infos.addItem(spacerItem1)
         self.gridLayout_2.addLayout(self.layout_infos, 0, 0, 1, 1)
-        self.verticalLayout.addWidget(self.widgetInfos)
+        self.verticalLayout_3.addWidget(self.widgetInfos)
+        self.verticalLayout.addWidget(self.groupBox_2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -124,7 +125,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.groupBox.setTitle(_translate("Form", "Default interpreter", None))
-        self.bt_configure.setText(_translate("Form", "...", None))
+        self.bt_cfg.setText(_translate("Form", "...", None))
         self.groupBox_2.setTitle(_translate("Form", "Installed packages", None))
         item = self.table_packages.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Package", None))

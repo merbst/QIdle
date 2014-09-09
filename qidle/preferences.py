@@ -124,18 +124,47 @@ class Cache(Section):
         dic[filename] = config
         self.run_configs = dic
 
-    def get_interpreters(self):
-        return eval(self.get_value('interpreters', str(
-            [(inter, 'system') for inter in detect_system_interpreters()])))
 
-    def set_interpreters(self, value):
-        self.set_value('interpreters', str(value))
+class Interpreters(Section):
+    def __init__(self, settings):
+        super().__init__(settings, self.__class__.__name__.lower())
 
-    def default_interpreter(self):
+    @property
+    def locals(self):
+        """
+        Gets/Sets the list of local interpreters, the one added
+        manually by the user.
+
+        :return: list of str
+        """
+        return eval(self.get_value('locals', '[]'))
+
+    @locals.setter
+    def locals(self, local_interpreters):
+        self.set_value('locals', repr(local_interpreters))
+
+    @property
+    def virtual_envs(self):
+        """
+        Gets/sets the list of virtual envs
+        :return:
+        """
+        return eval(self.get_value('virtual_envs', '[]'))
+
+    @virtual_envs.setter
+    def virtual_envs(self, virtual_envs):
+        self.set_value('virtual_envs', repr(virtual_envs))
+
+    @property
+    def default(self):
+        """
+        Gets/Sets the default interpreter.
+        """
         return self.get_value('default_interpreter',
                               os.path.realpath(sys.executable))
 
-    def set_default_interpreter(self, interpreter):
+    @default.setter
+    def default(self, interpreter):
         self.set_value('default_interpreter', interpreter)
 
 
@@ -145,3 +174,4 @@ class Preferences(QtCore.QSettings):
         self.main_window = MainWindow(self)
         self.key_bindings = KeyBindings(self)
         self.cache = Cache(self)
+        self.interpreters = Interpreters(self)
