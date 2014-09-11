@@ -4,7 +4,9 @@ from PyQt4 import QtCore, QtGui
 from pyqode.core.backend import NotConnected
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
-from qidle.interpreter import get_installed_packages
+from qidle import icons
+from qidle.interpreter import get_installed_packages, is_system_interpreter
+from qidle.preferences import Preferences
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
 from qidle.forms.preferences import page_interpreters_ui
@@ -28,6 +30,8 @@ class PageInterpreters(Page):
         self.movie = QtGui.QMovie(':/icons/loader.gif')
         self.backend = None
         super(PageInterpreters, self).__init__(self.ui, parent)
+        self.ui.table_packages.itemSelectionChanged.connect(
+            self._on_selected_package_changed)
         self.ui.lblMovie.setMovie(self.movie)
         self.ui.combo_interpreters.currentIndexChanged.connect(
             self._refresh_packages)
@@ -37,6 +41,15 @@ class PageInterpreters(Page):
             'create virtual env')
         self.action_remove_interpreter = self.menu_cfg.addAction('remove')
         self.ui.bt_cfg.setMenu(self.menu_cfg)
+
+        self.ui.bt_install_package.setIcon(icons.list_add)
+        self.ui.bt_uninstall_package.setIcon(icons.list_remove)
+        self.ui.bt_upgrade_package.setIcon(icons.go_up)
+        self.ui.bt_cfg.setIcon(icons.configure)
+        self.action_add_local.setIcon(icons.list_add)
+        self.action_remove_interpreter.setIcon(icons.list_remove)
+        self.action_create_virtualenv.setIcon(icons.python_virtualenv)
+        self._refresh_packages(0)
 
     def __del__(self):
         self._stop_backend()
@@ -86,10 +99,13 @@ class PageInterpreters(Page):
 
     @QtCore.pyqtSlot(int)
     def _refresh_packages(self, index):
+        interpreter = self.ui.combo_interpreters.currentText()
+        self.action_remove_interpreter.setEnabled(
+            not is_system_interpreter(interpreter))
         # stop previous backend, it will be run by a different interpreter
         self._start_movie()
         self._clear_packages()
-        self._start_backend(self.ui.combo_interpreters.currentText())
+        self._start_backend(interpreter)
         self._send_request()
         self._enable_buttons(False)
 
@@ -130,12 +146,21 @@ class PageInterpreters(Page):
                     val)
                 self.ui.table_packages.setItem(i, c, item)
 
+        self._on_selected_package_changed()
+
+    def _on_selected_package_changed(self):
+        enable = self.ui.table_packages.currentRow() != -1
+        self.ui.bt_uninstall_package.setEnabled(enable)
+        self.ui.bt_upgrade_package.setEnabled(enable)
+
     def reset(self):
         load_interpreters(self.ui.combo_interpreters)
-        self._refresh_packages(0)
+        if hasattr(self, 'action_remove_interpreter'):
+            self._refresh_packages(0)
 
     def restore_defaults(self):
         pass
 
     def apply(self):
-        pass
+        prefs = Preferences()
+        prefs.interpreters.default = self.ui.combo_interpreters.currentText()

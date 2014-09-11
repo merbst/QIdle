@@ -109,7 +109,7 @@ class Cache(Section):
             config = {
                 'script': filename,
                 'script_parameters': [],
-                'interpreter': sys.executable,
+                'interpreter': self._settings.interpreters.default,
                 'interpreter_options': [],
                 'working_dir': None,
                 'env_vars': {

@@ -10,10 +10,11 @@ from qidle.widgets.preferences import (
 
 
 class DlgPreferences(QtGui.QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent, apply_callback):
         super(DlgPreferences, self).__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self._apply_callback = apply_callback
 
         # general
         page = PageGeneral(self.ui.pages)
@@ -49,8 +50,20 @@ class DlgPreferences(QtGui.QDialog):
         else:
             self.ui.pages.setCurrentIndex(0)
 
+    def apply(self):
+        # apply the settings of every page, this mean writing in QSettings
+        for i in range(self.ui.pages.count()):
+            try:
+                self.ui.pages.widget(i).apply()
+            except AttributeError:
+                # temp page for page not already implemented
+                pass
+        # let the application apply new settings on open windows
+        if self._apply_callback is not None:
+            self._apply_callback()
+
     @classmethod
     def edit_preferences(cls, parent):
-        dlg = cls(parent)
+        dlg = cls(parent, None)
         if dlg.exec_() == DlgPreferences.Accepted:
-            pass
+            dlg.apply()

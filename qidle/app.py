@@ -12,7 +12,7 @@ from qidle.windows import ScripWindow
 
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 class Application:

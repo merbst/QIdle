@@ -1,6 +1,7 @@
 import os
 import sys
 from PyQt4 import QtGui
+from qidle import icons
 from qidle.forms import widget_run_cfg_ui
 from qidle.widgets.utils import load_interpreters
 
@@ -19,6 +20,8 @@ class RunConfigWidget(QtGui.QWidget):
         self.ui.tableWidgetEnvVars.itemSelectionChanged.connect(
             self._table_env_var_sel_changed)
         self.ui.toolButtonRemove.clicked.connect(self._rm_current_row)
+        self.ui.toolButtonRemove.setIcon(icons.list_remove)
+        self.ui.toolButtonAdd.setIcon(icons.list_add)
 
     def _rm_current_row(self):
         self.ui.tableWidgetEnvVars.takeRow(

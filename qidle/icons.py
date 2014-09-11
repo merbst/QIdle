@@ -44,6 +44,10 @@ terminal = None
 class_browser = None
 window_close = None
 application_exit = None
+list_add = None
+list_remove = None
+go_up = None
+go_down = None
 
 
 def init():
@@ -67,6 +71,10 @@ def init():
     global class_browser
     global window_close
     global application_exit
+    global list_add
+    global list_remove
+    global go_up
+    global go_down
 
     new_file = icon(':/icons/document-new.png', 'document-new')
     open_file = icon(':/icons/document-open.png', 'document-open')
@@ -88,6 +96,10 @@ def init():
     class_browser = icon(':/icons/view-tree.png')
     window_close = icon(':/icons/dialog-close.png', 'window-close')
     application_exit = icon(':/icons/exit.png', 'exit')
+    list_add = icon(':/icons/list-add.png', 'list-add')
+    list_remove = icon(':/icons/list-remove.png', 'list-remove')
+    go_up = icon(':/icons/go-up.png', 'go-up')
+    go_down = icon(':/icons/go-up.png', 'go-down')
 
 
 class IconProvider(QtGui.QFileIconProvider):

@@ -31,6 +31,10 @@ def detect_system_interpreters():
     return list(set(executables))
 
 
+def is_system_interpreter(path):
+    return path in detect_system_interpreters()
+
+
 def get_installed_packages(*args):
     packages = []
     for dist in pip.get_installed_distributions(skip=['python']):
