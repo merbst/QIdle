@@ -10,7 +10,7 @@ from PyQt4.QtGui import QKeySequence
 from qidle.interpreter import detect_system_interpreters
 
 
-class Section:
+class Section(object):
     def __init__(self, settings, prefix):
         self._settings = settings
         self.prefix = prefix
@@ -24,7 +24,7 @@ class Section:
 
 class MainWindow(Section):
     def __init__(self, settings):
-        super().__init__(settings, 'main_window')
+        super(MainWindow, self).__init__(settings, 'main_window')
 
     @property
     def script_window_geometry(self):
@@ -51,7 +51,7 @@ class MainWindow(Section):
 
 class KeyBindings(Section):
     def __init__(self, settings):
-        super().__init__(settings, 'key_bindings')
+        super(KeyBindings, self).__init__(settings, 'key_bindings')
         self.default_shortcuts = {
             'actionNew_file': QKeySequence(QKeySequence.New),
             'actionNew_project': QKeySequence('Ctrl+Shift+N'),
@@ -83,7 +83,7 @@ class KeyBindings(Section):
 
 class Cache(Section):
     def __init__(self, settings):
-        super().__init__(settings, 'cache')
+        super(Cache, self).__init__(settings, 'cache')
 
     @property
     def run_configs(self):
@@ -127,7 +127,8 @@ class Cache(Section):
 
 class Interpreters(Section):
     def __init__(self, settings):
-        super().__init__(settings, self.__class__.__name__.lower())
+        super(Interpreters, self).__init__(
+            settings, self.__class__.__name__.lower())
 
     @property
     def locals(self):
@@ -170,7 +171,7 @@ class Interpreters(Section):
 
 class Preferences(QtCore.QSettings):
     def __init__(self):
-        super().__init__('QIdle', 'QIdle')
+        super(Preferences, self).__init__('QIdle', 'QIdle')
         self.main_window = MainWindow(self)
         self.key_bindings = KeyBindings(self)
         self.cache = Cache(self)

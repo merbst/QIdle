@@ -6,7 +6,7 @@ from qidle.widgets import RunConfigWidget
 
 class DlgScriptRunConfig(QtGui.QDialog):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(DlgScriptRunConfig, self).__init__(parent)
         self.ui = dlg_script_run_config_ui.Ui_Dialog()
         self.ui.setupUi(self)
 

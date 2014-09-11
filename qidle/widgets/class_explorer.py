@@ -5,7 +5,7 @@ from pyqode.python.modes import DocumentAnalyserMode
 
 class ClassExplorer(QtGui.QTreeWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(ClassExplorer, self).__init__(parent)
         self._analyser = None
         self._expanded_items = []
         self.itemDoubleClicked.connect(self.on_item_double_clicked)
@@ -29,7 +29,7 @@ class ClassExplorer(QtGui.QTreeWidget):
         analyser = self._analyser
         assert isinstance(analyser, DocumentAnalyserMode)
         to_expand = [item.text(0) for item in self._expanded_items]
-        self._expanded_items.clear()
+        self._expanded_items[:] = []
         self.clear()
         self.addTopLevelItems(analyser.to_tree_widget_items())
         # restore expanded items

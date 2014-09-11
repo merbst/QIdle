@@ -27,7 +27,7 @@ class PageInterpreters(Page):
         self.ui = page_interpreters_ui.Ui_Form()
         self.movie = QtGui.QMovie(':/icons/loader.gif')
         self.backend = None
-        super().__init__(self.ui, parent)
+        super(PageInterpreters, self).__init__(self.ui, parent)
         self.ui.lblMovie.setMovie(self.movie)
         self.ui.combo_interpreters.currentIndexChanged.connect(
             self._refresh_packages)

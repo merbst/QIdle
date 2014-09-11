@@ -8,7 +8,7 @@ from IPython.qt.inprocess import QtInProcessKernelManager
 
 class Shell(RichIPythonWidget):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(Shell, self).__init__(parent)
         self._initialized = False
 
     def showEvent(self, e):
@@ -20,9 +20,9 @@ class Shell(RichIPythonWidget):
             self.kernel_manager = kernel_manager
             self.kernel_client = kernel_client
             self._initialized = True
-        super().showEvent(e)
+        super(Shell, self).showEvent(e)
 
     def sizeHint(self):
-        sh = super().sizeHint()
+        sh = super(Shell, self).sizeHint()
         sh.setHeight(200)
         return sh

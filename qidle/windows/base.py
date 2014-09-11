@@ -22,7 +22,7 @@ class WindowBase(QtGui.QMainWindow):
         return self._app()
 
     def __init__(self, ui, app):
-        super().__init__()
+        super(WindowBase, self).__init__()
         self._app = weakref.ref(app)
         self._height = None
         # path of the script, 'Untitled' if new file not saved to disk.
@@ -132,7 +132,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def closeEvent(self, ev):
         if ev.isAccepted():
-            super().closeEvent(ev)
+            super(WindowBase, self).closeEvent(ev)
             self.closed.emit(self)
 
     def zoom_height(self):

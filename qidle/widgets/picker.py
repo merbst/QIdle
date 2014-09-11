@@ -41,7 +41,7 @@ class FilePicker(QtGui.QWidget):
                                 QtCore.QDir.NoDotAndDotDot)
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(FilePicker, self).__init__(parent)
         self._pick_dirs = True
         layout = QtGui.QHBoxLayout()
         layout.setMargin(0)

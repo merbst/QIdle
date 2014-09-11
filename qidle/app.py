@@ -4,10 +4,15 @@ Contains the application class.
 """
 import os
 import sys
+from pyqode import qt
 from PyQt4 import QtGui, QtCore
 from pyqode.core.widgets import RecentFilesManager
 from qidle import icons
 from qidle.windows import ScripWindow
+
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Application:

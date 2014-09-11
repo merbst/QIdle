@@ -15,7 +15,7 @@ from qidle.windows.base import WindowBase
 class ScripWindow(WindowBase):
     def __init__(self, app):
         self.ui = win_script_ui.Ui_MainWindow()
-        super().__init__(self.ui, app)
+        super(ScripWindow, self).__init__(self.ui, app)
         self.ui.codeEdit.backend.start(
             server.__file__, sys.executable)
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
@@ -83,7 +83,7 @@ class ScripWindow(WindowBase):
                         ev.ignore()
                 else:
                     ev.accept()
-        super().closeEvent(ev)
+        super(ScripWindow, self).closeEvent(ev)
         if ev.isAccepted():
             self.ui.codeEdit.modes.clear()
             self.ui.codeEdit.panels.clear()

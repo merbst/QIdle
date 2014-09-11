@@ -11,7 +11,7 @@ from qidle.widgets.preferences import (
 
 class DlgPreferences(QtGui.QDialog):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(DlgPreferences, self).__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 

@@ -95,4 +95,4 @@ class IconProvider(QtGui.QFileIconProvider):
         global python_mimetype
         if file_infos.suffix() == 'py':
             return python_mimetype
-        return super().icon(file_infos)
+        return super(IconProvider, self).icon(file_infos)
