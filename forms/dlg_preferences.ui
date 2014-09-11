@@ -59,7 +59,7 @@
          <string>Editor</string>
         </property>
         <property name="icon">
-         <iconset theme="application-text">
+         <iconset theme="text">
           <normaloff/>
          </iconset>
         </property>

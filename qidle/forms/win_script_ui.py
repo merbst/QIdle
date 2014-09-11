@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Dev/QIdle/forms/win_script.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_script.ui'
 #
-# Created: Thu Sep  4 21:14:59 2014
+# Created: Wed Sep 10 13:53:12 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.dockWidgetShell.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetShell)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
         self.actionOpen_directory.setIcon(icon)
         self.actionOpen_directory.setObjectName(_fromUtf8("actionOpen_directory"))
         self.actionSave = QtGui.QAction(MainWindow)
-        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-save"))
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("applications-x-python"))
         self.actionSave.setIcon(icon)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
         self.actionSave_as = QtGui.QAction(MainWindow)
@@ -237,6 +237,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
+from qidle.widgets import Shell, ClassExplorer
 from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit
-from qidle.widgets import ClassExplorer, Shell
 from . import qidle_rc

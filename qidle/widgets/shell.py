@@ -15,7 +15,6 @@ class Shell(RichIPythonWidget):
         if not self._initialized:
             kernel_manager = QtInProcessKernelManager()
             kernel_manager.start_kernel()
-            # kernel = kernel_manager.kernel
             kernel_client = kernel_manager.client()
             kernel_client.start_channels()
             self.kernel_manager = kernel_manager

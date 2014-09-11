@@ -1,11 +1,12 @@
 from PyQt4 import QtGui
+from qidle import icons
 from qidle.interpreter import detect_system_interpreters
 from qidle.preferences import Preferences
 
 
 def add_interpreter_list(combo, interpreters, default, default_index=None, icon=None):
     if icon is None:
-        icon = QtGui.QIcon(':/icons/interpreter-sys.png')
+        icon = icons.python_interpreter
     for interpreter in sorted(interpreters):
         index =combo.count()
         combo.addItem(icon, interpreter)
@@ -21,7 +22,7 @@ def load_interpreters(combo, default=None):
         combo, detect_system_interpreters(), default)
     default_index = add_interpreter_list(
         combo, Preferences().interpreters.virtual_envs, default,
-        default_index, icon=QtGui.QIcon(':/icons/interpreter-venv.png'))
+        default_index, icon=icons.python_virtualenv)
     default_index = add_interpreter_list(
         combo, Preferences().interpreters.locals, default, default_index)
     combo.setCurrentIndex(default_index)

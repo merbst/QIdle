@@ -94,6 +94,12 @@
        <property name="alternatingRowColors">
         <bool>false</bool>
        </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
        <property name="gridStyle">
         <enum>Qt::SolidLine</enum>
        </property>
@@ -127,7 +133,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButtonAdd">
+        <widget class="QToolButton" name="toolButtonAdd">
          <property name="text">
           <string/>
          </property>
@@ -139,7 +145,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButtonRemove">
+        <widget class="QToolButton" name="toolButtonRemove">
          <property name="text">
           <string/>
          </property>
@@ -173,7 +179,7 @@
   <customwidget>
    <class>FilePicker</class>
    <extends>QWidget</extends>
-   <header>qidle.widgets.utils</header>
+   <header>qidle.widgets.picker</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

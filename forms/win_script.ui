@@ -85,7 +85,7 @@
      <x>0</x>
      <y>0</y>
      <width>924</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -220,7 +220,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset theme="document-save" resource="qidle.qrc">
+    <iconset theme="applications-x-python" resource="qidle.qrc">
      <normaloff>:/icons/document-save.png</normaloff>:/icons/document-save.png</iconset>
    </property>
    <property name="text">

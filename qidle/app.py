@@ -4,9 +4,9 @@ Contains the application class.
 """
 import os
 import sys
-from pyqode.core.widgets import RecentFilesManager
-
 from PyQt4 import QtGui, QtCore
+from pyqode.core.widgets import RecentFilesManager
+from qidle import icons
 from qidle.windows import ScripWindow
 
 
@@ -19,6 +19,7 @@ class Application:
     def __init__(self):
         self.windows = []
         self.qapp = QtGui.QApplication(sys.argv)
+        icons.init()
         self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
 
     def update_windows_menu(self):

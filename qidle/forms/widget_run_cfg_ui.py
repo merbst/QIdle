@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/widget_run_cfg.ui'
 #
-# Created: Sun Sep  7 17:49:47 2014
+# Created: Wed Sep 10 11:35:47 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -77,6 +77,8 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.tableWidgetEnvVars.sizePolicy().hasHeightForWidth())
         self.tableWidgetEnvVars.setSizePolicy(sizePolicy)
         self.tableWidgetEnvVars.setAlternatingRowColors(False)
+        self.tableWidgetEnvVars.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.tableWidgetEnvVars.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tableWidgetEnvVars.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidgetEnvVars.setRowCount(0)
         self.tableWidgetEnvVars.setObjectName(_fromUtf8("tableWidgetEnvVars"))
@@ -92,18 +94,18 @@ class Ui_Form(object):
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setContentsMargins(0, -1, -1, -1)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.pushButtonAdd = QtGui.QPushButton(Form)
-        self.pushButtonAdd.setText(_fromUtf8(""))
+        self.toolButtonAdd = QtGui.QToolButton(Form)
+        self.toolButtonAdd.setText(_fromUtf8(""))
         icon = QtGui.QIcon.fromTheme(_fromUtf8("list-add"))
-        self.pushButtonAdd.setIcon(icon)
-        self.pushButtonAdd.setObjectName(_fromUtf8("pushButtonAdd"))
-        self.verticalLayout.addWidget(self.pushButtonAdd)
-        self.pushButtonRemove = QtGui.QPushButton(Form)
-        self.pushButtonRemove.setText(_fromUtf8(""))
+        self.toolButtonAdd.setIcon(icon)
+        self.toolButtonAdd.setObjectName(_fromUtf8("toolButtonAdd"))
+        self.verticalLayout.addWidget(self.toolButtonAdd)
+        self.toolButtonRemove = QtGui.QToolButton(Form)
+        self.toolButtonRemove.setText(_fromUtf8(""))
         icon = QtGui.QIcon.fromTheme(_fromUtf8("list-remove"))
-        self.pushButtonRemove.setIcon(icon)
-        self.pushButtonRemove.setObjectName(_fromUtf8("pushButtonRemove"))
-        self.verticalLayout.addWidget(self.pushButtonRemove)
+        self.toolButtonRemove.setIcon(icon)
+        self.toolButtonRemove.setObjectName(_fromUtf8("toolButtonRemove"))
+        self.verticalLayout.addWidget(self.toolButtonRemove)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)

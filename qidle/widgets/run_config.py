@@ -13,14 +13,19 @@ class RunConfigWidget(QtGui.QWidget):
         super().__init__(parent)
         self.ui = widget_run_cfg_ui.Ui_Form()
         self.ui.setupUi(self)
-        self.ui.pushButtonRemove.setDisabled(True)
+        self.ui.toolButtonRemove.setDisabled(True)
         self.ui.pickerWorkingDir.pick_dirs = True
-        self.ui.pushButtonAdd.clicked.connect(self._add_row)
+        self.ui.toolButtonAdd.clicked.connect(self._add_row)
         self.ui.tableWidgetEnvVars.itemSelectionChanged.connect(
             self._table_env_var_sel_changed)
+        self.ui.toolButtonRemove.clicked.connect(self._rm_current_row)
+
+    def _rm_current_row(self):
+        self.ui.tableWidgetEnvVars.takeRow(
+            self.ui.tableWidgetEnvVars.currentRow())
 
     def _table_env_var_sel_changed(self):
-        self.ui.pushButtonRemove.setEnabled(
+        self.ui.toolButtonRemove.setEnabled(
             len(self.ui.tableWidgetEnvVars.selectedItems()))
 
     def _add_row(self):

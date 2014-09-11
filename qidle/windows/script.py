@@ -5,7 +5,7 @@ from PyQt4 import QtGui
 from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
 
-from qidle import version
+from qidle import version, icons
 from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
@@ -92,12 +92,13 @@ class ScripWindow(WindowBase):
             self.save_state()
 
     def restore_state(self):
-        pass
-        # self.restoreGeometry(Settings().script_window_geometry)
-        # self.restoreState(Settings().script_window_state)
+        self.restoreGeometry(Preferences().main_window.script_window_geometry)
+        self.restoreState(Preferences().main_window.script_window_state)
 
     def save_state(self):
-        pass
+        prefs = Preferences()
+        prefs.main_window.script_window_geometry = self.saveGeometry()
+        prefs.main_window.script_window_state = self.saveState()
 
     def new(self):
         base_title = 'Untitled'
@@ -169,8 +170,7 @@ class ScripWindow(WindowBase):
 
     def run_script(self):
         self.ui.actionRun.setText('Stop')
-        self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
-            'media-playback-stop'))
+        self.ui.actionRun.setIcon(icons.stop)
         path = self.ui.codeEdit.file.path
         cfg = Preferences().cache.get_run_config_for_file(path)
         opts = []
@@ -186,8 +186,7 @@ class ScripWindow(WindowBase):
 
     def stop_script(self):
         self.ui.actionRun.setText('Run')
-        self.ui.actionRun.setIcon(QtGui.QIcon.fromTheme(
-            'media-playback-start'))
+        self.ui.actionRun.setIcon(icons.run)
         self.ui.textEditPgmOutput.stop_process()
 
     def on_action_run_triggered(self):
