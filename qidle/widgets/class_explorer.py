@@ -34,7 +34,8 @@ class ClassExplorer(QtGui.QTreeWidget):
         self.addTopLevelItems(analyser.to_tree_widget_items())
         # restore expanded items
         for text in to_expand:
-            items = self.findItems(text, QtCore.Qt.MatchExactly)
+            items = self.findItems(
+                text, QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)
             for item in items:
                 self.expandItem(item)
 
