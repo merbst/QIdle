@@ -1,5 +1,6 @@
 import os
 import sys
+import versiontools
 
 from PyQt4 import QtGui
 from pyqode.core.api import TextHelper

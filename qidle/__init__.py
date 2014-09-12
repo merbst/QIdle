@@ -1,7 +1,5 @@
-version_major = 0
-version_minor = 0
-version_build = 1
-version_suffix = '-dev'
+import versiontools
 
-version = '%d.%d.%d%s' % (
-    version_major, version_minor, version_build, version_suffix)
+__version__ = (0, 1, 0, 'dev', 0)
+
+version = versiontools.Version(*__version__)

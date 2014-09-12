@@ -4,7 +4,6 @@ Setup script for QIdle
 """
 import sys
 from setuptools import setup, find_packages
-from qidle import version
 
 try:
     from pyqt_distutils.build_ui import build_ui
@@ -20,7 +19,7 @@ with open('README.rst', 'r') as readme:
 
 
 # install requirements
-requirements = ['pygments', 'pyqode.python']
+requirements = ['pygments', 'pyqode.python', 'versiontools']
 
 
 data_files = []
@@ -32,7 +31,7 @@ if sys.platform == 'linux':
 
 setup(
     name='QIdle',
-    version=version,
+    version=":versiontools:qidle",
     packages=[p for p in find_packages() if 'test' not in p],
     keywords=['Python; IDLE; IDE'],
     data_files=data_files,
