@@ -34,9 +34,58 @@ class WindowBase(QtGui.QMainWindow):
         self._setup_help_menu()
         self._setup_status_bar()
         ui.actionConfigure_IDLE.triggered.connect(self.edit_preferences)
-        self.setup_icons()
+        self._setup_icons()
 
-    def setup_icons(self):
+    def save(self):
+        raise NotImplementedError()
+
+    def save_as(self):
+        raise NotImplementedError()
+
+    def restore_state(self):
+        raise NotImplementedError()
+
+    def save_state(self):
+        raise NotImplementedError()
+
+    def update_recents_menu(self):
+        self.menu_recents.update_actions()
+
+    def edit_preferences(self):
+        DlgPreferences.edit_preferences(self)
+
+    def zoom_height(self):
+        desktop = QtGui.QApplication.instance().desktop()
+        if sys.platform == 'win32':
+            difference = (self.frameGeometry().height() -
+                          self.geometry().height())
+        else:
+            difference = 0
+        self.resize(self.width(), desktop.availableGeometry(self).height() -
+                    difference)
+        self.move(self.pos().x(), 0)
+
+    def update_windows_menu(self, open_windows):
+        self.ui.menuWindows.clear()
+        self.ui.menuWindows.addAction(self.ui.actionZoom_height)
+        self.ui.menuWindows.addSeparator()
+        self.ui.menuWindows.addMenu(self.ui.menuTools)
+        self.ui.menuWindows.addSeparator()
+        for win in open_windows:
+            action = QtGui.QAction(self)
+            if win == self:
+                action.setDisabled(True)
+            action.setText(win.windowTitle())
+            action.setData(win)
+            action.triggered.connect(self._show_window_from_action)
+            self.ui.menuWindows.addAction(action)
+
+    def closeEvent(self, ev):
+        if ev.isAccepted():
+            super(WindowBase, self).closeEvent(ev)
+            self.closed.emit(self)
+
+    def _setup_icons(self):
         self.ui.actionNew_file.setIcon(icons.new_file)
         self.ui.actionNew_project.setIcon(icons.new_folder)
         self.ui.actionOpen_file.setIcon(icons.open_file)
@@ -117,55 +166,6 @@ class WindowBase(QtGui.QMainWindow):
                 pass
             else:
                 action.setShortcut(key_sequence)
-
-    def save(self):
-        raise NotImplementedError()
-
-    def save_as(self):
-        raise NotImplementedError()
-
-    def restore_state(self):
-        raise NotImplementedError()
-
-    def save_state(self):
-        raise NotImplementedError()
-
-    def closeEvent(self, ev):
-        if ev.isAccepted():
-            super(WindowBase, self).closeEvent(ev)
-            self.closed.emit(self)
-
-    def zoom_height(self):
-        desktop = QtGui.QApplication.instance().desktop()
-        if sys.platform == 'win32':
-            difference = (self.frameGeometry().height() -
-                          self.geometry().height())
-        else:
-            difference = 0
-        self.resize(self.width(), desktop.availableGeometry(self).height() -
-                    difference)
-        self.move(self.pos().x(), 0)
-
-    def update_windows_menu(self, open_windows):
-        self.ui.menuWindows.clear()
-        self.ui.menuWindows.addAction(self.ui.actionZoom_height)
-        self.ui.menuWindows.addSeparator()
-        self.ui.menuWindows.addMenu(self.ui.menuTools)
-        self.ui.menuWindows.addSeparator()
-        for win in open_windows:
-            action = QtGui.QAction(self)
-            if win == self:
-                action.setDisabled(True)
-            action.setText(win.windowTitle())
-            action.setData(win)
-            action.triggered.connect(self._show_window_from_action)
-            self.ui.menuWindows.addAction(action)
-
-    def update_recents_menu(self):
-        self.menu_recents.update_actions()
-
-    def edit_preferences(self):
-        DlgPreferences.edit_preferences(self)
 
     def _show_window_from_action(self):
         window = self.sender().data()

@@ -59,7 +59,6 @@ class ScripWindow(WindowBase):
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
-
         self.ui.codeEdit.cursorPositionChanged.connect(self._update_status_bar)
 
     def closeEvent(self, ev):
@@ -130,6 +129,7 @@ class ScripWindow(WindowBase):
         self.app.remember_path(path)
 
     def _on_dirty_changed(self, dirty):
+        # adds a star to the title to mark dirty files.
         title = '* %s' % self._title if dirty else self._title
         self.setWindowTitle(title)
         self.ui.actionSave.setEnabled(dirty and os.path.exists(self.path))
