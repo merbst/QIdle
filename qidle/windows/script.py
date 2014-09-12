@@ -106,11 +106,13 @@ class ScripWindow(WindowBase):
         for w in self.app.windows:
             if w.path and base_title in w.path:
                 counter += 1
-        app_title = ' - QIdle %s' % version
+        app_title = ' - QIdle %s (Python %s)' % (
+            version, '.'.join([str(i) for i in sys.version_info[:3]]))
         suffix = ' %s' % counter if counter else ''
         title = base_title + suffix + app_title
         self.setWindowTitle(title)
-        self._title = self.path = title
+        self._title = title
+        self.path = base_title
         self._on_dirty_changed(False)
         # disabled till save as
         self.ui.actionRun.setDisabled(True)
@@ -119,8 +121,9 @@ class ScripWindow(WindowBase):
 
     def open(self, path):
         self.ui.codeEdit.file.open(path)
-        self._title = '%s [%s] - QIdle %s' % (
-            os.path.split(path)[1], path, version)
+        self._title = '%s [%s] - QIdle %s (Python %s)' % (
+            os.path.split(path)[1], path, version,
+            '.'.join([str(i) for i in sys.version_info[:3]]))
         self.setWindowTitle(self._title)
         self._on_dirty_changed(False)
         self.path = path
@@ -134,13 +137,15 @@ class ScripWindow(WindowBase):
 
     def save_as(self):
         path = QtGui.QFileDialog.getSaveFileName(
-            self, 'Save file as', filter='Python files (*.py)')
+            self, 'Save file as', filter='Python files (*.py)',
+            directory=self.path)
         if path:
             if os.path.splitext(path)[1] == '':
                 path += '.py'
             self.ui.codeEdit.file.save(path)
-            self._title = '%s [%s] - QIdle %s' % (
-                os.path.split(path)[1], path, version)
+            self._title = '%s [%s] - QIdle %s (Python %s)' % (
+                os.path.split(path)[1], path, version,
+                '.'.join([str(i) for i in sys.version_info[:3]]))
             self.setWindowTitle(self._title)
             if self.path == 'Untitled':
                 self.ui.actionRun.setEnabled(True)
