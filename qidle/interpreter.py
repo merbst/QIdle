@@ -118,15 +118,16 @@ def uninstall_package(package):
     return run_pip_command(args)
 
 
-# status, output = uninstall_package('pyflakes')
-# print('STATUS: ', status)
-# print('OUTPUT: ', output)
+if __name__ == '__main__':
+    # status, output = uninstall_package('pyflakes')
+    # print('STATUS: ', status)
+    # print('OUTPUT: ', output)
 
-status, output = install_package('pyflakes')
-print('STATUS: ', status)
-print('OUTPUT: ', output)
+    status, output = install_package('pyflakes')
+    print('STATUS: ', status)
+    print('OUTPUT: ', output)
 
-# status, output = upgrade_package('pyflakes')
-# print('STATUS: ', status)
-# print('OUTPUT: ', output)
+    # status, output = upgrade_package('pyflakes')
+    # print('STATUS: ', status)
+    # print('OUTPUT: ', output)
 

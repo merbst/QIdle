@@ -19,7 +19,8 @@ with open('README.rst', 'r') as readme:
 
 
 # install requirements
-requirements = ['pygments', 'pyqode.python', 'versiontools']
+requirements = ['pygments', 'pyqode.python', 'versiontools',
+                'ipython', 'pyzmq']
 
 
 data_files = []

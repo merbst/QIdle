@@ -7,12 +7,15 @@ import sys
 from pyqode import qt
 from PyQt4 import QtGui, QtCore
 from pyqode.core.widgets import RecentFilesManager
-from qidle import icons
+from qidle import icons, version
+from qidle.system import embed_package_into_zip, get_library_zip_path
 from qidle.windows import ScripWindow
-
-
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+
+# dependencies frozen into a zip file on startup:
+import jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,\
+       frosted, pies, versiontools
 
 
 class Application:
@@ -25,7 +28,16 @@ class Application:
         self.windows = []
         self.qapp = QtGui.QApplication(sys.argv)
         icons.init()
+        self._init_libraries()
         self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
+
+    def _init_libraries(self):
+        if not '.dev' in str(version) and os.path.exists(get_library_zip_path()):
+            return
+        else:
+            embed_package_into_zip(
+                [jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,
+                 versiontools, frosted, pies])
 
     def update_windows_menu(self):
         for w in self.windows:

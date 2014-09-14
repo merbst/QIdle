@@ -7,6 +7,7 @@ from pyqode.python.backend import server
 from qidle import icons
 from qidle.interpreter import get_installed_packages, is_system_interpreter
 from qidle.preferences import Preferences
+from qidle.system import get_library_zip_path
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
 from qidle.forms.preferences import page_interpreters_ui
@@ -66,13 +67,8 @@ class PageInterpreters(Page):
     def _get_sys_paths(self):
         # adapt sys path so that the backend can find pyqode and qidle
         # package if ran by a different process than sys.executable
-        zip_path = os.path.join(os.getcwd(), 'libraries.zip')
-        if not os.path.exists(zip_path):
-            if platform.system().lower() == 'linux':
-                zip_path = '/usr/share/qidle/libraries.zip'
         paths = [
-            os.getcwd(),
-            zip_path
+            get_library_zip_path()
         ]
         return list(set(paths))
 
@@ -86,6 +82,7 @@ class PageInterpreters(Page):
     def _start_backend(self, interpreter):
         self._stop_backend()
         self.backend = BackendManager(self)
+        print('start backend', interpreter, self._get_sys_paths())
         self.backend.start(
             server.__file__, interpreter=interpreter,
             args=['-s'] + self._get_sys_paths())
