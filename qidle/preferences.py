@@ -7,7 +7,7 @@ import os
 import sys
 from PyQt4 import QtCore
 from PyQt4.QtGui import QKeySequence
-from qidle.interpreter import detect_system_interpreters
+from qidle.python import detect_system_interpreters
 
 
 class Section(object):

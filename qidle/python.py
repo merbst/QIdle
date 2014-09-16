@@ -82,7 +82,7 @@ def run_pip_command(args):
         pgm = get_authentification_program()
         if pgm:
             pargs = [pgm, sys.executable] + sys.argv + [os.environ]
-            # the next line replaces the currently-running process with the sudo
+            # the next line replaces the currently-running process with sudo
             os.execlpe(pgm, *pargs)
 
     def need_root_perms():

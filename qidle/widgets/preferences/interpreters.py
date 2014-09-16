@@ -5,9 +5,11 @@ from pyqode.core.backend import NotConnected
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
 from qidle import icons
+from qidle.dialogs.pip import DlgPipCommand
 from qidle.dialogs.virtualenv import DlgCreateVirtualEnv
 from qidle.forms import settings_page_interpreters_ui
-from qidle.interpreter import get_installed_packages, is_system_interpreter
+from qidle.python import get_installed_packages, is_system_interpreter, \
+    upgrade_package
 from qidle.preferences import Preferences
 from qidle.system import get_library_zip_path, WINDOWS
 from qidle.widgets.preferences.base import Page
@@ -60,6 +62,8 @@ class PageInterpreters(Page):
         self.action_create_virtualenv.triggered.connect(
             self._create_virtualenv)
 
+        self.ui.bt_upgrade_package.clicked.connect(self._upgrade)
+
     def __del__(self):
         self._stop_backend()
 
@@ -78,7 +82,7 @@ class PageInterpreters(Page):
         paths = [
             get_library_zip_path()
         ]
-        return list(set(paths))
+        return paths
 
     def _clear_packages(self):
         self.ui.table_packages.clear()
@@ -211,6 +215,13 @@ class PageInterpreters(Page):
             self.ui.combo_interpreters.count() - 1)
         self._stop_movie()
         self.ui.lblInfos.setText('Refreshing packages list')
+
+    def _upgrade(self):
+        package = self.ui.table_packages.item(
+            self.ui.table_packages.currentRow(), 0).text()
+        DlgPipCommand.run_command(
+            self, self.ui.combo_interpreters.currentText(), upgrade_package,
+            package, 'Upgrading package %s' % package)
 
 
 class CreateVirtualEnvThread(QtCore.QThread):
