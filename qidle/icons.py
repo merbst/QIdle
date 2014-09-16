@@ -48,6 +48,7 @@ list_add = None
 list_remove = None
 go_up = None
 go_down = None
+qidle = None
 
 
 def init():
@@ -75,10 +76,11 @@ def init():
     global list_remove
     global go_up
     global go_down
+    global qidle
 
     new_file = icon(':/icons/document-new.png', 'document-new')
     open_file = icon(':/icons/document-open.png', 'document-open')
-    new_folder = icon(':/icons/folder-new.png', 'folder-new')
+    new_folder = icon(':/icons/folder-new.png',               'folder-new')
     open_folder = icon(':/icons/folder-open.png', 'folder-open')
     save = icon(':/icons/document-save.png', 'document-save')
     save_as = icon(':/icons/document-save-as.png', 'document-save-as')
@@ -100,6 +102,7 @@ def init():
     list_remove = icon(':/icons/list-remove.png', 'list-remove')
     go_up = icon(':/icons/go-up.png', 'go-up')
     go_down = icon(':/icons/go-up.png', 'go-down')
+    qidle = icon(':/icons/QIdle.png')
 
 
 class IconProvider(QtGui.QFileIconProvider):

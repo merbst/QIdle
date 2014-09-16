@@ -5,12 +5,13 @@ from pyqode.core.backend import NotConnected
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
 from qidle import icons
+from qidle.dialogs.virtualenv import DlgCreateVirtualEnv
+from qidle.forms import settings_page_interpreters_ui
 from qidle.interpreter import get_installed_packages, is_system_interpreter
 from qidle.preferences import Preferences
-from qidle.system import get_library_zip_path
+from qidle.system import get_library_zip_path, WINDOWS
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
-from qidle.forms.preferences import page_interpreters_ui
 
 
 class PageInterpreters(Page):
@@ -27,10 +28,11 @@ class PageInterpreters(Page):
     to work, pip must be installed on the target interpreter sites-package.
     """
     def __init__(self, parent=None):
-        self.ui = page_interpreters_ui.Ui_Form()
+        self.ui = settings_page_interpreters_ui.Ui_Form()
         self.movie = QtGui.QMovie(':/icons/loader.gif')
         self.backend = None
         super(PageInterpreters, self).__init__(self.ui, parent)
+        self._create_virtualenv_thread = None
         self.ui.table_packages.itemSelectionChanged.connect(
             self._on_selected_package_changed)
         self.ui.lblMovie.setMovie(self.movie)
@@ -51,6 +53,12 @@ class PageInterpreters(Page):
         self.action_remove_interpreter.setIcon(icons.list_remove)
         self.action_create_virtualenv.setIcon(icons.python_virtualenv)
         self._refresh_packages(0)
+
+        self.action_add_local.triggered.connect(self._add_local)
+        self.action_remove_interpreter.triggered.connect(
+            self._remove_interpreter)
+        self.action_create_virtualenv.triggered.connect(
+            self._create_virtualenv)
 
     def __del__(self):
         self._stop_backend()
@@ -161,3 +169,62 @@ class PageInterpreters(Page):
     def apply(self):
         prefs = Preferences()
         prefs.interpreters.default = self.ui.combo_interpreters.currentText()
+
+    def _add_local(self):
+        path = QtGui.QFileDialog.getOpenFileName(self, 'Add local interpreter')
+        if path:
+            lst = Preferences().interpreters.locals
+            lst.append(path)
+            Preferences().interpreters.locals = lst
+            self.reset()
+            self.ui.combo_interpreters.setCurrentIndex(
+                self.ui.combo_interpreters.count() - 1)
+
+    def _remove_interpreter(self):
+        path = self.ui.combo_interpreters.currentText()
+        lst = Preferences().interpreters.locals
+        lst.remove(path)
+        Preferences().interpreters.locals = lst
+        self.ui.combo_interpreters.removeItem(
+            self.ui.combo_interpreters.currentIndex())
+
+    def _create_virtualenv(self):
+        data = DlgCreateVirtualEnv.get_virtualenv_creation_params(self)
+        if data:
+            path, interpreter, site_packages = data
+            self._create_virtualenv_thread = CreateVirtualEnvThread()
+            self._create_virtualenv_thread.path = path
+            self._create_virtualenv_thread.interpreter = interpreter
+            self._create_virtualenv_thread.system_site_packages = site_packages
+            self._create_virtualenv_thread.created.connect(
+                self._on_virtualenv_created)
+            self.ui.lblInfos.setText('Creating virtual environment')
+            self._start_movie()
+            self._create_virtualenv_thread.start()
+
+    def _on_virtualenv_created(self, path):
+        envs = Preferences().interpreters.virtual_envs
+        envs.append(path)
+        Preferences().interpreters.virtual_envs = envs
+        self.reset()
+        self.ui.combo_interpreters.setCurrentIndex(
+            self.ui.combo_interpreters.count() - 1)
+        self._stop_movie()
+        self.ui.lblInfos.setText('Refreshing packages list')
+
+
+class CreateVirtualEnvThread(QtCore.QThread):
+    created = QtCore.pyqtSignal(str)
+    path = ''
+    interpreter = ''
+    system_site_packages = False
+
+    def run(self):
+        command = ['virtualenv', '-p', self.interpreter, self.path]
+        if self.system_site_packages:
+            command.insert(1, '--system-site-packages')
+        command = ' '.join(command)
+        print(os.system(command))
+        ext = '.exe' if WINDOWS else ''
+        path = os.path.join(self.path, 'bin', 'python' + ext)
+        self.created.emit(path)

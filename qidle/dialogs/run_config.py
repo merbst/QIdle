@@ -1,4 +1,5 @@
 from PyQt4 import QtGui
+from qidle import icons
 from qidle.preferences import Preferences
 from qidle.forms import dlg_script_run_config_ui
 from qidle.widgets import RunConfigWidget
@@ -9,6 +10,7 @@ class DlgScriptRunConfig(QtGui.QDialog):
         super(DlgScriptRunConfig, self).__init__(parent)
         self.ui = dlg_script_run_config_ui.Ui_Dialog()
         self.ui.setupUi(self)
+        self.setWindowIcon(icons.qidle)
 
     @classmethod
     def edit_config(cls, parent, path):

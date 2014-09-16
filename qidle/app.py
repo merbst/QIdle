@@ -56,7 +56,9 @@ class Application:
         if path:
             for w in self.windows:
                 if w.path == path:
+                    w.show()
                     self.qapp.setActiveWindow(w)
+                    w.raise_()
                     return w
         active_window = self.qapp.activeWindow()
         if active_window:

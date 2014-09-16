@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/dlg_preferences.ui'
+# Form implementation generated from reading ui file '/home/colin/QIdle/forms/dlg_preferences.ui'
 #
-# Created: Wed Sep 10 14:01:42 2014
+# Created: Tue Sep 16 14:11:13 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,6 +27,9 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(933, 539)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/Preferences-system.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Dialog.setWindowIcon(icon)
         self.verticalLayout = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -51,9 +54,9 @@ class Ui_Dialog(object):
         item_1 = QtGui.QTreeWidgetItem(item_0)
         item_1 = QtGui.QTreeWidgetItem(item_0)
         item_0 = QtGui.QTreeWidgetItem(self.categories)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/interpreter-sys.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item_0.setIcon(0, icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/interpreter-sys.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        item_0.setIcon(0, icon1)
         self.categories.header().setVisible(False)
         self.horizontalLayout.addWidget(self.categories)
         self.line = QtGui.QFrame(Dialog)
@@ -91,7 +94,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Preferences", None))
         self.categories.headerItem().setText(0, _translate("Dialog", "item", None))
         __sortingEnabled = self.categories.isSortingEnabled()
         self.categories.setSortingEnabled(False)

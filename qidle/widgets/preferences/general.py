@@ -1,7 +1,7 @@
 """
 Contains the general settings page.
 """
-from qidle.forms.preferences.page_general_ui import Ui_Form
+from qidle.forms.settings_page_general_ui import Ui_Form
 from qidle.widgets.preferences.base import Page
 
 

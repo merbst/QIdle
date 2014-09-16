@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>QIdle.png</file>
     <file>go-down.png</file>
     <file>go-up.png</file>
     <file>list-add.png</file>
@@ -13,7 +14,6 @@
     <file>application-x-python.png</file>
     <file>terminal.png</file>
     <file>view-tree.png</file>
-    <file>pyqode.png</file>
     <file>folder-new.png</file>
     <file>folder-open.png</file>
     <file>Preferences-system.png</file>

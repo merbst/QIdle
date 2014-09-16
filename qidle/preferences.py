@@ -71,7 +71,7 @@ class KeyBindings(Section):
     def dict(self):
         def get_default_key_bindings():
             if self.default_shortcuts['actionConfigure_IDLE'].toString() == '':
-                self.default_shortcuts['actionConfigure_IDLE'] = 'Ctrl+Alt+S'
+                self.default_shortcuts['actionConfigure_IDLE'] = 'F2'
 
             return self.default_shortcuts
         try:
@@ -150,11 +150,17 @@ class Interpreters(Section):
         Gets/sets the list of virtual envs
         :return:
         """
-        return eval(self.get_value('virtual_envs', '[]'))
+        values = list(set(eval(self.get_value('virtual_envs', '[]'))))
+        ret_val = []
+        for val in values:
+            if os.path.exists(val):
+                ret_val.append(val)
+        self.set_value('virtual_envs', repr(list(set(ret_val))))
+        return ret_val
 
     @virtual_envs.setter
     def virtual_envs(self, virtual_envs):
-        self.set_value('virtual_envs', repr(virtual_envs))
+        self.set_value('virtual_envs', repr(list(set(virtual_envs))))
 
     @property
     def default(self):

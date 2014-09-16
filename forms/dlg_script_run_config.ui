@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Run configuration</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qidle.qrc">
+    <normaloff>:/icons/media-playback-start.png</normaloff>:/icons/media-playback-start.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -37,7 +41,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="qidle.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

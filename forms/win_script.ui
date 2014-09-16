@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="qidle.qrc">
-    <normaloff>:/icons/pyqode.png</normaloff>:/icons/pyqode.png</iconset>
+    <normaloff>:/icons/QIdle.png</normaloff>:/icons/QIdle.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">

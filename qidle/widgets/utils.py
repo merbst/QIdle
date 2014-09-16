@@ -15,14 +15,17 @@ def add_interpreter_list(combo, interpreters, default, default_index=None, icon=
     return default_index
 
 
-def load_interpreters(combo, default=None):
+def load_interpreters(combo, default=None, locals=True, virtualenvs=True):
     if default is None:
         default = Preferences().interpreters.default
     default_index = add_interpreter_list(
         combo, detect_system_interpreters(), default)
-    default_index = add_interpreter_list(
-        combo, Preferences().interpreters.virtual_envs, default,
-        default_index, icon=icons.python_virtualenv)
-    default_index = add_interpreter_list(
-        combo, Preferences().interpreters.locals, default, default_index)
-    combo.setCurrentIndex(default_index)
+    if virtualenvs:
+        default_index = add_interpreter_list(
+            combo, Preferences().interpreters.virtual_envs, default,
+            default_index, icon=icons.python_virtualenv)
+    if locals:
+        default_index = add_interpreter_list(
+            combo, Preferences().interpreters.locals, default, default_index)
+    combo.setCurrentIndex(default_index if default_index is not None else 0)
+

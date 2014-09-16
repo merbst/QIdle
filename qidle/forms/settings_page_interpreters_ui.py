@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/preferences/page_interpreters.ui'
+# Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_interpreters.ui'
 #
-# Created: Tue Sep  9 23:20:50 2014
+# Created: Tue Sep 16 09:45:18 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -43,7 +43,7 @@ class Ui_Form(object):
         self.bt_cfg.setIcon(icon)
         self.bt_cfg.setPopupMode(QtGui.QToolButton.InstantPopup)
         self.bt_cfg.setArrowType(QtCore.Qt.NoArrow)
-        self.bt_cfg.setObjectName(_fromUtf8("bt_add_interpreter"))
+        self.bt_cfg.setObjectName(_fromUtf8("bt_cfg"))
         self.horizontalLayout.addWidget(self.bt_cfg)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
@@ -136,4 +136,4 @@ class Ui_Form(object):
         self.lblMovie.setText(_translate("Form", "mov", None))
         self.lblInfos.setText(_translate("Form", "Refreshing packages list", None))
 
-from .. import qidle_rc
+from . import qidle_rc

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Preferences</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qidle.qrc">
+    <normaloff>:/icons/Preferences-system.png</normaloff>:/icons/Preferences-system.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

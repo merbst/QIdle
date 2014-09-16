@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/preferences/page_general.ui'
+# Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_general.ui'
 #
-# Created: Sun Sep  7 18:17:52 2014
+# Created: Tue Sep 16 09:45:19 2014
 #      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
