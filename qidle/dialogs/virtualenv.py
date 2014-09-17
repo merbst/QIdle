@@ -3,6 +3,7 @@ This module contains the create virtualenv dialog.
 """
 import os
 from PyQt4 import QtGui
+import sys
 from qidle.forms.dlg_create_virtualenv_ui import Ui_Dialog
 from qidle.system import WINDOWS
 from qidle.widgets.utils import load_interpreters

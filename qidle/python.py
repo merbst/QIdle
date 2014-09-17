@@ -52,59 +52,25 @@ def run_pip_command(args):
         sys.stdout = open(log_file, 'w')
         return log_file, old_stdout
 
-    def get_root_perms():
-        def get_authentification_program():
-            """
-            kdesu or gksu
-            """
-            def which(program):
-                import os
-                def is_exe(fpath):
-                    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-                fpath, fname = os.path.split(program)
-                if fpath:
-                    if is_exe(program):
-                        return program
-                else:
-                    for path in os.environ["PATH"].split(os.pathsep):
-                        path = path.strip('"')
-                        exe_file = os.path.join(path, program)
-                        if is_exe(exe_file):
-                            return exe_file
-
-                return None
-            for program in ['gksu', 'kdesu']:
-                if which(program) is not None:
-                    return program
-            return None
-
-        pgm = get_authentification_program()
-        if pgm:
-            pargs = [pgm, sys.executable] + sys.argv + [os.environ]
-            # the next line replaces the currently-running process with sudo
-            os.execlpe(pgm, *pargs)
-
-    def need_root_perms():
-        return os.geteuid() != 0 and 'win32' not in sys.platform
-
     def get_output(log_file):
         with open(log_file, 'r') as f:
             output = f.read()
         os.remove(log_file)
         return output
 
-    if need_root_perms():
-        get_root_perms()
     log_file, old_stdout = setup_log_file()
     print('pip %s' % ' '.join(args))
     retval = pip.main(args)
     sys.stdout = old_stdout
-    return retval, get_output(log_file)
+    return retval == 0, get_output(log_file)
 
 
 def install_package(package):
-    args = ['install', package]
+    # ensure pyqode.python is also installed (pyqode.core will be installed
+    # as a dependency of pyqode.python)
+    if 'pyqode' in package and 'pyqode.python' not in package:
+        package = 'pyqode.python ' + package
+    args = ['install'] + package.split(' ')
     return run_pip_command(args)
 
 
@@ -116,18 +82,3 @@ def upgrade_package(package):
 def uninstall_package(package):
     args = ['uninstall', '-y', package]
     return run_pip_command(args)
-
-
-if __name__ == '__main__':
-    # status, output = uninstall_package('pyflakes')
-    # print('STATUS: ', status)
-    # print('OUTPUT: ', output)
-
-    status, output = install_package('pyflakes')
-    print('STATUS: ', status)
-    print('OUTPUT: ', output)
-
-    # status, output = upgrade_package('pyflakes')
-    # print('STATUS: ', status)
-    # print('OUTPUT: ', output)
-

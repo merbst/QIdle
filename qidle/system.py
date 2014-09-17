@@ -70,6 +70,39 @@ def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
                 myzip.write(path, arcname=arcname)
 
 
+def get_authentication_program():
+    """
+    Gets the authentication program used to run command as root (on linux only).
+
+    The function try to use one of the following programs:
+        - gksu
+        - kdesu
+
+    """
+    def get_path(program):
+        import os
+        def is_exe(fpath):
+            return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+        fpath, fname = os.path.split(program)
+        if fpath:
+            if is_exe(program):
+                return program
+        else:
+            for path in os.environ["PATH"].split(os.pathsep):
+                path = path.strip('"')
+                exe_file = os.path.join(path, program)
+                if is_exe(exe_file):
+                    return exe_file
+
+        return None
+    if LINUX:
+        for program in ['gksu', 'kdesu']:
+            if get_path(program) is not None:
+                return program
+    return None
+
+
 if __name__ == '__main__':
     import jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle, frosted, pies
     import time

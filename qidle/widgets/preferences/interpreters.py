@@ -1,6 +1,7 @@
 import os
 import platform
 from PyQt4 import QtCore, QtGui
+from pyqode.core.api.client import _ServerProcess
 from pyqode.core.backend import NotConnected
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
@@ -9,9 +10,10 @@ from qidle.dialogs.pip import DlgPipCommand
 from qidle.dialogs.virtualenv import DlgCreateVirtualEnv
 from qidle.forms import settings_page_interpreters_ui
 from qidle.python import get_installed_packages, is_system_interpreter, \
-    upgrade_package
+    upgrade_package, uninstall_package, install_package
 from qidle.preferences import Preferences
-from qidle.system import get_library_zip_path, WINDOWS
+from qidle.system import get_library_zip_path, WINDOWS, LINUX, \
+    get_authentication_program
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
 
@@ -63,6 +65,8 @@ class PageInterpreters(Page):
             self._create_virtualenv)
 
         self.ui.bt_upgrade_package.clicked.connect(self._upgrade)
+        self.ui.bt_uninstall_package.clicked.connect(self._uninstall)
+        self.ui.bt_install_package.clicked.connect(self._install)
 
     def __del__(self):
         self._stop_backend()
@@ -74,6 +78,7 @@ class PageInterpreters(Page):
 
     def _start_movie(self):
         self.movie.start()
+        self.ui.lblMovie.show()
         self.ui.widgetInfos.show()
 
     def _get_sys_paths(self):
@@ -94,7 +99,7 @@ class PageInterpreters(Page):
     def _start_backend(self, interpreter):
         self._stop_backend()
         self.backend = BackendManager(self)
-        print('start backend', interpreter, self._get_sys_paths())
+        # print('start backend', interpreter, self._get_sys_paths())
         self.backend.start(
             server.__file__, interpreter=interpreter,
             args=['-s'] + self._get_sys_paths())
@@ -107,7 +112,8 @@ class PageInterpreters(Page):
         self.ui.bt_upgrade_package.setEnabled(enable)
 
     @QtCore.pyqtSlot(int)
-    def _refresh_packages(self, index):
+    def _refresh_packages(self, *args):
+        self.ui.lblInfos.setText('Refreshing packages list')
         interpreter = self.ui.combo_interpreters.currentText()
         self.action_remove_interpreter.setEnabled(
             not is_system_interpreter(interpreter))
@@ -130,9 +136,10 @@ class PageInterpreters(Page):
                 # site-packages
                 QtGui.QMessageBox.warning(
                     self, 'Refresh failed',
-                    'Failed to refresh packages list. \n'
-                    'Make sure you installed pip for the target interpreter: '
-                    '%s' % self.ui.combo_interpreters.currentText())
+                    'Failed to refresh packages list for %s\n'
+                    'Ensure pip and pyqode.python has been installed for the '
+                    'target intepreter' %
+                    self.ui.combo_interpreters.currentText())
                 self._on_refresh_finished(False, None)
             else:
                 # waiting for the backend to start, retry in a few milliseconds
@@ -141,6 +148,7 @@ class PageInterpreters(Page):
     def _stop_movie(self):
         self.movie.stop()
         self.ui.widgetInfos.hide()
+        self.ui.lblMovie.hide()
 
     def _on_refresh_finished(self, status, results):
         self._stop_movie()
@@ -162,8 +170,8 @@ class PageInterpreters(Page):
         self.ui.bt_uninstall_package.setEnabled(enable)
         self.ui.bt_upgrade_package.setEnabled(enable)
 
-    def reset(self):
-        load_interpreters(self.ui.combo_interpreters)
+    def reset(self, default=None):
+        load_interpreters(self.ui.combo_interpreters, default=default)
         if hasattr(self, 'action_remove_interpreter'):
             self._refresh_packages(0)
 
@@ -187,8 +195,18 @@ class PageInterpreters(Page):
     def _remove_interpreter(self):
         path = self.ui.combo_interpreters.currentText()
         lst = Preferences().interpreters.locals
-        lst.remove(path)
-        Preferences().interpreters.locals = lst
+        try:
+            lst.remove(path)
+        except ValueError:
+            lst = Preferences().interpreters.virtual_envs
+            try:
+                lst.remove(path)
+            except ValueError:
+                pass
+            else:
+                Preferences().interpreters.virtual_envs = lst
+        else:
+            Preferences().interpreters.locals = lst
         self.ui.combo_interpreters.removeItem(
             self.ui.combo_interpreters.currentIndex())
 
@@ -196,6 +214,7 @@ class PageInterpreters(Page):
         data = DlgCreateVirtualEnv.get_virtualenv_creation_params(self)
         if data:
             path, interpreter, site_packages = data
+            self._clear_packages()
             self._create_virtualenv_thread = CreateVirtualEnvThread()
             self._create_virtualenv_thread.path = path
             self._create_virtualenv_thread.interpreter = interpreter
@@ -207,21 +226,87 @@ class PageInterpreters(Page):
             self._create_virtualenv_thread.start()
 
     def _on_virtualenv_created(self, path):
-        envs = Preferences().interpreters.virtual_envs
-        envs.append(path)
-        Preferences().interpreters.virtual_envs = envs
-        self.reset()
-        self.ui.combo_interpreters.setCurrentIndex(
-            self.ui.combo_interpreters.count() - 1)
-        self._stop_movie()
-        self.ui.lblInfos.setText('Refreshing packages list')
+        if path:
+            envs = Preferences().interpreters.virtual_envs
+            envs.append(path)
+            Preferences().interpreters.virtual_envs = envs
+            self.reset(default=path)
+            self._stop_movie()
+            self.ui.widgetInfos.show()
+            self.ui.lblInfos.setText('Virtual env sucessfully created at %s' %
+                                     path)
+        else:
+            self._stop_movie()
+            self.ui.widgetInfos.show()
+            self.ui.lblInfos.setText('Failed to create virtual env')
 
     def _upgrade(self):
         package = self.ui.table_packages.item(
             self.ui.table_packages.currentRow(), 0).text()
-        DlgPipCommand.run_command(
-            self, self.ui.combo_interpreters.currentText(), upgrade_package,
-            package, 'Upgrading package %s' % package)
+        self.run_pip_command(self.ui.combo_interpreters.currentText(),
+                             upgrade_package, package,
+                             'Upgrading package %s' % package)
+
+    def _uninstall(self):
+        package = self.ui.table_packages.item(
+            self.ui.table_packages.currentRow(), 0).text()
+        self.run_pip_command(
+            self.ui.combo_interpreters.currentText(), uninstall_package,
+            package, 'Uninstalling package %s' % package)
+
+    def _install(self):
+        package, status = QtGui.QInputDialog.getText(self, 'Install package',
+                                             'Package:')
+        if not status:
+            return
+        self.run_pip_command(
+            self.ui.combo_interpreters.currentText(), install_package,
+            package, 'Installing package %s' % package)
+
+    def run_pip_command(self, interpreter, worker_function, package,
+                        operation):
+        self._stop_backend()
+        self._start_movie()
+        self.ui.lblInfos.setText(operation)
+        self._worker = worker_function
+        self._package = package
+        self._stop_backend()
+        self.backend = BackendManager(self)
+        if self._need_root_perms(interpreter):
+            # self.backend.start()
+            process = _ServerProcess(self.parent())
+            self.backend.socket._process = process
+            server_script = server.__file__.replace('.pyc', '.py')
+            port = self.backend.socket.pick_free_port()
+            self.backend.socket._port = port
+            cmd = '%s "%s %s %s --syspath %s"' % (
+                get_authentication_program(), interpreter, server_script,
+                str(port), get_library_zip_path())
+            process.started.connect(self.backend.socket._on_process_started)
+            process.start(cmd)
+        else:
+            self.backend.start(
+                server.__file__, interpreter=interpreter,
+                args=['-s'] + [get_library_zip_path()])
+        self.backend.socket.connected.connect(self._run_command)
+
+    def _need_root_perms(self, interpreter):
+        if LINUX and not interpreter.startswith('/home'):
+            return True
+        return False
+
+    def _run_command(self):
+        self.backend.send_request(self._worker, self._package,
+                                  on_receive=self._on_command_finished)
+
+    def _on_command_finished(self, status, output):
+        self._stop_movie()
+        self.ui.widgetInfos.setVisible(True)
+        if status:
+            self._refresh_packages()
+        else:
+            QtGui.QMessageBox.warning(self, 'Pip command failed', output)
+        self.backend.stop()
 
 
 class CreateVirtualEnvThread(QtCore.QThread):
@@ -235,7 +320,9 @@ class CreateVirtualEnvThread(QtCore.QThread):
         if self.system_site_packages:
             command.insert(1, '--system-site-packages')
         command = ' '.join(command)
-        print(os.system(command))
-        ext = '.exe' if WINDOWS else ''
-        path = os.path.join(self.path, 'bin', 'python' + ext)
+        if os.system(command) == 0:
+            ext = '.exe' if WINDOWS else ''
+            path = os.path.join(self.path, 'bin', 'python' + ext)
+        else:
+            path = None
         self.created.emit(path)
