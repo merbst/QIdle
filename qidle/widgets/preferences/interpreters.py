@@ -72,24 +72,26 @@ class PageInterpreters(Page):
         self._stop_backend()
 
     def _stop_backend(self):
+        """
+        Stops the backend process used to execute pip command on a foreign
+        interpreter.
+        """
         if self.backend is not None:
             self.backend.stop()
             self.backend = None
 
-    def _start_movie(self):
+    def _start_gif(self):
+        """
+        Starts the gif (waiting) animation, and show the info widget
+        """
         self.movie.start()
         self.ui.lblMovie.show()
         self.ui.widgetInfos.show()
 
-    def _get_sys_paths(self):
-        # adapt sys path so that the backend can find pyqode and qidle
-        # package if ran by a different process than sys.executable
-        paths = [
-            get_library_zip_path()
-        ]
-        return paths
-
     def _clear_packages(self):
+        """
+        Clears the package table.
+        """
         self.ui.table_packages.clear()
         self.ui.table_packages.setColumnCount(3)
         self.ui.table_packages.setRowCount(0)
@@ -97,14 +99,20 @@ class PageInterpreters(Page):
             ['Name', 'Version', 'Path'])
 
     def _start_backend(self, interpreter):
+        """
+        Starts the backend process for the specified interpreter
+        :param interpreter: The python interpreter used to run the backend.
+        """
         self._stop_backend()
         self.backend = BackendManager(self)
-        # print('start backend', interpreter, self._get_sys_paths())
         self.backend.start(
             server.__file__, interpreter=interpreter,
-            args=['-s'] + self._get_sys_paths())
+            args=['-s',  get_library_zip_path()])
 
     def _enable_buttons(self, enable):
+        """
+        Enable/Disable buttons.
+        """
         self.ui.combo_interpreters.setEnabled(enable)
         self.ui.bt_cfg.setEnabled(enable)
         self.ui.bt_install_package.setEnabled(enable)
@@ -113,18 +121,24 @@ class PageInterpreters(Page):
 
     @QtCore.pyqtSlot(int)
     def _refresh_packages(self, *args):
+        """
+        Refreshes the list of packages for the current interpreter.
+        """
         self.ui.lblInfos.setText('Refreshing packages list')
         interpreter = self.ui.combo_interpreters.currentText()
         self.action_remove_interpreter.setEnabled(
             not is_system_interpreter(interpreter))
         # stop previous backend, it will be run by a different interpreter
-        self._start_movie()
+        self._start_gif()
         self._clear_packages()
         self._start_backend(interpreter)
         self._send_request()
         self._enable_buttons(False)
 
     def _send_request(self):
+        """
+        Sends the refresh package request to the backend
+        """
         try:
             self.backend.send_request(
                 get_installed_packages, 'refresh_packages',
@@ -145,13 +159,23 @@ class PageInterpreters(Page):
                 # waiting for the backend to start, retry in a few milliseconds
                 QtCore.QTimer.singleShot(100, self._send_request)
 
-    def _stop_movie(self):
+    def _stop_gif(self):
+        """
+        Stops the gif animation and hide the infos widget.
+        """
         self.movie.stop()
         self.ui.widgetInfos.hide()
         self.ui.lblMovie.hide()
 
     def _on_refresh_finished(self, status, results):
-        self._stop_movie()
+        """
+        Display the refreshed list of packages when the backend command
+        finished.
+
+        :param status: Command status
+        :param results: Command results
+        """
+        self._stop_gif()
         self._stop_backend()
         self._enable_buttons(True)
         if status is False:
@@ -166,23 +190,43 @@ class PageInterpreters(Page):
         self._on_selected_package_changed()
 
     def _on_selected_package_changed(self):
+        """
+        Enable buttons depending on whether a package has been selected
+        or not.
+        """
         enable = self.ui.table_packages.currentRow() != -1
         self.ui.bt_uninstall_package.setEnabled(enable)
         self.ui.bt_upgrade_package.setEnabled(enable)
 
     def reset(self, default=None):
+        """
+        Reset the page: reload the list of interpreters and refresh the default
+        interpreter packages
+
+        :param default: Default interpreter.
+        """
         load_interpreters(self.ui.combo_interpreters, default=default)
         if hasattr(self, 'action_remove_interpreter'):
             self._refresh_packages(0)
 
     def restore_defaults(self):
+        """
+        Restor defaults. Removes all added interpreters (locals or virtual
+        envs).
+        """
         pass
 
     def apply(self):
+        """
+        Apply page settings to the application preferences (here we just set
+        the default interpreter).
+        """
         prefs = Preferences()
         prefs.interpreters.default = self.ui.combo_interpreters.currentText()
 
     def _add_local(self):
+        """
+        Adds a local interpeter.        """
         path = QtGui.QFileDialog.getOpenFileName(self, 'Add local interpreter')
         if path:
             lst = Preferences().interpreters.locals
@@ -193,6 +237,9 @@ class PageInterpreters(Page):
                 self.ui.combo_interpreters.count() - 1)
 
     def _remove_interpreter(self):
+        """
+        Removes the selected interpreter.
+        """
         path = self.ui.combo_interpreters.currentText()
         lst = Preferences().interpreters.locals
         try:
@@ -211,6 +258,9 @@ class PageInterpreters(Page):
             self.ui.combo_interpreters.currentIndex())
 
     def _create_virtualenv(self):
+        """
+        Creates a new virtual environment.
+        """
         data = DlgCreateVirtualEnv.get_virtualenv_creation_params(self)
         if data:
             path, interpreter, site_packages = data
@@ -222,25 +272,34 @@ class PageInterpreters(Page):
             self._create_virtualenv_thread.created.connect(
                 self._on_virtualenv_created)
             self.ui.lblInfos.setText('Creating virtual environment')
-            self._start_movie()
+            self._start_gif()
             self._create_virtualenv_thread.start()
 
     def _on_virtualenv_created(self, path):
+        """
+        Display the new virtual env in the interpreter list and refresh
+        its packages.
+
+        :param path: path to the new interpreter
+        """
         if path:
             envs = Preferences().interpreters.virtual_envs
             envs.append(path)
             Preferences().interpreters.virtual_envs = envs
             self.reset(default=path)
-            self._stop_movie()
+            self._stop_gif()
             self.ui.widgetInfos.show()
             self.ui.lblInfos.setText('Virtual env sucessfully created at %s' %
                                      path)
         else:
-            self._stop_movie()
+            self._stop_gif()
             self.ui.widgetInfos.show()
             self.ui.lblInfos.setText('Failed to create virtual env')
 
     def _upgrade(self):
+        """
+        Upgrade the selected package for the current interpreter.
+        """
         package = self.ui.table_packages.item(
             self.ui.table_packages.currentRow(), 0).text()
         self.run_pip_command(self.ui.combo_interpreters.currentText(),
@@ -248,6 +307,9 @@ class PageInterpreters(Page):
                              'Upgrading package %s' % package)
 
     def _uninstall(self):
+        """
+        Uninstall the selected package for the current interpreter.
+        """
         package = self.ui.table_packages.item(
             self.ui.table_packages.currentRow(), 0).text()
         self.run_pip_command(
@@ -255,6 +317,12 @@ class PageInterpreters(Page):
             package, 'Uninstalling package %s' % package)
 
     def _install(self):
+        """
+        Install one or more package.
+
+        Asks the user the list of packages to install (each package is
+        separated by a space.
+        """
         package, status = QtGui.QInputDialog.getText(self, 'Install package',
                                              'Package:')
         if not status:
@@ -265,8 +333,18 @@ class PageInterpreters(Page):
 
     def run_pip_command(self, interpreter, worker_function, package,
                         operation):
+        """
+        Run a pip command. The command is run on the backend for the current
+        interpreter.
+
+        :param interpreter: Interpreter which is going to run the backend
+        :param worker_function: The worker function to execute.
+        :param package: The list of packages to install, as a string where each
+            item is separated by a space.
+        :param operation: Operation title (used for the info label)
+        """
         self._stop_backend()
-        self._start_movie()
+        self._start_gif()
         self.ui.lblInfos.setText(operation)
         self._worker = worker_function
         self._package = package
@@ -291,16 +369,35 @@ class PageInterpreters(Page):
         self.backend.socket.connected.connect(self._run_command)
 
     def _need_root_perms(self, interpreter):
+        """
+        Checks if we need root perms for running the pip command.
+
+        We need persm for any interpreter no installed under home on linux.
+
+        TODO: fix this for mac osx
+
+        :param interpreter: path of the interpreter.
+        """
         if LINUX and not interpreter.startswith('/home'):
             return True
         return False
 
     def _run_command(self):
+        """
+        Run the pip command as soon as the connection has been established.
+        """
         self.backend.send_request(self._worker, self._package,
                                   on_receive=self._on_command_finished)
 
     def _on_command_finished(self, status, output):
-        self._stop_movie()
+        """
+        Displays command results if the command failed or refreshes the list
+        of packages.
+
+        :param status: Command status. False if the command failed.
+        :param output: Command output.
+        """
+        self._stop_gif()
         self.ui.widgetInfos.setVisible(True)
         if status:
             self._refresh_packages()
@@ -310,12 +407,22 @@ class PageInterpreters(Page):
 
 
 class CreateVirtualEnvThread(QtCore.QThread):
+    """
+    Thread used to run the process that creates a new virtual env.
+    """
+    #: Signal emitted when the virtual env has been created
     created = QtCore.pyqtSignal(str)
+    #: Path of the environment to create
     path = ''
+    #: Base interpreter, must be a system interpreter
     interpreter = ''
+    #: True to enable system site-packages. Not recommended.
     system_site_packages = False
 
     def run(self):
+        """
+        Creates the virtual env
+        """
         command = ['virtualenv', '-p', self.interpreter, self.path]
         if self.system_site_packages:
             command.insert(1, '--system-site-packages')

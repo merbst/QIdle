@@ -1,9 +1,17 @@
+"""
+This module contains the class explorer implementation.
+"""
 from PyQt4 import QtCore, QtGui
 from pyqode.core.api import TextHelper
 from pyqode.python.modes import DocumentAnalyserMode
 
 
 class ClassExplorer(QtGui.QTreeWidget):
+    """
+    Displays the structure of an editor (classes/functions/methods)
+
+    To use this widget, just set the current editor using ``set_editor``.
+    """
     def __init__(self, parent=None):
         super(ClassExplorer, self).__init__(parent)
         self._analyser = None
@@ -13,6 +21,12 @@ class ClassExplorer(QtGui.QTreeWidget):
         self.itemCollapsed.connect(self._expanded_items.remove)
 
     def set_editor(self, editor):
+        """
+        Sets the current editor. The widget display the structure of that
+        editor.
+
+        :param editor: PyCodeEdit
+        """
         self._editor = editor
         if self._analyser:
             self._analyser.document_changed.disconnect(self.on_changed)
@@ -26,6 +40,9 @@ class ClassExplorer(QtGui.QTreeWidget):
             analyser.document_changed.connect(self.on_changed)
 
     def on_changed(self):
+        """
+        Update the tree items
+        """
         analyser = self._analyser
         assert isinstance(analyser, DocumentAnalyserMode)
         to_expand = [item.text(0) for item in self._expanded_items]
@@ -40,6 +57,9 @@ class ClassExplorer(QtGui.QTreeWidget):
                 self.expandItem(item)
 
     def on_item_double_clicked(self, item):
+        """
+        Go to the item position in the editor.
+        """
         d = item.data(0, QtCore.Qt.UserRole)
         TextHelper(self._editor).goto_line(d.block.blockNumber(), d.column)
         self._editor.setFocus(True)

@@ -5,6 +5,11 @@ Setup script for QIdle
 import sys
 from setuptools import setup, find_packages
 
+
+# add build_ui command. This command is only used by developer to easily
+# update the ui scripts.
+# To use this command, you need to install the pyqt-distutils packages (using
+# pip).
 try:
     from pyqt_distutils.build_ui import build_ui
     cmdclass = {'build_ui': build_ui}
@@ -20,9 +25,10 @@ with open('README.rst', 'r') as readme:
 
 # install requirements
 requirements = ['pygments', 'pyqode.python', 'versiontools',
-                'ipython', 'pyzmq']
+                'ipython', 'pyzmq', 'virtualenv']
 
 
+# install desktop entry and pixmap on linux
 data_files = []
 if sys.platform == 'linux':
     data_files.append(('/usr/share/applications',
@@ -30,6 +36,7 @@ if sys.platform == 'linux':
     data_files.append(('/usr/share/pixmaps', ['share/QIdle.png']))
 
 
+# run setup
 setup(
     name='QIdle',
     version=":versiontools:qidle",
