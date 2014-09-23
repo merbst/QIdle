@@ -23,15 +23,30 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QComboBox" name="combo_interpreters"/>
+         <widget class="QComboBox" name="combo_interpreters">
+          <property name="toolTip">
+           <string>Choose the default python interpreter</string>
+          </property>
+          <property name="statusTip">
+           <string>Choose the default interpreter that will be used for the first run</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QToolButton" name="bt_cfg">
+          <property name="toolTip">
+           <string>Configure  interpreters</string>
+          </property>
+          <property name="statusTip">
+           <string>Add/remove interpreters</string>
+          </property>
           <property name="text">
            <string>...</string>
           </property>
           <property name="icon">
-           <iconset theme="system-run"/>
+           <iconset theme="system-run">
+            <normaloff/>
+           </iconset>
           </property>
           <property name="popupMode">
            <enum>QToolButton::InstantPopup</enum>
@@ -104,6 +119,12 @@
           </property>
           <item>
            <widget class="QToolButton" name="bt_install_package">
+            <property name="toolTip">
+             <string>Install new packages</string>
+            </property>
+            <property name="statusTip">
+             <string>Install new packages (package names should be separated by a space)</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -116,6 +137,12 @@
           </item>
           <item>
            <widget class="QToolButton" name="bt_uninstall_package">
+            <property name="toolTip">
+             <string>Remove package</string>
+            </property>
+            <property name="statusTip">
+             <string>Remove the selected package</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -128,6 +155,12 @@
           </item>
           <item>
            <widget class="QToolButton" name="bt_upgrade_package">
+            <property name="toolTip">
+             <string>Upgrade package</string>
+            </property>
+            <property name="statusTip">
+             <string>Upgrade the selected package</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -210,7 +243,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../qidle.qrc"/>
+  <include location="qidle.qrc"/>
  </resources>
  <connections/>
 </ui>
