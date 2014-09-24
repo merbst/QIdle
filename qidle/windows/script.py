@@ -1,12 +1,12 @@
 import os
 import sys
-import versiontools
 
 from PyQt4 import QtGui
+
 from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
 
-from qidle import version, icons
+from qidle import icons
 from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
@@ -108,7 +108,8 @@ class ScripWindow(WindowBase):
             if w.path and base_title in w.path:
                 counter += 1
         app_title = ' - QIdle %s (Python %s)' % (
-            version, '.'.join([str(i) for i in sys.version_info[:3]]))
+            self.app.version_str, '.'.join(
+                [str(i) for i in sys.version_info[:3]]))
         suffix = ' %s' % counter if counter else ''
         title = base_title + suffix + app_title
         self.setWindowTitle(title)
@@ -123,7 +124,7 @@ class ScripWindow(WindowBase):
     def open(self, path):
         self.ui.codeEdit.file.open(path)
         self._title = '%s [%s] - QIdle %s (Python %s)' % (
-            os.path.split(path)[1], path, version,
+            os.path.split(path)[1], path, self.app.version_str,
             '.'.join([str(i) for i in sys.version_info[:3]]))
         self.setWindowTitle(self._title)
         self._on_dirty_changed(False)
@@ -146,7 +147,7 @@ class ScripWindow(WindowBase):
                 path += '.py'
             self.ui.codeEdit.file.save(path)
             self._title = '%s [%s] - QIdle %s (Python %s)' % (
-                os.path.split(path)[1], path, version,
+                os.path.split(path)[1], path, self.app.version_str,
                 '.'.join([str(i) for i in sys.version_info[:3]]))
             self.setWindowTitle(self._title)
             if self.path == 'Untitled':

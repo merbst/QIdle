@@ -2,19 +2,17 @@
 Contains the application class.
 
 """
+import logging
 import os
 import sys
-from pyqode import qt
-from PyQt4 import QtGui, QtCore
+from versiontools import Version
+from PyQt4 import QtGui
 from pyqode.core.widgets import RecentFilesManager
-from qidle import icons, version
+from qidle import icons, __version__
 from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.preferences import Preferences
 from qidle.system import embed_package_into_zip, get_library_zip_path
 from qidle.windows import ScripWindow
-
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 
 # dependencies frozen into a zip file on startup:
@@ -28,7 +26,12 @@ class Application:
     open windows.
 
     """
+    @property
+    def version_str(self):
+        return str(Version(*__version__))
+
     def __init__(self):
+        logging.basicConfig(level=logging.INFO)
         self.windows = []
         self.qapp = QtGui.QApplication(sys.argv)
         icons.init()
@@ -36,7 +39,8 @@ class Application:
         self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
 
     def _init_libraries(self):
-        if not '.dev' in str(version) and os.path.exists(get_library_zip_path()):
+        if (not '.dev' in self.version_str and
+                os.path.exists(get_library_zip_path())):
             return
         else:
             embed_package_into_zip(
