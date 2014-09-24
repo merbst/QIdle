@@ -1,12 +1,11 @@
 import os
 import platform
 from PyQt4 import QtCore, QtGui
-from pyqode.core.api.client import _ServerProcess
-from pyqode.core.backend import NotConnected
+from pyqode.core.api.client import ServerProcess
+from pyqode.core.backend import NotRunning
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
 from qidle import icons
-from qidle.dialogs.pip import DlgPipCommand
 from qidle.dialogs.virtualenv import DlgCreateVirtualEnv
 from qidle.forms import settings_page_interpreters_ui
 from qidle.python import get_installed_packages, is_system_interpreter, \
@@ -143,7 +142,7 @@ class PageInterpreters(Page):
             self.backend.send_request(
                 get_installed_packages, 'refresh_packages',
                 on_receive=self._on_refresh_finished)
-        except NotConnected:
+        except NotRunning:
             if self.backend.exit_code:
                 # backend stopped working, may happen if pip or another
                 # package is missing for the target interpreter's
@@ -352,21 +351,20 @@ class PageInterpreters(Page):
         self.backend = BackendManager(self)
         if self._need_root_perms(interpreter):
             # self.backend.start()
-            process = _ServerProcess(self.parent())
-            self.backend.socket._process = process
+            process = ServerProcess(self.parent())
+            self.backend._process = process
             server_script = server.__file__.replace('.pyc', '.py')
-            port = self.backend.socket.pick_free_port()
-            self.backend.socket._port = port
+            port = self.backend.pick_free_port()
+            self.backend._port = port
             cmd = '%s "%s %s %s --syspath %s"' % (
                 get_authentication_program(), interpreter, server_script,
                 str(port), get_library_zip_path())
-            process.started.connect(self.backend.socket._on_process_started)
             process.start(cmd)
         else:
             self.backend.start(
                 server.__file__, interpreter=interpreter,
                 args=['-s'] + [get_library_zip_path()])
-        self.backend.socket.connected.connect(self._run_command)
+        self.backend._process.started.connect(self._run_command)
 
     def _need_root_perms(self, interpreter):
         """
@@ -399,11 +397,11 @@ class PageInterpreters(Page):
         """
         self._stop_gif()
         self.ui.widgetInfos.setVisible(True)
+        self.backend.stop()
         if status:
             self._refresh_packages()
         else:
             QtGui.QMessageBox.warning(self, 'Pip command failed', output)
-        self.backend.stop()
 
 
 class CreateVirtualEnvThread(QtCore.QThread):

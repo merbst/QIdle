@@ -10,8 +10,10 @@ from pyqode.core.widgets import RecentFilesManager
 from qidle import icons, version
 from qidle.system import embed_package_into_zip, get_library_zip_path
 from qidle.windows import ScripWindow
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
+
 
 # dependencies frozen into a zip file on startup:
 import jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,\

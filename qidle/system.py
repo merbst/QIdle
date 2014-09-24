@@ -39,7 +39,8 @@ def get_cache_directory():
 
 
 def get_library_zip_path():
-    return os.path.join(get_cache_directory(), 'libraries-%s.zip' % str(version))
+    lib = 'libraries-%s.zip' % str(version)
+    return os.path.join(get_cache_directory(), lib)
 
 
 def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
