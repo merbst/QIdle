@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>714</width>
-    <height>544</height>
+    <height>528</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,9 +76,19 @@
           </widget>
          </item>
          <item>
+          <widget class="QRadioButton" name="rb_open_scr_ask">
+           <property name="text">
+            <string>Ask each time</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="cb_restore_prev_scrwin_state">
            <property name="text">
             <string>Restore state of previous window</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -87,6 +97,9 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="title">
          <string>Project opening</string>
         </property>
@@ -109,6 +122,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QRadioButton" name="rb_open_proj_ask">
+           <property name="text">
+            <string>Ask each time</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="cb_restore_prev_projwin_state">
            <property name="text">
             <string>Restore state of previous window</string>
@@ -127,16 +147,6 @@
          <string>Save</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QCheckBox" name="cb_save_on_focus_lost">
-           <property name="text">
-            <string>Save editors when window loose focus</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QCheckBox" name="cb_save_before_run">
            <property name="text">

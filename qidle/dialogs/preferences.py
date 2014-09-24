@@ -29,21 +29,28 @@ class DlgPreferences(QtGui.QDialog):
         # appearance
         page = PageAppearance(self.ui.pages)
         self.ui.pages.addWidget(page)
-        general = self.ui.categories.findItems(
+        appearance = self.ui.categories.findItems(
             'Appearance', QtCore.Qt.MatchExactly)[0]
-        general.setData(0, QtCore.Qt.UserRole, page)
+        appearance.setData(0, QtCore.Qt.UserRole, page)
 
         # appearance
         page = PageInterpreters(self.ui.pages)
         self.ui.pages.addWidget(page)
-        general = self.ui.categories.findItems(
+        interpreters = self.ui.categories.findItems(
             'Interpreters', QtCore.Qt.MatchExactly)[0]
-        general.setData(0, QtCore.Qt.UserRole, page)
+        interpreters.setData(0, QtCore.Qt.UserRole, page)
 
         # show general settings
+        self.ui.categories.setCurrentItem(general)
         self.ui.pages.setCurrentIndex(1)
+        self.ui.categories.currentItemChanged.connect(
+            self._on_category_changed)
 
-        self.ui.categories.currentItemChanged.connect(self._on_category_changed)
+        self.ui.buttons.button(self.ui.buttons.Reset).clicked.connect(
+            self.reset)
+        self.ui.buttons.button(
+            self.ui.buttons.RestoreDefaults).clicked.connect(
+            self.restore_defaults)
 
     def _on_category_changed(self, cat):
         page = cat.data(0, QtCore.Qt.UserRole)
@@ -69,3 +76,18 @@ class DlgPreferences(QtGui.QDialog):
         dlg = cls(parent, None)
         if dlg.exec_() == DlgPreferences.Accepted:
             dlg.apply()
+
+    def reset(self):
+        w = self.ui.pages.currentWidget()
+        try:
+            w.reset()
+        except NotImplementedError:
+            print('reset not implemented for widget %s' % w.objectName())
+
+    def restore_defaults(self):
+        w = self.ui.pages.currentWidget()
+        try:
+            self.ui.pages.currentWidget().restore_defaults()
+        except NotImplementedError:
+            print('restore_defaults not implemented for widget %s' %
+                  w.objectName())

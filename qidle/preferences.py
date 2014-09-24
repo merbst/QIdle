@@ -175,6 +175,58 @@ class Interpreters(Section):
         self.set_value('default_interpreter', interpreter)
 
 
+class General(Section):
+    class OpenActions:
+        NEW = 0
+        CURRENT = 1
+        ASK = 2
+
+    def __init__(self, settings):
+        super(General, self).__init__(
+            settings, self.__class__.__name__.lower())
+
+    @property
+    def confirm_application_exit(self):
+        return eval(self.get_value('confirm_application_exit', 'True'))
+
+    @confirm_application_exit.setter
+    def confirm_application_exit(self, value):
+        self.set_value('confirm_application_exit', str(value))
+
+    @property
+    def reopen_last_window(self):
+        return eval(self.get_value('reopen_last_window', 'True'))
+
+    @reopen_last_window.setter
+    def reopen_last_window(self, value):
+        self.set_value('reopen_last_window', str(value))
+
+    @property
+    def open_scr_action(self):
+        return int(self.get_value(
+            'open_scr_action', str(self.OpenActions.NEW)))
+
+    @open_scr_action.setter
+    def open_scr_action(self, value):
+        self.set_value('open_scr_action', str(value))
+
+    @property
+    def restore_scr_window_state(self):
+        return eval(self.get_value('restore_scr_window_state', 'False'))
+
+    @restore_scr_window_state.setter
+    def restore_scr_window_state(self, value):
+        self.set_value('restore_scr_window_state', str(value))
+
+    @property
+    def save_before_run(self):
+        return eval(self.get_value('save_before_run', 'True'))
+
+    @save_before_run.setter
+    def save_before_run(self, value):
+        self.set_value('save_before_run', str(value))
+
+
 class Preferences(QtCore.QSettings):
     def __init__(self):
         super(Preferences, self).__init__('QIdle', 'QIdle')
@@ -182,3 +234,4 @@ class Preferences(QtCore.QSettings):
         self.key_bindings = KeyBindings(self)
         self.cache = Cache(self)
         self.interpreters = Interpreters(self)
+        self.general = General(self)

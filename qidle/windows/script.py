@@ -30,7 +30,6 @@ class ScripWindow(WindowBase):
             self.ui.codeEdit.panels.remove('SymbolBrowserPanel')
         except KeyError:
             pass  # panel not installed
-        self.menu_recents.open_requested.connect(self.app.create_script_window)
         self.ui.codeEdit.dirty_changed.connect(self._on_dirty_changed)
 
         # Edit menu
@@ -92,8 +91,10 @@ class ScripWindow(WindowBase):
             self.save_state()
 
     def restore_state(self):
-        self.restoreGeometry(Preferences().main_window.script_window_geometry)
-        self.restoreState(Preferences().main_window.script_window_state)
+        prefs = Preferences()
+        if prefs.general.restore_scr_window_state:
+            self.restoreGeometry(prefs.main_window.script_window_geometry)
+            self.restoreState(prefs.main_window.script_window_state)
 
     def save_state(self):
         prefs = Preferences()
@@ -197,7 +198,8 @@ class ScripWindow(WindowBase):
 
     def on_action_run_triggered(self):
         if self.ui.actionRun.text() == 'Run':
-            self.save()
+            if Preferences().general.save_before_run:
+                self.save()
             self.run_script()
             self.ui.dockWidgetProgramOutput.show()
             self.ui.textEditPgmOutput.setFocus(True)

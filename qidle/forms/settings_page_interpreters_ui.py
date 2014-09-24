@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_interpreters.ui'
 #
-# Created: Tue Sep 16 09:45:18 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Wed Sep 24 13:29:15 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -125,6 +125,10 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.groupBox.setTitle(_translate("Form", "Default interpreter", None))
+        self.combo_interpreters.setToolTip(_translate("Form", "Choose the default python interpreter", None))
+        self.combo_interpreters.setStatusTip(_translate("Form", "Choose the default interpreter that will be used for the first run", None))
+        self.bt_cfg.setToolTip(_translate("Form", "Configure  interpreters", None))
+        self.bt_cfg.setStatusTip(_translate("Form", "Add/remove interpreters", None))
         self.bt_cfg.setText(_translate("Form", "...", None))
         self.groupBox_2.setTitle(_translate("Form", "Installed packages", None))
         item = self.table_packages.horizontalHeaderItem(0)
@@ -133,6 +137,12 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Version", None))
         item = self.table_packages.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Path", None))
+        self.bt_install_package.setToolTip(_translate("Form", "Install new packages", None))
+        self.bt_install_package.setStatusTip(_translate("Form", "Install new packages (package names should be separated by a space)", None))
+        self.bt_uninstall_package.setToolTip(_translate("Form", "Remove package", None))
+        self.bt_uninstall_package.setStatusTip(_translate("Form", "Remove the selected package", None))
+        self.bt_upgrade_package.setToolTip(_translate("Form", "Upgrade package", None))
+        self.bt_upgrade_package.setStatusTip(_translate("Form", "Upgrade the selected package", None))
         self.lblMovie.setText(_translate("Form", "mov", None))
         self.lblInfos.setText(_translate("Form", "Refreshing packages list", None))
 

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_general.ui'
 #
-# Created: Tue Sep 16 09:45:19 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Wed Sep 24 13:54:25 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(714, 544)
+        Form.resize(714, 528)
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.groupBox_5 = QtGui.QGroupBox(Form)
@@ -58,11 +58,16 @@ class Ui_Form(object):
         self.rb_open_scr_in_same.setChecked(False)
         self.rb_open_scr_in_same.setObjectName(_fromUtf8("rb_open_scr_in_same"))
         self.verticalLayout_4.addWidget(self.rb_open_scr_in_same)
+        self.rb_open_scr_ask = QtGui.QRadioButton(self.groupBox_2)
+        self.rb_open_scr_ask.setObjectName(_fromUtf8("rb_open_scr_ask"))
+        self.verticalLayout_4.addWidget(self.rb_open_scr_ask)
         self.cb_restore_prev_scrwin_state = QtGui.QCheckBox(self.groupBox_2)
+        self.cb_restore_prev_scrwin_state.setChecked(False)
         self.cb_restore_prev_scrwin_state.setObjectName(_fromUtf8("cb_restore_prev_scrwin_state"))
         self.verticalLayout_4.addWidget(self.cb_restore_prev_scrwin_state)
         self.verticalLayout_7.addWidget(self.groupBox_2)
         self.groupBox_3 = QtGui.QGroupBox(self.groupBox_5)
+        self.groupBox_3.setEnabled(False)
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.groupBox_3)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
@@ -73,6 +78,9 @@ class Ui_Form(object):
         self.rb_open_proj_in_same = QtGui.QRadioButton(self.groupBox_3)
         self.rb_open_proj_in_same.setObjectName(_fromUtf8("rb_open_proj_in_same"))
         self.verticalLayout_5.addWidget(self.rb_open_proj_in_same)
+        self.rb_open_proj_ask = QtGui.QRadioButton(self.groupBox_3)
+        self.rb_open_proj_ask.setObjectName(_fromUtf8("rb_open_proj_ask"))
+        self.verticalLayout_5.addWidget(self.rb_open_proj_ask)
         self.cb_restore_prev_projwin_state = QtGui.QCheckBox(self.groupBox_3)
         self.cb_restore_prev_projwin_state.setChecked(True)
         self.cb_restore_prev_projwin_state.setObjectName(_fromUtf8("cb_restore_prev_projwin_state"))
@@ -82,10 +90,6 @@ class Ui_Form(object):
         self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.groupBox_4)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
-        self.cb_save_on_focus_lost = QtGui.QCheckBox(self.groupBox_4)
-        self.cb_save_on_focus_lost.setChecked(True)
-        self.cb_save_on_focus_lost.setObjectName(_fromUtf8("cb_save_on_focus_lost"))
-        self.verticalLayout_6.addWidget(self.cb_save_on_focus_lost)
         self.cb_save_before_run = QtGui.QCheckBox(self.groupBox_4)
         self.cb_save_before_run.setChecked(True)
         self.cb_save_before_run.setObjectName(_fromUtf8("cb_save_before_run"))
@@ -107,12 +111,13 @@ class Ui_Form(object):
         self.groupBox_2.setTitle(_translate("Form", "Script opening", None))
         self.rb_open_scr_in_new.setText(_translate("Form", "Open script in a new window", None))
         self.rb_open_scr_in_same.setText(_translate("Form", "Open script in the same window (replace current script)", None))
+        self.rb_open_scr_ask.setText(_translate("Form", "Ask each time", None))
         self.cb_restore_prev_scrwin_state.setText(_translate("Form", "Restore state of previous window", None))
         self.groupBox_3.setTitle(_translate("Form", "Project opening", None))
         self.rb_open_proj_in_new.setText(_translate("Form", "Open project in new window", None))
         self.rb_open_proj_in_same.setText(_translate("Form", "Open project in the same window (replace current project)", None))
+        self.rb_open_proj_ask.setText(_translate("Form", "Ask each time", None))
         self.cb_restore_prev_projwin_state.setText(_translate("Form", "Restore state of previous window", None))
         self.groupBox_4.setTitle(_translate("Form", "Save", None))
-        self.cb_save_on_focus_lost.setText(_translate("Form", "Save editors when window loose focus", None))
         self.cb_save_before_run.setText(_translate("Form", "Save editors before run", None))
 

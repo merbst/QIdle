@@ -1,11 +1,13 @@
 """
 Base implementation for windows.
 """
+import os
 import sys
 import weakref
 from PyQt4 import QtCore, QtGui
 from pyqode.core.widgets import MenuRecentFiles
 from qidle import icons
+from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.icons import IconProvider
 from qidle.preferences import Preferences
 from qidle.dialogs import DlgPreferences
@@ -66,6 +68,7 @@ class WindowBase(QtGui.QMainWindow):
         self.move(self.pos().x(), 0)
 
     def update_windows_menu(self, open_windows):
+        self._open_windows = open_windows
         self.ui.menuWindows.clear()
         self.ui.menuWindows.addAction(self.ui.actionZoom_height)
         self.ui.menuWindows.addSeparator()
@@ -81,6 +84,14 @@ class WindowBase(QtGui.QMainWindow):
             self.ui.menuWindows.addAction(action)
 
     def closeEvent(self, ev):
+        nb_windows = len(self._open_windows)
+        if Preferences().general.confirm_application_exit and nb_windows == 1:
+            button = QtGui.QMessageBox.question(
+                self, "Confirm exit",
+                "Are you sure you want to exit QIdle?",
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            if button != QtGui.QMessageBox.Yes:
+                ev.ignore()
         if ev.isAccepted():
             super(WindowBase, self).closeEvent(ev)
             self.closed.emit(self)
@@ -120,6 +131,8 @@ class WindowBase(QtGui.QMainWindow):
         self.menu_recents = MenuRecentFiles(
             self, app.recent_files_manager, title='Recents',
             icon_provider=IconProvider())
+        self.menu_recents.open_requested.connect(
+            self.app.open_recent)
         self.ui.menuFile.addMenu(self.menu_recents)
         self.ui.menuFile.addSeparator()
         self.ui.menuFile.addAction(self.ui.actionSave)
@@ -175,12 +188,39 @@ class WindowBase(QtGui.QMainWindow):
         self.save_state()
         self.app.create_script_window()
 
+    def _open_in_current(self, path, script):
+        from qidle.windows.script import ScripWindow
+        if ((script and isinstance(self, ScripWindow) or
+                (not script and not isinstance(self, ScripWindow)))):
+            self.open(path)
+        else:
+            self._open_in_new(path, script)
+
+    def _open_in_new(self, path, script):
+        if script:
+            self.app.create_script_window(path)
+        else:
+            # todo create project window
+            pass
+
     def _on_open_file_triggered(self):
         path = QtGui.QFileDialog.getOpenFileName(
             self, 'Open script', self.path,
             filter='Python files (*.py *.pyw)')
         if path:
-            self.app.create_script_window(path)
+            script = os.path.isfile(path)
+            action = Preferences().general.open_scr_action
+            if action == Preferences().general.OpenActions.NEW:
+                self._open_in_new(path, script)
+            elif action == Preferences().general.OpenActions.CURRENT:
+                self._open_in_current(path, script)
+            else:
+                # ask
+                val = DlgAskOpenScript.ask(self)
+                if val == Preferences().general.OpenActions.NEW:
+                    self._open_in_new(path, script)
+                elif val == Preferences().general.OpenActions.CURRENT:
+                    self._open_in_current(path, script)
 
     def _show_prev_window(self):
         i = self.app.windows.index(self)

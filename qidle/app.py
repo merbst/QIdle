@@ -8,6 +8,8 @@ from pyqode import qt
 from PyQt4 import QtGui, QtCore
 from pyqode.core.widgets import RecentFilesManager
 from qidle import icons, version
+from qidle.dialogs.ask_open import DlgAskOpenScript
+from qidle.preferences import Preferences
 from qidle.system import embed_package_into_zip, get_library_zip_path
 from qidle.windows import ScripWindow
 
@@ -92,14 +94,52 @@ class Application:
         for w in self.windows:
             w.update_recents_menu()
 
+    def _open_in_new(self, path, script):
+        if script:
+            self.create_script_window(path)
+
+    def _open_in_current(self, path, script):
+        win = self.qapp.activeWindow()
+        if win is None:
+            win = self.windows[0]
+        if ((script and isinstance(win, ScripWindow) or
+                 (not script and not isinstance(self, ScripWindow)))):
+            win.open(path)
+        else:
+            self._open_in_new(path, script)
+
+    def open_recent(self, path):
+        script = os.path.isfile(path)
+        action = Preferences().general.open_scr_action
+        if action == Preferences().general.OpenActions.NEW:
+            self._open_in_new(path, script)
+        elif action == Preferences().general.OpenActions.CURRENT:
+            self._open_in_current(path, script)
+        else:
+            if script:
+                # ask
+                val = DlgAskOpenScript.ask(self.qapp.activeWindow())
+                if val == Preferences().general.OpenActions.NEW:
+                    self._open_in_new(path, script)
+                elif val == Preferences().general.OpenActions.CURRENT:
+                    self._open_in_current(path, script)
+            else:
+                # todo ask for projects
+                pass
+
     def run(self):
         """
         Runs the application.
         """
-        try:
-            path = self.recent_files_manager.last_file()
-        except IndexError:
-            self.create_script_window()
+        if Preferences().general.reopen_last_window:
+            try:
+                path = self.recent_files_manager.last_file()
+            except IndexError:
+                self.create_script_window()
+            else:
+                # todo create the correct window type based on the file path
+                self.create_script_window(path)
         else:
-            self.create_script_window(path)
+            # create untitled script window
+            self.create_script_window()
         self.qapp.exec_()
