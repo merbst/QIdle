@@ -74,6 +74,15 @@ print(f.__doc__)
                 current_index = self.ui.list_color_schemes.count() - 1
         self.ui.list_color_schemes.setCurrentRow(current_index)
 
+        # update preview
+        prefs = Preferences()
+        self.ui.edit_preview.font_name = prefs.appearance.font
+        self.ui.edit_preview.font_size = prefs.appearance.font_size
+        self.ui.edit_preview.show_whitespaces = \
+            prefs.appearance.show_whitespaces
+        scheme = ColorScheme(prefs.appearance.color_scheme)
+        self.ui.edit_preview.syntax_highlighter.color_scheme = scheme
+
     def restore_defaults(self):
         appearance = Preferences().appearance
         appearance.font = 'Source Code Pro'
