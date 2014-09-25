@@ -261,6 +261,7 @@ class ScripWindow(WindowBase):
         self.ui.codeEdit.font_name = prefs.appearance.font
         self.ui.codeEdit.font_size = prefs.appearance.font_size
         self.ui.codeEdit.show_whitespaces = prefs.appearance.show_whitespaces
-        self.ui.codeEdit.syntax_highlighter.color_scheme = ColorScheme(
-            prefs.appearance.color_scheme)
+        scheme = ColorScheme(prefs.appearance.color_scheme)
+        self.ui.codeEdit.syntax_highlighter.color_scheme = scheme
         self.ui.shell.apply_preferences()
+        self.ui.textEditPgmOutput.apply_color_scheme(scheme)
