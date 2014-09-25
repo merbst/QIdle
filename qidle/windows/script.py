@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -11,6 +12,10 @@ from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
 from qidle.windows.base import WindowBase
+
+
+def _logger():
+    return logging.getLogger(__name__)
 
 
 class ScripWindow(WindowBase):
@@ -40,7 +45,8 @@ class ScripWindow(WindowBase):
 
         self.ui.actionConfigureRun.triggered.connect(self.configure_run)
         self.ui.actionRun.triggered.connect(self.on_action_run_triggered)
-        self.ui.textEditPgmOutput.process_finished.connect(self.stop_script)
+        self.ui.textEditPgmOutput.process_finished.connect(
+            self._on_script_finished)
         self.ui.textEditPgmOutput.open_file_requested.connect(
             self._goto_requested)
         mode = self.ui.codeEdit.modes.get('GoToAssignmentsMode')
@@ -120,6 +126,7 @@ class ScripWindow(WindowBase):
         self.ui.actionRun.setDisabled(True)
         self.ui.actionConfigureRun.setDisabled(True)
         self._update_status_bar()
+        _logger().debug('new file created')
 
     def open(self, path):
         self.ui.codeEdit.file.open(path)
@@ -130,6 +137,7 @@ class ScripWindow(WindowBase):
         self._on_dirty_changed(False)
         self.path = path
         self.app.remember_path(path)
+        _logger().debug('file opened: %s' % path)
 
     def _on_dirty_changed(self, dirty):
         # adds a star to the title to mark dirty files.
@@ -145,6 +153,7 @@ class ScripWindow(WindowBase):
         if path:
             if os.path.splitext(path)[1] == '':
                 path += '.py'
+            _logger().info('save as: %s' % path)
             self.ui.codeEdit.file.save(path)
             self._title = '%s [%s] - QIdle %s (Python %s)' % (
                 os.path.split(path)[1], path, self.app.version_str,
@@ -160,6 +169,7 @@ class ScripWindow(WindowBase):
         return False
 
     def save(self):
+        _logger().info('save file: %s' % self.path)
         if self.path == 'Untitled':
             return self.save_as()
         else:
@@ -175,8 +185,10 @@ class ScripWindow(WindowBase):
     def configure_run(self):
         path = self.ui.codeEdit.file.path
         DlgScriptRunConfig.edit_config(self, path)
+        _logger().info('run configuration edited')
 
     def run_script(self):
+        _logger().info('running script')
         self.ui.actionRun.setText('Stop')
         self.ui.actionRun.setIcon(icons.stop)
         path = self.ui.codeEdit.file.path
@@ -187,12 +199,22 @@ class ScripWindow(WindowBase):
         opts += [cfg['script']]
         if len(cfg['script_parameters']):
             opts += cfg['script_parameters']
+        _logger().info('script interpreter: %s', cfg['interpreter'])
+        _logger().info('script arguments: %r', opts)
+        _logger().info('working dir: %r', cfg['working_dir'])
+        _logger().info('environment variables: %r', cfg['env_vars'])
         self.ui.textEditPgmOutput.start_process(
             cfg['interpreter'], opts,
             cwd=cfg['working_dir'],
             env=cfg['env_vars'])
 
+    def _on_script_finished(self):
+        _logger().info('script finished')
+        self.ui.actionRun.setText('Run')
+        self.ui.actionRun.setIcon(icons.run)
+
     def stop_script(self):
+        _logger().info('stopping script')
         self.ui.actionRun.setText('Run')
         self.ui.actionRun.setIcon(icons.run)
         self.ui.textEditPgmOutput.stop_process()
@@ -223,8 +245,7 @@ class ScripWindow(WindowBase):
         else:
             window = self.app.create_script_window(path)
             widget = window.ui.codeEdit
-        self.app.qapp.setActiveWindow(window)
-        window.raise_()
+        self.app.activate_window(window)
         self.app.qapp.processEvents()
         TextHelper(widget).goto_line(line, col)
         widget.setFocus(True)

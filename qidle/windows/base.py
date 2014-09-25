@@ -1,6 +1,7 @@
 """
 Base implementation for windows.
 """
+import logging
 import os
 import sys
 import weakref
@@ -11,6 +12,10 @@ from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.icons import IconProvider
 from qidle.preferences import Preferences
 from qidle.dialogs import DlgPreferences
+
+
+def _logger(obj):
+    return logging.getLogger(__name__ + '[%s]' % obj.__class__.__name__)
 
 
 class WindowBase(QtGui.QMainWindow):
@@ -57,6 +62,7 @@ class WindowBase(QtGui.QMainWindow):
         DlgPreferences.edit_preferences(self)
 
     def zoom_height(self):
+        _logger(self).debug('zoom height')
         desktop = QtGui.QApplication.instance().desktop()
         if sys.platform == 'win32':
             difference = (self.frameGeometry().height() -
@@ -68,6 +74,7 @@ class WindowBase(QtGui.QMainWindow):
         self.move(self.pos().x(), 0)
 
     def update_windows_menu(self, open_windows):
+        _logger(self).debug('update windows menu: %r' % open_windows)
         self._open_windows = open_windows
         self.ui.menuWindows.clear()
         self.ui.menuWindows.addAction(self.ui.actionZoom_height)
@@ -85,6 +92,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def closeEvent(self, ev):
         nb_windows = len(self._open_windows)
+        _logger(self).debug('number of windows: %d', nb_windows)
         if Preferences().general.confirm_application_exit and nb_windows == 1:
             button = QtGui.QMessageBox.question(
                 self, "Confirm exit",
@@ -185,6 +193,7 @@ class WindowBase(QtGui.QMainWindow):
         self.app.activate_window(window)
 
     def _on_new_file_triggered(self):
+        _logger(self).debug('create new file')
         self.save_state()
         self.app.create_script_window()
 
@@ -235,6 +244,7 @@ class WindowBase(QtGui.QMainWindow):
             self.app.activate_window(window)
 
     def _show_python_docs(self):
+        _logger(self).info('opening python docs in the default browser')
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl('https://docs.python.org/3/'))
 

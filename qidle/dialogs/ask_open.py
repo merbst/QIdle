@@ -11,6 +11,7 @@ class DlgAskOpenScript(QtGui.QDialog):
         super(DlgAskOpenScript, self).__init__(parent)
         self.ui = dlg_ask_open_script_ui.Ui_Dialog()
         self.ui.setupUi(self)
+        self.setWindowTitle('Open script')
 
     @classmethod
     def ask(cls, parent):

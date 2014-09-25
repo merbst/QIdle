@@ -1,3 +1,4 @@
+import logging
 import os
 import platform
 from PyQt4 import QtCore, QtGui
@@ -15,6 +16,10 @@ from qidle.system import get_library_zip_path, WINDOWS, LINUX, \
     get_authentication_program
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
+
+
+def _logger():
+    return logging.getLogger(__name__)
 
 
 class PageInterpreters(Page):
@@ -123,6 +128,7 @@ class PageInterpreters(Page):
         """
         Refreshes the list of packages for the current interpreter.
         """
+        _logger().info('refreshing packages')
         self.ui.lblInfos.setText('Refreshing packages list')
         interpreter = self.ui.combo_interpreters.currentText()
         self.action_remove_interpreter.setEnabled(
@@ -178,6 +184,7 @@ class PageInterpreters(Page):
         self._stop_backend()
         self._enable_buttons(True)
         if status is False:
+            _logger().info('packages refresh failed')
             return
         self.ui.table_packages.setRowCount(len(results))
         for i, data in enumerate(sorted(results, key=lambda x: x[0])):
@@ -187,6 +194,7 @@ class PageInterpreters(Page):
                 self.ui.table_packages.setItem(i, c, item)
 
         self._on_selected_package_changed()
+        _logger().info('packages refresh succeeded')
 
     def _on_selected_package_changed(self):
         """
@@ -222,6 +230,7 @@ class PageInterpreters(Page):
         """
         prefs = Preferences()
         prefs.interpreters.default = self.ui.combo_interpreters.currentText()
+        _logger().info('default interpreter: %s' % prefs.interpreters.default)
 
     def _add_local(self):
         """
@@ -234,6 +243,7 @@ class PageInterpreters(Page):
             self.reset()
             self.ui.combo_interpreters.setCurrentIndex(
                 self.ui.combo_interpreters.count() - 1)
+            _logger().info('local interpreter added: %s', path)
 
     def _remove_interpreter(self):
         """
@@ -255,6 +265,7 @@ class PageInterpreters(Page):
             Preferences().interpreters.locals = lst
         self.ui.combo_interpreters.removeItem(
             self.ui.combo_interpreters.currentIndex())
+        _logger().info('interpreter removed: %s', path)
 
     def _create_virtualenv(self):
         """
@@ -273,6 +284,9 @@ class PageInterpreters(Page):
             self.ui.lblInfos.setText('Creating virtual environment')
             self._start_gif()
             self._create_virtualenv_thread.start()
+            _logger().info('creating virtual env')
+            _logger().info('path: %s' % path)
+            _logger().info('base interpreter: %s' % interpreter)
 
     def _on_virtualenv_created(self, path):
         """
@@ -290,9 +304,11 @@ class PageInterpreters(Page):
             self.ui.widgetInfos.show()
             self.ui.lblInfos.setText('Virtual env sucessfully created at %s' %
                                      path)
+            _logger().info('virtualenv created successfully')
         else:
             self._stop_gif()
             self.ui.widgetInfos.show()
+            _logger().info('failed to create virtualenv')
             self.ui.lblInfos.setText('Failed to create virtual env')
 
     def _upgrade(self):
@@ -301,6 +317,7 @@ class PageInterpreters(Page):
         """
         package = self.ui.table_packages.item(
             self.ui.table_packages.currentRow(), 0).text()
+        _logger().info('upgrading package: %s', package)
         self.run_pip_command(self.ui.combo_interpreters.currentText(),
                              upgrade_package, package,
                              'Upgrading package %s' % package)
@@ -311,6 +328,7 @@ class PageInterpreters(Page):
         """
         package = self.ui.table_packages.item(
             self.ui.table_packages.currentRow(), 0).text()
+        _logger().info('uninstalling package: %s', package)
         self.run_pip_command(
             self.ui.combo_interpreters.currentText(), uninstall_package,
             package, 'Uninstalling package %s' % package)
@@ -326,6 +344,7 @@ class PageInterpreters(Page):
                                              'Package:')
         if not status:
             return
+        _logger().info('installing packages: %r', package)
         self.run_pip_command(
             self.ui.combo_interpreters.currentText(), install_package,
             package, 'Installing package %s' % package)
@@ -350,6 +369,7 @@ class PageInterpreters(Page):
         self._stop_backend()
         self.backend = BackendManager(self)
         if self._need_root_perms(interpreter):
+            _logger().info('running pip command with root privileges')
             # self.backend.start()
             process = ServerProcess(self.parent())
             self.backend._process = process
@@ -395,6 +415,7 @@ class PageInterpreters(Page):
         :param status: Command status. False if the command failed.
         :param output: Command output.
         """
+        _logger().info('pip command finished: %d - %s', status, output)
         self._stop_gif()
         self.ui.widgetInfos.setVisible(True)
         self.backend.stop()

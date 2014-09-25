@@ -1,4 +1,5 @@
 import functools
+import logging
 import os
 import platform
 from zipfile import ZipFile
@@ -11,7 +12,7 @@ LINUX = platform.system() == 'Linux'
 DARWIN = platform.system() == 'Darwin'
 
 
-def ensure_cache_exists(func):
+def ensure_directory_exists(func):
     @functools.wraps(func)
     def wrapper(*args, **kwds):
         ret = func(*args, **kwds)
@@ -23,7 +24,7 @@ def ensure_cache_exists(func):
     return wrapper
 
 
-@ensure_cache_exists
+@ensure_directory_exists
 def get_cache_directory():
     """
     Gets the platform specific cache directory (where we store the log file and
@@ -44,14 +45,18 @@ def get_library_zip_path():
     return os.path.join(get_cache_directory(), lib)
 
 
+def _logger():
+    return logging.getLogger(__name__)
+
+
 def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
-    print('-- creating zip file with external libraries: %s' % zip_path)
+    _logger().debug('creating zip file with external libraries: %s' % zip_path)
     with ZipFile(zip_path, 'w') as myzip:
         for package in packages:
             pfile = package.__file__
             path = pfile if not '__init__.py' in pfile else os.path.dirname(
                 pfile)
-            print('--- adding %s ' % package.__name__)
+            _logger().debug(' - adding %s ' % package.__name__)
             parent_path = os.path.abspath(os.path.join(path, '..'))
             if package.__name__ == 'pyqode':
                 myzip.write(pfile, 'pyqode/__init__.py')
@@ -72,6 +77,25 @@ def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
                 myzip.write(path, arcname=arcname)
 
 
+def which(program):
+    import os
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
+
+
 def get_authentication_program():
     """
     Gets the authentication program used to run command as root (on linux only).
@@ -81,26 +105,9 @@ def get_authentication_program():
         - kdesu
 
     """
-    def get_path(program):
-        import os
-        def is_exe(fpath):
-            return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-        fpath, fname = os.path.split(program)
-        if fpath:
-            if is_exe(program):
-                return program
-        else:
-            for path in os.environ["PATH"].split(os.pathsep):
-                path = path.strip('"')
-                exe_file = os.path.join(path, program)
-                if is_exe(exe_file):
-                    return exe_file
-
-        return None
     if LINUX:
         for program in ['gksu', 'kdesu']:
-            if get_path(program) is not None:
+            if which(program) is not None:
                 return program
     return None
 

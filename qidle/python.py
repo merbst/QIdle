@@ -2,11 +2,16 @@
 This module contains utility function related to python interpreters
 """
 import glob
+import logging
 import os
 import pip
 import platform
 import re
 import sys
+
+
+def _logger():
+    return logging.getLogger(__name__)
 
 
 def detect_system_interpreters():
@@ -29,7 +34,9 @@ def detect_system_interpreters():
                 if 'scripts' in path.lower():
                      path = os.path.abspath(os.path.join(path, os.pardir))
                 executables.add(os.path.join(path, 'python.exe'))
-    return list(set(executables))
+    ret_val = list(set(executables))
+    _logger().debug('system interpreters: %r' % ret_val)
+    return ret_val
 
 
 def is_system_interpreter(path):
