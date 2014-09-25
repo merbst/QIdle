@@ -24,7 +24,7 @@ with open('README.rst', 'r') as readme:
 
 
 # install requirements
-requirements = ['pygments', 'pyqode.python', 'versiontools',
+requirements = ['pyqode.python', 'versiontools',
                 'ipython', 'pyzmq', 'virtualenv']
 
 
