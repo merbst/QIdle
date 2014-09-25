@@ -16,11 +16,6 @@ from qidle.system import embed_package_into_zip, get_library_zip_path
 from qidle.windows import ScripWindow
 
 
-# dependencies frozen into a zip file on startup:
-import jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,\
-       frosted, pies, versiontools
-
-
 def _logger():
     return logging.getLogger(__name__)
 
@@ -62,6 +57,17 @@ class Application:
             _logger().info('libraries.zip is up to date')
             return
         else:
+            # dependencies frozen into a zip file on startup:
+            import jedi
+            import pep8
+            import pyqode
+            import pyqode.core
+            import pyqode.python
+            import pyqode.qt
+            import qidle
+            import frosted
+            import pies
+            import versiontools
             _logger().info('updating libraries.zip')
             embed_package_into_zip(
                 [jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,
