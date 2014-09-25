@@ -83,14 +83,20 @@
      <property name="title">
       <string>Preview</string>
      </property>
-     <zorder>groupBox</zorder>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QPlainTextEdit" name="edit_preview"/>
+    <widget class="PyCodeEdit" name="edit_preview"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyCodeEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>pyqode.python.widgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/win_script.ui'
 #
-# Created: Tue Sep 16 14:24:32 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Thu Sep 25 15:05:02 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -71,9 +71,9 @@ class Ui_MainWindow(object):
         self.dockWidgetContents_4.setObjectName(_fromUtf8("dockWidgetContents_4"))
         self.gridLayout_5 = QtGui.QGridLayout(self.dockWidgetContents_4)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
-        self.textEdit_2 = Shell(self.dockWidgetContents_4)
-        self.textEdit_2.setObjectName(_fromUtf8("textEdit_2"))
-        self.gridLayout_5.addWidget(self.textEdit_2, 0, 0, 1, 1)
+        self.shell = Shell(self.dockWidgetContents_4)
+        self.shell.setObjectName(_fromUtf8("shell"))
+        self.gridLayout_5.addWidget(self.shell, 0, 0, 1, 1)
         self.dockWidgetShell.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetShell)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -237,6 +237,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
+from qidle.widgets import Shell, ClassExplorer
 from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit
-from qidle.widgets import ClassExplorer, Shell
 from . import qidle_rc

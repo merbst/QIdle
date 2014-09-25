@@ -191,7 +191,7 @@ class General(Section):
 
     @confirm_application_exit.setter
     def confirm_application_exit(self, value):
-        self.set_value('confirm_application_exit', str(value))
+        self.set_value('confirm_application_exit', repr(value))
 
     @property
     def reopen_last_window(self):
@@ -199,16 +199,16 @@ class General(Section):
 
     @reopen_last_window.setter
     def reopen_last_window(self, value):
-        self.set_value('reopen_last_window', str(value))
+        self.set_value('reopen_last_window', repr(value))
 
     @property
     def open_scr_action(self):
         return int(self.get_value(
-            'open_scr_action', str(self.OpenActions.NEW)))
+            'open_scr_action', repr(self.OpenActions.NEW)))
 
     @open_scr_action.setter
     def open_scr_action(self, value):
-        self.set_value('open_scr_action', str(value))
+        self.set_value('open_scr_action', repr(value))
 
     @property
     def restore_scr_window_state(self):
@@ -216,7 +216,7 @@ class General(Section):
 
     @restore_scr_window_state.setter
     def restore_scr_window_state(self, value):
-        self.set_value('restore_scr_window_state', str(value))
+        self.set_value('restore_scr_window_state', repr(value))
 
     @property
     def save_before_run(self):
@@ -224,7 +224,45 @@ class General(Section):
 
     @save_before_run.setter
     def save_before_run(self, value):
-        self.set_value('save_before_run', str(value))
+        self.set_value('save_before_run', repr(value))
+
+
+class Appearance(Section):
+    def __init__(self, settings):
+        super(Appearance, self).__init__(
+            settings, self.__class__.__name__.lower())
+
+    @property
+    def font(self):
+        return self.get_value('font', 'Source Code Pro')
+
+    @font.setter
+    def font(self, value):
+        self.set_value('font', value)
+
+    @property
+    def font_size(self):
+        return int(self.get_value('font_size', '10'))
+
+    @font_size.setter
+    def font_size(self, value):
+        self.set_value('font_size', value)
+
+    @property
+    def show_whitespaces(self):
+        return eval(self.get_value('show_whitespaces', 'False'))
+
+    @show_whitespaces.setter
+    def show_whitespaces(self, value):
+        self.set_value('show_whitespaces', repr(value))
+
+    @property
+    def color_scheme(self):
+        return self.get_value('color_scheme', 'qt')
+
+    @color_scheme.setter
+    def color_scheme(self, value):
+        self.set_value('color_scheme', value)
 
 
 class Preferences(QtCore.QSettings):
@@ -235,3 +273,4 @@ class Preferences(QtCore.QSettings):
         self.cache = Cache(self)
         self.interpreters = Interpreters(self)
         self.general = General(self)
+        self.appearance = Appearance(self)

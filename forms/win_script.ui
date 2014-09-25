@@ -74,7 +74,7 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="Shell" name="textEdit_2"/>
+      <widget class="Shell" name="shell"/>
      </item>
     </layout>
    </widget>

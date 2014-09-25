@@ -1,6 +1,10 @@
 # from PyQt4.QtGui import QApplication
 import logging
 import os
+from IPython.qt.console import styles
+from pyqode.core.api import ColorScheme
+from qidle.preferences import Preferences
+
 if os.environ['QT_API'] == 'pyqt4':
     os.environ['QT_API'] = 'pyqt'
 from IPython.qt.console.rich_ipython_widget import RichIPythonWidget
@@ -26,6 +30,7 @@ class Shell(RichIPythonWidget):
             self.kernel_manager = kernel_manager
             self.kernel_client = kernel_client
             self._initialized = True
+            self.apply_preferences()
             _logger().info('shell initialized')
         super(Shell, self).showEvent(e)
 
@@ -33,3 +38,20 @@ class Shell(RichIPythonWidget):
         sh = super(Shell, self).sizeHint()
         sh.setHeight(200)
         return sh
+
+    def apply_preferences(self):
+        prefs = Preferences()
+        self.font_family = prefs.appearance.font
+        self.font_size = prefs.appearance.font_size
+        self.syntax_style = prefs.appearance.color_scheme
+        scheme = ColorScheme(self.syntax_style)
+        foreground = scheme.formats['normal'].foreground().color()
+        background = scheme.background
+        if background.lightness() < 128:
+            self.style_sheet = styles.default_dark_style_template % dict(
+                bgcolor=background.name(), fgcolor=foreground.name(),
+                select="#444")
+        else:
+            self.style_sheet = styles.default_light_style_template % dict(
+                bgcolor=background.name(), fgcolor=foreground.name(),
+                select="#ccc")

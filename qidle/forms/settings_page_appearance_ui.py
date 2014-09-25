@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_appearance.ui'
 #
-# Created: Tue Sep 16 09:45:19 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Thu Sep 25 13:48:12 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -68,7 +68,7 @@ class Ui_Form(object):
         self.groupBox_2 = QtGui.QGroupBox(Form)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.gridLayout.addWidget(self.groupBox_2, 1, 0, 1, 1)
-        self.edit_preview = QtGui.QPlainTextEdit(Form)
+        self.edit_preview = PyCodeEdit(Form)
         self.edit_preview.setObjectName(_fromUtf8("edit_preview"))
         self.gridLayout.addWidget(self.edit_preview, 2, 0, 1, 1)
 
@@ -85,3 +85,4 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "Color scheme:", None))
         self.groupBox_2.setTitle(_translate("Form", "Preview", None))
 
+from pyqode.python.widgets import PyCodeEdit

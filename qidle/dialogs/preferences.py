@@ -32,6 +32,7 @@ class DlgPreferences(QtGui.QDialog):
         appearance = self.ui.categories.findItems(
             'Appearance', QtCore.Qt.MatchExactly)[0]
         appearance.setData(0, QtCore.Qt.UserRole, page)
+        self.appearance = page
 
         # appearance
         page = PageInterpreters(self.ui.pages)
@@ -72,10 +73,13 @@ class DlgPreferences(QtGui.QDialog):
             self._apply_callback()
 
     @classmethod
-    def edit_preferences(cls, parent):
-        dlg = cls(parent, None)
+    def edit_preferences(cls, parent, callback=None):
+        dlg = cls(parent, callback)
         if dlg.exec_() == DlgPreferences.Accepted:
             dlg.apply()
+            dlg.appearance.ui.edit_preview.modes.clear()
+            dlg.appearance.ui.edit_preview.panels.clear()
+            dlg.appearance.ui.edit_preview.backend.stop()
 
     def reset(self):
         w = self.ui.pages.currentWidget()

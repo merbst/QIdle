@@ -43,6 +43,9 @@ class WindowBase(QtGui.QMainWindow):
         ui.actionConfigure_IDLE.triggered.connect(self.edit_preferences)
         self._setup_icons()
 
+    def apply_preferences(self):
+        raise NotImplementedError()
+
     def save(self):
         raise NotImplementedError()
 
@@ -59,7 +62,8 @@ class WindowBase(QtGui.QMainWindow):
         self.menu_recents.update_actions()
 
     def edit_preferences(self):
-        DlgPreferences.edit_preferences(self)
+        DlgPreferences.edit_preferences(
+            self, callback=self.app.apply_preferences)
 
     def zoom_height(self):
         _logger(self).debug('zoom height')

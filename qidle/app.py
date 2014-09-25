@@ -167,6 +167,10 @@ class Application:
                 # todo ask for projects
                 pass
 
+    def apply_preferences(self):
+        for w in self.windows:
+            w.apply_preferences()
+
     def init(self):
         if Preferences().general.reopen_last_window:
             try:

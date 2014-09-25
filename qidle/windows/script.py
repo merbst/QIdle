@@ -4,7 +4,7 @@ import sys
 
 from PyQt4 import QtGui
 
-from pyqode.core.api import TextHelper
+from pyqode.core.api import TextHelper, ColorScheme
 from pyqode.python.backend import server
 
 from qidle import icons
@@ -23,7 +23,7 @@ class ScripWindow(WindowBase):
         self.ui = win_script_ui.Ui_MainWindow()
         super(ScripWindow, self).__init__(self.ui, app)
         self.ui.codeEdit.backend.start(
-            server.__file__, sys.executable)
+            server.__file__, Preferences().interpreters.default)
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
         self.ui.dockWidgetClassExplorer.hide()
         self.ui.dockWidgetShell.hide()
@@ -66,6 +66,7 @@ class ScripWindow(WindowBase):
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
         self.ui.codeEdit.cursorPositionChanged.connect(self._update_status_bar)
+        self.apply_preferences()
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
@@ -254,3 +255,12 @@ class ScripWindow(WindowBase):
         l, c = TextHelper(self.ui.codeEdit).cursor_position()
         self.lbl_cursor_pos.setText('%d:%d' % (l + 1, c + 1))
         self.lbl_encoding.setText(self.ui.codeEdit.file.encoding)
+
+    def apply_preferences(self):
+        prefs = Preferences()
+        self.ui.codeEdit.font_name = prefs.appearance.font
+        self.ui.codeEdit.font_size = prefs.appearance.font_size
+        self.ui.codeEdit.show_whitespaces = prefs.appearance.show_whitespaces
+        self.ui.codeEdit.syntax_highlighter.color_scheme = ColorScheme(
+            prefs.appearance.color_scheme)
+        self.ui.shell.apply_preferences()
