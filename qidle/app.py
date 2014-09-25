@@ -5,6 +5,7 @@ Contains the application class.
 import logging
 import os
 import sys
+from pyqode.python.widgets import PyCodeEdit
 from versiontools import Version
 from PyQt4 import QtGui
 from pyqode.core.widgets import RecentFilesManager
@@ -37,6 +38,16 @@ class Application:
         icons.init()
         self._init_libraries()
         self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
+        self._current = None
+        self.qapp.focusChanged.connect(self.on_focus_changed)
+
+    def on_focus_changed(self, prev, new):
+        if new and isinstance(new, PyCodeEdit):
+            parent = new.parent()
+            while (not isinstance(parent, QtGui.QMainWindow) and
+                    parent is not None):
+                parent = parent.parent()
+            self._current = parent
 
     def _init_libraries(self):
         if (not '.dev' in self.version_str and
@@ -51,6 +62,12 @@ class Application:
         for w in self.windows:
             w.update_windows_menu(self.windows)
 
+    def activate_window(self, window):
+        window.show()
+        self.qapp.setActiveWindow(window)
+        window.raise_()
+        self._current = window
+
     def create_script_window(self, path=None):
         """
         Creates a new script window.
@@ -64,9 +81,7 @@ class Application:
         if path:
             for w in self.windows:
                 if w.path == path:
-                    w.show()
-                    self.qapp.setActiveWindow(w)
-                    w.raise_()
+                    self.activate_window(w)
                     return w
         active_window = self.qapp.activeWindow()
         if active_window:
@@ -80,9 +95,7 @@ class Application:
         else:
             window.new()
         self.update_windows_menu()
-        window.show()
-        self.qapp.setActiveWindow(window)
-        window.raise_()
+        self.activate_window(window)
         window._configure_shortcuts()
         return window
 
@@ -103,11 +116,10 @@ class Application:
             self.create_script_window(path)
 
     def _open_in_current(self, path, script):
-        win = self.qapp.activeWindow()
-        if win is None:
-            win = self.windows[0]
+        win = self._current
+        assert win is not None
         if ((script and isinstance(win, ScripWindow) or
-                 (not script and not isinstance(self, ScripWindow)))):
+                (not script and not isinstance(self, ScripWindow)))):
             win.open(path)
         else:
             self._open_in_new(path, script)

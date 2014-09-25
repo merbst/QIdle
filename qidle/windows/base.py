@@ -182,7 +182,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def _show_window_from_action(self):
         window = self.sender().data()
-        QtGui.QApplication.instance().setActiveWindow(window)
+        self.app.activate_window(window)
 
     def _on_new_file_triggered(self):
         self.save_state()
@@ -226,17 +226,13 @@ class WindowBase(QtGui.QMainWindow):
         i = self.app.windows.index(self)
         if i - 1 >= 0:
             window = self.app.windows[i - 1]
-            window.show()
-            window.activateWindow()
-            window.raise_()
+            self.app.activate_window(window)
 
     def _show_next_window(self):
         i = self.app.windows.index(self)
         if i + 1 < len(self.app.windows):
             window = self.app.windows[i + 1]
-            window.show()
-            window.activateWindow()
-            window.raise_()
+            self.app.activate_window(window)
 
     def _show_python_docs(self):
         QtGui.QDesktopServices.openUrl(
