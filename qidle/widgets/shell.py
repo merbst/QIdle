@@ -10,6 +10,8 @@ if os.environ['QT_API'] == 'pyqt4':
 from IPython.qt.console.rich_ipython_widget import RichIPythonWidget
 from IPython.qt.inprocess import QtInProcessKernelManager
 
+os.environ['QT_API'] = 'pyqt4'
+
 
 def _logger():
     return logging.getLogger()
