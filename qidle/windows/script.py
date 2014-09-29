@@ -11,6 +11,7 @@ from qidle import icons
 from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
+from qidle.system import get_library_zip_path
 from qidle.windows.base import WindowBase
 
 
@@ -23,7 +24,8 @@ class ScripWindow(WindowBase):
         self.ui = win_script_ui.Ui_MainWindow()
         super(ScripWindow, self).__init__(self.ui, app)
         self.ui.codeEdit.backend.start(
-            server.__file__, Preferences().interpreters.default)
+            server.__file__, Preferences().interpreters.default,
+            args=['-s'] + [get_library_zip_path()])
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
         self.ui.dockWidgetClassExplorer.hide()
         self.ui.dockWidgetShell.hide()
