@@ -124,7 +124,7 @@ class Application:
         """
         Adds the path to the list of recent paths.
         """
-        _logger().debug('remember path', path)
+        _logger().debug('remember path: %s', path)
         self.recent_files_manager.open_file(path)
         for w in self.windows:
             w.update_recents_menu()
