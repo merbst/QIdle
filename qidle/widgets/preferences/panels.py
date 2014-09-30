@@ -13,11 +13,17 @@ class PageEditorPanels(Page):
         self.ui = Ui_Form()
         super(PageEditorPanels, self).__init__(self.ui, parent)
 
+    def extract_doc(self, m):
+        if m.__doc__:
+            d = m.__doc__.strip()
+            return d.splitlines()[0]
+        else:
+            return ''
+
     def _get_installed_panels(self):
         code_edit = PyCodeEdit()
-        modes = [(m.name, m.__doc__.strip() if m.__doc__ else '')
-                  for m in code_edit.panels
-                  if m.name != 'SymbolBrowserPanel']
+        modes = [(m.name, self.extract_doc(m))
+                 for m in code_edit.panels if m.name != 'SymbolBrowserPanel']
         code_edit.close()
         code_edit.delete()
         del code_edit
