@@ -7,171 +7,177 @@
     <x>0</x>
     <y>0</y>
     <width>714</width>
-    <height>528</height>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_5">
-     <property name="title">
-      <string>General</string>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="header">
+     <property name="styleSheet">
+      <string notr="true">border-radius: 3px;
+background-color: rgb(161, 161, 161);
+padding: 10px;</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_7">
+     <property name="text">
+      <string>Configure general settings</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Startup/Shutdown</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Startup/Shutdown</string>
+       <widget class="QCheckBox" name="cb_reopen">
+        <property name="text">
+         <string>Reopen last window (project or script) on startup</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QCheckBox" name="cb_reopen">
-           <property name="text">
-            <string>Reopen last window (project or script) on startup</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="cb_confirm_exit">
-           <property name="text">
-            <string>Confirm application exit </string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Script opening</string>
+       <widget class="QCheckBox" name="cb_confirm_exit">
+        <property name="text">
+         <string>Confirm application exit </string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QRadioButton" name="rb_open_scr_in_new">
-           <property name="text">
-            <string>Open script in a new window</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="rb_open_scr_in_same">
-           <property name="text">
-            <string>Open script in the same window (replace current script)</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="rb_open_scr_ask">
-           <property name="text">
-            <string>Ask each time</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="cb_restore_prev_scrwin_state">
-           <property name="text">
-            <string>Restore state of previous window</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Script opening</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QRadioButton" name="rb_open_scr_in_new">
+        <property name="text">
+         <string>Open script in a new window</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="enabled">
+       <widget class="QRadioButton" name="rb_open_scr_in_same">
+        <property name="text">
+         <string>Open script in the same window (replace current script)</string>
+        </property>
+        <property name="checked">
          <bool>false</bool>
         </property>
-        <property name="title">
-         <string>Project opening</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QRadioButton" name="rb_open_proj_in_new">
-           <property name="text">
-            <string>Open project in new window</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="rb_open_proj_in_same">
-           <property name="text">
-            <string>Open project in the same window (replace current project)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="rb_open_proj_ask">
-           <property name="text">
-            <string>Ask each time</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="cb_restore_prev_projwin_state">
-           <property name="text">
-            <string>Restore state of previous window</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_4">
-        <property name="title">
-         <string>Save</string>
+       <widget class="QRadioButton" name="rb_open_scr_ask">
+        <property name="text">
+         <string>Ask each time</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QCheckBox" name="cb_save_before_run">
-           <property name="text">
-            <string>Save editors before run</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
        </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_restore_prev_scrwin_state">
+        <property name="text">
+         <string>Restore state of previous window</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Project opening</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QRadioButton" name="rb_open_proj_in_new">
+        <property name="text">
+         <string>Open project in new window</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rb_open_proj_in_same">
+        <property name="text">
+         <string>Open project in the same window (replace current project)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rb_open_proj_ask">
+        <property name="text">
+         <string>Ask each time</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_restore_prev_projwin_state">
+        <property name="text">
+         <string>Restore state of previous window</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Save</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QCheckBox" name="cb_save_before_run">
+        <property name="text">
+         <string>Save editors before run</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_general.ui'
 #
-# Created: Wed Sep 24 13:54:25 2014
+# Created: Tue Sep 30 12:12:14 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,14 +26,17 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(714, 528)
-        self.gridLayout = QtGui.QGridLayout(Form)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.groupBox_5 = QtGui.QGroupBox(Form)
-        self.groupBox_5.setObjectName(_fromUtf8("groupBox_5"))
-        self.verticalLayout_7 = QtGui.QVBoxLayout(self.groupBox_5)
-        self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
-        self.groupBox = QtGui.QGroupBox(self.groupBox_5)
+        Form.resize(714, 665)
+        self.verticalLayout = QtGui.QVBoxLayout(Form)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.header = QtGui.QLabel(Form)
+        self.header.setStyleSheet(_fromUtf8("border-radius: 3px;\n"
+"background-color: rgb(161, 161, 161);\n"
+"padding: 10px;"))
+        self.header.setAlignment(QtCore.Qt.AlignCenter)
+        self.header.setObjectName(_fromUtf8("header"))
+        self.verticalLayout.addWidget(self.header)
+        self.groupBox = QtGui.QGroupBox(Form)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.groupBox)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -45,8 +48,8 @@ class Ui_Form(object):
         self.cb_confirm_exit.setChecked(True)
         self.cb_confirm_exit.setObjectName(_fromUtf8("cb_confirm_exit"))
         self.verticalLayout_3.addWidget(self.cb_confirm_exit)
-        self.verticalLayout_7.addWidget(self.groupBox)
-        self.groupBox_2 = QtGui.QGroupBox(self.groupBox_5)
+        self.verticalLayout.addWidget(self.groupBox)
+        self.groupBox_2 = QtGui.QGroupBox(Form)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.groupBox_2)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
@@ -65,8 +68,8 @@ class Ui_Form(object):
         self.cb_restore_prev_scrwin_state.setChecked(False)
         self.cb_restore_prev_scrwin_state.setObjectName(_fromUtf8("cb_restore_prev_scrwin_state"))
         self.verticalLayout_4.addWidget(self.cb_restore_prev_scrwin_state)
-        self.verticalLayout_7.addWidget(self.groupBox_2)
-        self.groupBox_3 = QtGui.QGroupBox(self.groupBox_5)
+        self.verticalLayout.addWidget(self.groupBox_2)
+        self.groupBox_3 = QtGui.QGroupBox(Form)
         self.groupBox_3.setEnabled(False)
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.groupBox_3)
@@ -85,8 +88,8 @@ class Ui_Form(object):
         self.cb_restore_prev_projwin_state.setChecked(True)
         self.cb_restore_prev_projwin_state.setObjectName(_fromUtf8("cb_restore_prev_projwin_state"))
         self.verticalLayout_5.addWidget(self.cb_restore_prev_projwin_state)
-        self.verticalLayout_7.addWidget(self.groupBox_3)
-        self.groupBox_4 = QtGui.QGroupBox(self.groupBox_5)
+        self.verticalLayout.addWidget(self.groupBox_3)
+        self.groupBox_4 = QtGui.QGroupBox(Form)
         self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.groupBox_4)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
@@ -96,15 +99,14 @@ class Ui_Form(object):
         self.verticalLayout_6.addWidget(self.cb_save_before_run)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_6.addItem(spacerItem)
-        self.verticalLayout_7.addWidget(self.groupBox_4)
-        self.gridLayout.addWidget(self.groupBox_5, 0, 0, 1, 1)
+        self.verticalLayout.addWidget(self.groupBox_4)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
-        self.groupBox_5.setTitle(_translate("Form", "General", None))
+        self.header.setText(_translate("Form", "Configure general settings", None))
         self.groupBox.setTitle(_translate("Form", "Startup/Shutdown", None))
         self.cb_reopen.setText(_translate("Form", "Reopen last window (project or script) on startup", None))
         self.cb_confirm_exit.setText(_translate("Form", "Confirm application exit ", None))

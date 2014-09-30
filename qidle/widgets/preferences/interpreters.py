@@ -1,11 +1,12 @@
 import logging
 import os
-import platform
 from PyQt4 import QtCore, QtGui
-from pyqode.core.api.client import ServerProcess
+
+from pyqode.core.api.client import BackendProcess
 from pyqode.core.backend import NotRunning
 from pyqode.core.managers import BackendManager
 from pyqode.python.backend import server
+
 from qidle import icons
 from qidle.dialogs.virtualenv import DlgCreateVirtualEnv
 from qidle.forms import settings_page_interpreters_ui
@@ -371,7 +372,7 @@ class PageInterpreters(Page):
         if self._need_root_perms(interpreter):
             _logger().info('running pip command with root privileges')
             # self.backend.start()
-            process = ServerProcess(self.parent())
+            process = BackendProcess(self.parent())
             self.backend._process = process
             server_script = server.__file__.replace('.pyc', '.py')
             port = self.backend.pick_free_port()

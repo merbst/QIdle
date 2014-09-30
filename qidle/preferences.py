@@ -265,6 +265,100 @@ class Appearance(Section):
         self.set_value('color_scheme', value)
 
 
+class Editor(Section):
+    def __init__(self, settings):
+        super(Editor, self).__init__(
+            settings, self.__class__.__name__.lower())
+
+    @property
+    def highlight_caret_scope(self):
+        return eval(self.get_value('highlight_caret_scope', 'False'))
+
+    @highlight_caret_scope.setter
+    def highlight_caret_scope(self, value):
+        self.set_value('highlight_caret_scope', repr(value))
+
+    @property
+    def use_spaces_instead_of_tabs(self):
+        return eval(self.get_value('use_spaces_instead_of_tabs', 'True'))
+
+    @use_spaces_instead_of_tabs.setter
+    def use_spaces_instead_of_tabs(self, value):
+        self.set_value('use_spaces_instead_of_tabs', repr(value))
+
+    @property
+    def tab_len(self):
+        return eval(self.get_value('tab_len', '4'))
+
+    @tab_len.setter
+    def tab_len(self, value):
+        self.set_value('tab_len', repr(value))
+
+    @property
+    def margin_pos(self):
+        return eval(self.get_value('margin_pos', '79'))
+
+    @margin_pos.setter
+    def margin_pos(self, value):
+        self.set_value('margin_pos', repr(value))
+
+    @property
+    def convert_tabs_to_spaces(self):
+        return eval(self.get_value('convert_tab_to_spaces', 'True'))
+
+    @convert_tabs_to_spaces.setter
+    def convert_tabs_to_spaces(self, value):
+        self.set_value('convert_tab_to_spaces', repr(value))
+
+    @property
+    def clean_trailing(self):
+        return eval(self.get_value('clean_trailing', 'True'))
+
+    @clean_trailing.setter
+    def clean_trailing(self, value):
+        self.set_value('convert_tab_to_spaces', repr(value))
+
+    @property
+    def restore_cursor(self):
+        return eval(self.get_value('restore_cursor', 'True'))
+
+    @restore_cursor.setter
+    def restore_cursor(self, value):
+        self.set_value('restore_cursor', repr(value))
+
+    @property
+    def safe_save(self):
+        return eval(self.get_value('safe_save', 'True'))
+
+    @safe_save.setter
+    def safe_save(self, value):
+        self.set_value('safe_save', repr(value))
+
+    @property
+    def cc_trigger_len(self):
+        return eval(self.get_value('cc_trigger_len', '1'))
+
+    @cc_trigger_len.setter
+    def cc_trigger_len(self, value):
+        self.set_value('cc_trigger_len', repr(value))
+
+    @property
+    def cc_show_tooltips(self):
+        return eval(self.get_value('cc_show_tooltips', 'True'))
+
+    @cc_show_tooltips.setter
+    def cc_show_tooltips(self, value):
+        self.set_value('cc_show_tooltips', repr(value))
+
+    @property
+    def cc_case_sensitive(self):
+        return eval(self.get_value('cc_case_sensitive', 'False'))
+
+    @cc_case_sensitive.setter
+    def cc_case_sensitive(self, value):
+        self.set_value('cc_case_sensitive', repr(value))
+
+
 class Preferences(QtCore.QSettings):
     def __init__(self):
         super(Preferences, self).__init__('QIdle', 'QIdle')
@@ -274,3 +368,4 @@ class Preferences(QtCore.QSettings):
         self.interpreters = Interpreters(self)
         self.general = General(self)
         self.appearance = Appearance(self)
+        self.editor = Editor(self)

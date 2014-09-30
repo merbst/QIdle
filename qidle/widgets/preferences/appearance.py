@@ -45,6 +45,8 @@ print(f.__doc__)
             self._on_color_scheme_changed)
 
     def _on_color_scheme_changed(self, item):
+        if not item:
+            return
         self.ui.edit_preview.syntax_highlighter.color_scheme = ColorScheme(
             item.text())
 

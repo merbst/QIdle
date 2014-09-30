@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_interpreters.ui'
 #
-# Created: Wed Sep 24 13:29:15 2014
+# Created: Tue Sep 30 12:12:14 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,6 +29,13 @@ class Ui_Form(object):
         Form.resize(594, 487)
         self.verticalLayout = QtGui.QVBoxLayout(Form)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.header = QtGui.QLabel(Form)
+        self.header.setStyleSheet(_fromUtf8("border-radius: 3px;\n"
+"background-color: rgb(161, 161, 161);\n"
+"padding: 10px;"))
+        self.header.setAlignment(QtCore.Qt.AlignCenter)
+        self.header.setObjectName(_fromUtf8("header"))
+        self.verticalLayout.addWidget(self.header)
         self.groupBox = QtGui.QGroupBox(Form)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.gridLayout = QtGui.QGridLayout(self.groupBox)
@@ -124,6 +131,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
+        self.header.setText(_translate("Form", "Configure python interpreters", None))
         self.groupBox.setTitle(_translate("Form", "Default interpreter", None))
         self.combo_interpreters.setToolTip(_translate("Form", "Choose the default python interpreter", None))
         self.combo_interpreters.setStatusTip(_translate("Form", "Choose the default interpreter that will be used for the first run", None))

@@ -6,7 +6,7 @@ from PyQt4 import QtGui, QtCore
 from qidle import icons
 from qidle.forms.dlg_preferences_ui import Ui_Dialog
 from qidle.widgets.preferences import (
-    PageAppearance, PageGeneral, PageInterpreters
+    PageAppearance, PageGeneral, PageInterpreters, PageEditor
 )
 
 
@@ -34,7 +34,14 @@ class DlgPreferences(QtGui.QDialog):
         appearance.setData(0, QtCore.Qt.UserRole, page)
         self.appearance = page
 
-        # appearance
+        # editor
+        page = PageEditor(self.ui.pages)
+        self.ui.pages.addWidget(page)
+        editor = self.ui.categories.findItems(
+            'Editor', QtCore.Qt.MatchExactly)[0]
+        editor.setData(0, QtCore.Qt.UserRole, page)
+
+        # interpreters
         page = PageInterpreters(self.ui.pages)
         self.ui.pages.addWidget(page)
         interpreters = self.ui.categories.findItems(

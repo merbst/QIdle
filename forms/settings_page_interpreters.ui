@@ -15,6 +15,21 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="header">
+     <property name="styleSheet">
+      <string notr="true">border-radius: 3px;
+background-color: rgb(161, 161, 161);
+padding: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Configure python interpreters</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Default interpreter</string>
