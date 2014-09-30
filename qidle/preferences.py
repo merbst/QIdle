@@ -24,7 +24,7 @@ class Section(object):
 
 class MainWindow(Section):
     def __init__(self, settings):
-        super(MainWindow, self).__init__(settings, 'main_window')
+        super(MainWindow, self).__init__(settings, self.__class__.__name__)
 
     @property
     def script_window_geometry(self):
@@ -127,8 +127,7 @@ class Cache(Section):
 
 class Interpreters(Section):
     def __init__(self, settings):
-        super(Interpreters, self).__init__(
-            settings, self.__class__.__name__.lower())
+        super(Interpreters, self).__init__(settings, self.__class__.__name__)
 
     @property
     def locals(self):
@@ -182,8 +181,7 @@ class General(Section):
         ASK = 2
 
     def __init__(self, settings):
-        super(General, self).__init__(
-            settings, self.__class__.__name__.lower())
+        super(General, self).__init__(settings, '')
 
     @property
     def confirm_application_exit(self):
@@ -229,8 +227,7 @@ class General(Section):
 
 class Appearance(Section):
     def __init__(self, settings):
-        super(Appearance, self).__init__(
-            settings, self.__class__.__name__.lower())
+        super(Appearance, self).__init__(settings, self.__class__.__name__)
 
     @property
     def font(self):
@@ -267,8 +264,7 @@ class Appearance(Section):
 
 class Editor(Section):
     def __init__(self, settings):
-        super(Editor, self).__init__(
-            settings, self.__class__.__name__.lower())
+        super(Editor, self).__init__(settings, self.__class__.__name__)
 
     @property
     def highlight_caret_scope(self):
@@ -358,10 +354,62 @@ class Editor(Section):
     def cc_case_sensitive(self, value):
         self.set_value('cc_case_sensitive', repr(value))
 
+    @property
+    def modes(self):
+        default = {
+            'CalltipsMode': True,
+            'CaretLineHighlighterMode': True,
+            'CodeCompletionMode': True,
+            'CommentsMode': True,
+            'DocumentAnalyserMode': True,
+            'ExtendedSelectionMode': True,
+            'FileWatcherMode': True,
+            'FrostedCheckerMode': True,
+            'GoToAssignmentsMode': True,
+            'OccurrencesHighlighterMode': True,
+            'PEP8CheckerMode': True,
+            'PyAutoCompleteMode': True,
+            'PyAutoIndentMode': True,
+            'PyIndenterMode': True,
+            'PythonSH': True,
+            'RightMarginMode': True,
+            'SmartBackSpaceMode': True,
+            'SymbolMatcherMode': True,
+            'ZoomMode': True
+        }
+        return eval(self.get_value('modes', repr(default)))
+
+    @modes.setter
+    def modes(self, value):
+        self.set_value('modes', repr(value))
+
+    @property
+    def panels(self):
+        default = {
+            'EncodingPanel': True,
+            'LineNumberPanel': True,
+            'CheckerPanel': True,
+            'FoldingPanel': True,
+            'GlobalCheckerPanel': True,
+            'QuickDocPanel': True,
+            'SearchAndReplacePanel': True,
+            'CalltipsMode': True
+        }
+        return eval(self.get_value('panels', repr(default)))
+
+    @panels.setter
+    def panels(self, value):
+        self.set_value('panels', repr(value))
+
 
 class Preferences(QtCore.QSettings):
+    #: settings version, updated it to clear user settings for the next
+    # release
+    version = ''
+    names = ('QIdle', 'QIdle%s' % version)
+
     def __init__(self):
-        super(Preferences, self).__init__('QIdle', 'QIdle')
+        super(Preferences, self).__init__(*self.names)
         self.main_window = MainWindow(self)
         self.key_bindings = KeyBindings(self)
         self.cache = Cache(self)

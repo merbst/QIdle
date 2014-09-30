@@ -37,7 +37,7 @@ class Application:
         self.qapp = QtGui.QApplication(sys.argv)
         icons.init()
         self._init_libraries()
-        self.recent_files_manager = RecentFilesManager('QIdle', 'QIdle')
+        self.recent_files_manager = RecentFilesManager(*Preferences.names)
         self._current = None
         self.qapp.focusChanged.connect(self.on_focus_changed)
 

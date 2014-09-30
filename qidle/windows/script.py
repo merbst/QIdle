@@ -288,3 +288,22 @@ class ScripWindow(WindowBase):
         mode.trigger_length = prefs.editor.cc_trigger_len
         mode.show_tooltips = prefs.editor.cc_show_tooltips
         mode.case_sensitive = prefs.editor.cc_case_sensitive
+
+        # modes
+        for m in self.ui.codeEdit.modes:
+            if m.name in prefs.editor.modes:
+                m.enabled = prefs.editor.modes[m.name]
+            else:
+                m.enabled = True
+
+        # panels
+        for m in self.ui.codeEdit.panels:
+            if m.name in prefs.editor.panels:
+                m.enabled = prefs.editor.panels[m.name]
+            else:
+                m.enabled = True
+            if m.name in ['EncodingPanel', 'QuickDocPanel',
+                              'SearchAndReplacePanel']:
+                m.setVisible(False)
+            else:
+                m.setVisible(m.enabled)

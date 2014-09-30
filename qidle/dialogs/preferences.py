@@ -6,7 +6,8 @@ from PyQt4 import QtGui, QtCore
 from qidle import icons
 from qidle.forms.dlg_preferences_ui import Ui_Dialog
 from qidle.widgets.preferences import (
-    PageAppearance, PageGeneral, PageInterpreters, PageEditor
+    PageAppearance, PageGeneral, PageInterpreters, PageEditor,
+    PageEditorModes, PageEditorPanels
 )
 
 
@@ -40,6 +41,20 @@ class DlgPreferences(QtGui.QDialog):
         editor = self.ui.categories.findItems(
             'Editor', QtCore.Qt.MatchExactly)[0]
         editor.setData(0, QtCore.Qt.UserRole, page)
+
+        # editor modes
+        page = PageEditorModes(self.ui.pages)
+        self.ui.pages.addWidget(page)
+        editor_modes = self.ui.categories.findItems(
+            'Modes', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
+        editor_modes.setData(0, QtCore.Qt.UserRole, page)
+
+        # editor panels
+        page = PageEditorPanels(self.ui.pages)
+        self.ui.pages.addWidget(page)
+        editor_panels = self.ui.categories.findItems(
+            'Panels', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
+        editor_panels.setData(0, QtCore.Qt.UserRole, page)
 
         # interpreters
         page = PageInterpreters(self.ui.pages)

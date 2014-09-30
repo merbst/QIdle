@@ -5,3 +5,5 @@ from .appearance import PageAppearance
 from .editor import PageEditor
 from .interpreters import PageInterpreters
 from .general import PageGeneral
+from .modes import PageEditorModes
+from .panels import PageEditorPanels
