@@ -30,10 +30,10 @@ requirements = ['pyqode.python', 'versiontools',
 
 # install desktop entry and pixmap on linux
 data_files = []
-if sys.platform == 'linux':
-    data_files.append(('/usr/share/applications',
-                       ['share/QIdle.desktop']))
-    data_files.append(('/usr/share/pixmaps', ['share/QIdle.png']))
+# if sys.platform == 'linux':
+#     data_files.append(('/usr/share/applications',
+#                        ['share/QIdle.desktop']))
+#     data_files.append(('/usr/share/pixmaps', ['share/QIdle.png']))
 
 
 # run setup
