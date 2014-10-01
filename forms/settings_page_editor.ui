@@ -109,13 +109,27 @@ padding: 10px;</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Center on scroll</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="cb_center_on_scoll">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>File manager</string>
+      <string>Open/Save</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -143,6 +157,20 @@ padding: 10px;</string>
        <widget class="QCheckBox" name="cb_safe_save">
         <property name="text">
          <string>Safe save (save to a temporary file first)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_fold_imports">
+        <property name="text">
+         <string>Fold imports</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_fold_doc">
+        <property name="text">
+         <string>Fold docstrings</string>
         </property>
        </widget>
       </item>

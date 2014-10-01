@@ -24,14 +24,14 @@ QIdle has the following features:
 - Package manager interface: let you install, upgrade or remove python
   packages (using pip).
 
+Installation
+------------
 
-Status
-------
+The project is under heavy development and has not been released on pypi yet.
 
-This project is still under heavy development.
+You can install from the git repository::
 
-At the moment, the script window has been implemented (you can edit and run
-your python script) but there is still no debugger and no project window.
+    pip install git+https://github.com/ColinDuquesnoy/QIdle.git
 
 
 Road-map
@@ -39,7 +39,7 @@ Road-map
 
 Here is the expected list of milestones till version 1.0:
 
-- [ ] 0.1: implement script window and application settings
+- [x] 0.1: implement script window and application settings
 - [ ] 0.2: implement project window
 - [ ] 1.0: implement debugger interface
 - [ ] 1.x: add more features (such as refactoring, add editors for more

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_editor.ui'
 #
-# Created: Tue Sep 30 12:12:14 2014
+# Created: Wed Oct  1 09:07:08 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -80,6 +80,13 @@ class Ui_Form(object):
         self.cb_spaces_instead_of_tabs.setText(_fromUtf8(""))
         self.cb_spaces_instead_of_tabs.setObjectName(_fromUtf8("cb_spaces_instead_of_tabs"))
         self.formLayout_2.setWidget(1, QtGui.QFormLayout.FieldRole, self.cb_spaces_instead_of_tabs)
+        self.label_8 = QtGui.QLabel(self.groupBox)
+        self.label_8.setObjectName(_fromUtf8("label_8"))
+        self.formLayout_2.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_8)
+        self.cb_center_on_scoll = QtGui.QCheckBox(self.groupBox)
+        self.cb_center_on_scoll.setText(_fromUtf8(""))
+        self.cb_center_on_scoll.setObjectName(_fromUtf8("cb_center_on_scoll"))
+        self.formLayout_2.setWidget(2, QtGui.QFormLayout.FieldRole, self.cb_center_on_scoll)
         self.verticalLayout.addWidget(self.groupBox)
         self.groupBox_3 = QtGui.QGroupBox(Form)
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
@@ -97,6 +104,12 @@ class Ui_Form(object):
         self.cb_safe_save = QtGui.QCheckBox(self.groupBox_3)
         self.cb_safe_save.setObjectName(_fromUtf8("cb_safe_save"))
         self.verticalLayout_3.addWidget(self.cb_safe_save)
+        self.cb_fold_imports = QtGui.QCheckBox(self.groupBox_3)
+        self.cb_fold_imports.setObjectName(_fromUtf8("cb_fold_imports"))
+        self.verticalLayout_3.addWidget(self.cb_fold_imports)
+        self.cb_fold_doc = QtGui.QCheckBox(self.groupBox_3)
+        self.cb_fold_doc.setObjectName(_fromUtf8("cb_fold_doc"))
+        self.verticalLayout_3.addWidget(self.cb_fold_doc)
         self.verticalLayout.addWidget(self.groupBox_3)
         self.groupBox_2 = QtGui.QGroupBox(Form)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
@@ -137,11 +150,14 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "Margin position:", None))
         self.label_4.setText(_translate("Form", "Highlight caret scope:", None))
         self.label_5.setText(_translate("Form", "Use spaces instead of tabs:", None))
-        self.groupBox_3.setTitle(_translate("Form", "File manager", None))
+        self.label_8.setText(_translate("Form", "Center on scroll", None))
+        self.groupBox_3.setTitle(_translate("Form", "Open/Save", None))
         self.cb_convert_tabs_to_spaces.setText(_translate("Form", "Convert tab to spaces", None))
         self.cb_clean_trailing.setText(_translate("Form", "Clean trailing whitespaces", None))
         self.cb_restore_cursor.setText(_translate("Form", "Restore cursor position", None))
         self.cb_safe_save.setText(_translate("Form", "Safe save (save to a temporary file first)", None))
+        self.cb_fold_imports.setText(_translate("Form", "Fold imports", None))
+        self.cb_fold_doc.setText(_translate("Form", "Fold docstrings", None))
         self.groupBox_2.setTitle(_translate("Form", "Code completion", None))
         self.label_3.setText(_translate("Form", "Trigger length:", None))
         self.label_6.setText(_translate("Form", "Show tooltips:", None))

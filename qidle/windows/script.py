@@ -25,6 +25,8 @@ class ScripWindow(WindowBase):
     def __init__(self, app):
         self.ui = win_script_ui.Ui_MainWindow()
         super(ScripWindow, self).__init__(self.ui, app)
+        self.setMinimumWidth(600)
+        self.setMinimumHeight(480)
         self.ui.codeEdit.backend.start(
             server.__file__, Preferences().interpreters.default,
             args=['-s'] + [get_library_zip_path()])
@@ -261,6 +263,8 @@ class ScripWindow(WindowBase):
         self.lbl_encoding.setText(self.ui.codeEdit.file.encoding)
 
     def apply_preferences(self):
+        _logger().info('applying preferences on editor: %s' %
+                       self.ui.codeEdit.file.path)
         prefs = Preferences()
         # appearance
         self.ui.codeEdit.font_name = prefs.appearance.font
@@ -282,12 +286,16 @@ class ScripWindow(WindowBase):
             prefs.editor.convert_tabs_to_spaces
         self.ui.codeEdit.file.clean_trailing_whitespaces = \
             prefs.editor.clean_trailing
+        self.ui.codeEdit.file.fold_imports = prefs.editor.fold_imports
+        self.ui.codeEdit.file.fold_docstrings = prefs.editor.fold_docstrings
         self.ui.codeEdit.file.restore_cursor = prefs.editor.restore_cursor
         self.ui.codeEdit.file.safe_save = prefs.editor.safe_save
         mode = self.ui.codeEdit.modes.get(CodeCompletionMode)
         mode.trigger_length = prefs.editor.cc_trigger_len
         mode.show_tooltips = prefs.editor.cc_show_tooltips
         mode.case_sensitive = prefs.editor.cc_case_sensitive
+
+        self.ui.codeEdit.setCenterOnScroll(prefs.editor.center_on_scroll)
 
         # modes
         for m in self.ui.codeEdit.modes:
@@ -307,3 +315,10 @@ class ScripWindow(WindowBase):
                 m.setVisible(False)
             else:
                 m.setVisible(m.enabled)
+
+    def setFocus(self, reason=None):
+        _logger().debug('setFocus: %r', reason)
+        if reason:
+            self.ui.codeEdit.setFocus(reason)
+        else:
+            self.ui.codeEdit.setFocus()
