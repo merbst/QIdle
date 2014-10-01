@@ -43,4 +43,4 @@ Here is the expected list of milestones till version 1.0:
 - [ ] 0.2: implement project window
 - [ ] 1.0: implement debugger interface
 - [ ] 1.x: add more features (such as refactoring, add editors for more
-           languages (cython, json, html, c))
+  languages (cython, json, html, c))
