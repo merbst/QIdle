@@ -25,6 +25,8 @@ class ScripWindow(WindowBase):
     def __init__(self, app):
         self.ui = win_script_ui.Ui_MainWindow()
         super(ScripWindow, self).__init__(self.ui, app)
+        self.setMinimumWidth(600)
+        self.setMinimumHeight(480)
         self.ui.codeEdit.backend.start(
             server.__file__, Preferences().interpreters.default,
             args=['-s'] + [get_library_zip_path()])
