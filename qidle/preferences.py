@@ -355,6 +355,30 @@ class Editor(Section):
         self.set_value('cc_case_sensitive', repr(value))
 
     @property
+    def center_on_scroll(self):
+        return eval(self.get_value('center_on_scroll', 'True'))
+
+    @center_on_scroll.setter
+    def center_on_scroll(self, value):
+        self.set_value('center_on_scroll', repr(value))
+
+    @property
+    def fold_imports(self):
+        return eval(self.get_value('fold_imports', 'False'))
+
+    @fold_imports.setter
+    def fold_imports(self, value):
+        self.set_value('fold_imports', repr(value))
+
+    @property
+    def fold_docstrings(self):
+        return eval(self.get_value('fold_docstrings', 'False'))
+
+    @fold_docstrings.setter
+    def fold_docstrings(self, value):
+        self.set_value('fold_docstrings', repr(value))
+
+    @property
     def modes(self):
         default = {
             'CalltipsMode': True,

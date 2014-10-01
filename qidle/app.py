@@ -78,11 +78,12 @@ class Application:
             w.update_windows_menu(self.windows)
 
     def activate_window(self, window):
-        window.show()
         self.qapp.setActiveWindow(window)
+        window.show()
         window.raise_()
+        window.setFocus()
         self._current = window
-        _logger().debug('showing window: %s' % window.path)
+        _logger().info('showing window: %s' % window.path)
 
     def create_script_window(self, path=None):
         """

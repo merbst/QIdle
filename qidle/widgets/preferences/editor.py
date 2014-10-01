@@ -26,6 +26,9 @@ class PageEditor(Page):
         self.ui.sb_cc_trigger_len.setValue(editor.cc_trigger_len)
         self.ui.cb_cc_tooltips.setChecked(editor.cc_show_tooltips)
         self.ui.cb_cc_case_sensitive.setChecked(editor.cc_case_sensitive)
+        self.ui.cb_fold_doc.setChecked(editor.fold_docstrings)
+        self.ui.cb_fold_imports.setChecked(editor.fold_imports)
+        self.ui.cb_center_on_scoll.setChecked(editor.center_on_scroll)
 
     def restore_defaults(self):
         editor = Preferences().editor
@@ -40,6 +43,9 @@ class PageEditor(Page):
         editor.safe_save = True
         editor.tab_len = 4
         editor.use_spaces_instead_of_tabs = True
+        editor.center_on_scroll = True
+        editor.fold_docstrings = False
+        editor.fold_imports = False
         self.reset()
 
     def apply(self):
@@ -57,3 +63,6 @@ class PageEditor(Page):
         editor.tab_len = self.ui.sb_tab_len.value()
         editor.use_spaces_instead_of_tabs = \
             self.ui.cb_spaces_instead_of_tabs.isChecked()
+        editor.fold_docstrings = self.ui.cb_fold_doc.isChecked()
+        editor.fold_imports = self.ui.cb_fold_imports.isChecked()
+        editor.center_on_scroll = self.ui.cb_center_on_scoll.isChecked()

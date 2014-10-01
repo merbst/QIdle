@@ -237,15 +237,19 @@ class WindowBase(QtGui.QMainWindow):
 
     def _show_prev_window(self):
         i = self.app.windows.index(self)
-        if i - 1 >= 0:
-            window = self.app.windows[i - 1]
-            self.app.activate_window(window)
+        i -= 1
+        if i < 0:
+            i = len(self.app.windows) - 1
+        window = self.app.windows[i]
+        self.app.activate_window(window)
 
     def _show_next_window(self):
         i = self.app.windows.index(self)
-        if i + 1 < len(self.app.windows):
-            window = self.app.windows[i + 1]
-            self.app.activate_window(window)
+        i += 1
+        if i >= len(self.app.windows):
+            i = 0
+        window = self.app.windows[i]
+        self.app.activate_window(window)
 
     def _show_python_docs(self):
         _logger(self).info('opening python docs in the default browser')
