@@ -2,7 +2,7 @@
 """
 Setup script for QIdle
 """
-import sys
+import qidle
 from setuptools import setup, find_packages
 
 
@@ -24,8 +24,9 @@ with open('README.rst', 'r') as readme:
 
 
 # install requirements
-requirements = ['pyqode.python', 'versiontools',
-                'ipython', 'pyzmq', 'virtualenv']
+requirements = [
+    'pyqode.python', 'ipython', 'pyzmq', 'virtualenv'
+]
 
 
 # install desktop entry and pixmap on linux
@@ -39,7 +40,7 @@ data_files = []
 # run setup
 setup(
     name='QIdle',
-    version=":versiontools:qidle",
+    version=qidle.__version__,
     packages=[p for p in find_packages() if 'test' not in p],
     keywords=['Python; IDLE; IDE'],
     data_files=data_files,

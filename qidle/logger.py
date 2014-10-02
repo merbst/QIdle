@@ -23,15 +23,12 @@ def setup(verbose=False):
         level is used.
     """
     level = logging.DEBUG if verbose else logging.INFO
-    logger = logging.getLogger()
-    formatter = logging.Formatter(
-        '%(asctime)s::%(levelname)s::%(name)s::%(message)s',
-        '%Y-%m-%d %H:%M:%S')
     handlers = [
-        logging.FileHandler(get_path(), mode='w')
+        logging.FileHandler(get_path(), mode='w'),
+        logging.StreamHandler()
     ]
-    logger.setLevel(level)
-    for handler in handlers:
-        logger.addHandler(handler)
-    for handler in logger.handlers:
-        handler.setFormatter(formatter)
+    logging.basicConfig(
+        level=level, handlers=handlers,
+        format='%(asctime)s::%(levelname)s::%(name)s::%(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S')
+    logging.info('Test')

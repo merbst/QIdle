@@ -28,7 +28,7 @@ class Application:
     """
     @property
     def version_str(self):
-        return str(Version(*__version__))
+        return __version__
 
     def __init__(self):
         logger.setup()

@@ -27,9 +27,11 @@ class ScripWindow(WindowBase):
         super(ScripWindow, self).__init__(self.ui, app)
         self.setMinimumWidth(600)
         self.setMinimumHeight(480)
-        self.ui.codeEdit.backend.start(
-            server.__file__, Preferences().interpreters.default,
-            args=['-s'] + [get_library_zip_path()])
+        args = []
+        interpreter = Preferences().interpreters.default
+        if sys.executable != interpreter:
+            args = ['-s'] + [get_library_zip_path()]
+        self.ui.codeEdit.backend.start(server.__file__, interpreter, args)
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
         self.ui.dockWidgetClassExplorer.hide()
         self.ui.dockWidgetShell.hide()

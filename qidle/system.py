@@ -3,8 +3,6 @@ import logging
 import os
 import platform
 from zipfile import ZipFile
-from versiontools import Version
-
 from qidle import __version__
 
 WINDOWS = platform.system() == 'Windows'
@@ -41,7 +39,7 @@ def get_cache_directory():
 
 
 def get_library_zip_path():
-    lib = 'libraries-%s.zip' % str(Version(*__version__))
+    lib = 'libraries-%s.zip' % __version__
     return os.path.join(get_cache_directory(), lib)
 
 
