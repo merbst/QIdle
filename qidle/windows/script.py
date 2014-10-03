@@ -74,7 +74,7 @@ class ScripWindow(WindowBase):
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
         self.ui.codeEdit.cursorPositionChanged.connect(self._update_status_bar)
-        self.apply_preferences()
+        self.apply_preferences(show_panels=False)
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
@@ -136,6 +136,8 @@ class ScripWindow(WindowBase):
         self.ui.actionConfigureRun.setDisabled(True)
         self._update_status_bar()
         _logger().debug('new file created')
+        self.ui.codeEdit.show()
+        self.ui.codeEdit.panels.refresh()
 
     def open(self, path):
         self.ui.codeEdit.file.open(path)
@@ -264,7 +266,7 @@ class ScripWindow(WindowBase):
         self.lbl_cursor_pos.setText('%d:%d' % (l + 1, c + 1))
         self.lbl_encoding.setText(self.ui.codeEdit.file.encoding)
 
-    def apply_preferences(self):
+    def apply_preferences(self, show_panels=True):
         _logger().info('applying preferences on editor: %s' %
                        self.ui.codeEdit.file.path)
         prefs = Preferences()
@@ -313,9 +315,9 @@ class ScripWindow(WindowBase):
             else:
                 m.enabled = True
             if m.name in ['EncodingPanel', 'QuickDocPanel',
-                              'SearchAndReplacePanel']:
+                          'SearchAndReplacePanel']:
                 m.setVisible(False)
-            else:
+            elif show_panels:
                 m.setVisible(m.enabled)
 
     def setFocus(self, reason=None):
