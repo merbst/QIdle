@@ -140,13 +140,13 @@ class ScripWindow(WindowBase):
         self.ui.codeEdit.panels.refresh()
 
     def open(self, path):
-        self.ui.codeEdit.file.open(path)
         self._title = '%s [%s] - QIdle %s (Python %s)' % (
             os.path.split(path)[1], path, self.app.version_str,
             '.'.join([str(i) for i in sys.version_info[:3]]))
+        self.path = path
+        self.ui.codeEdit.file.open(path)
         self.setWindowTitle(self._title)
         self._on_dirty_changed(False)
-        self.path = path
         self.app.remember_path(path)
         _logger().debug('file opened: %s' % path)
 
