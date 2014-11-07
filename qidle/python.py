@@ -4,6 +4,8 @@ This module contains utility function related to python interpreters
 import glob
 import logging
 import os
+import subprocess
+import tempfile
 import pip
 import platform
 import re
@@ -19,12 +21,33 @@ def detect_system_interpreters():
     Detects system python interpreters
     :return:
     """
-    if platform.system().lower() == 'linux':
+    def check_version(path):
+        if not os.path.isfile(path):
+            return False
+        try:
+            tmp_dir = os.path.join(tempfile.gettempdir(), 'version')
+            with open(tmp_dir, 'w') as stderr:
+                output = subprocess.check_output([path, '--version'],
+                                                 stderr=stderr).decode()
+            if not output:
+                # Python2 print version to stderr (at least on OSX)
+                with open(tmp_dir, 'r') as stderr:
+                    output = stderr.read()
+            version = output.split(' ')[1]
+        except (IndexError, OSError) as e:
+            print('error with path: %s' % path, e)
+            return False
+        else:
+            return version > '2.7.0'
+
+    if platform.system().lower() != 'windows':
         executables = []
-        for base in ['/usr/bin', '/usr/local/bin']:
+        for base in ['/usr/bin', '/usr/local/bin',
+                     '/usr/opt', '/usr/local/opt']:
             for pth in glob.glob('%s/python*' % base):
                 prog = re.compile(r'python[\d.]*$')
-                if prog.match(os.path.split(pth)[1]):
+                if prog.match(os.path.split(pth)[1]) and check_version(pth):
+
                     executables.append(os.path.realpath(pth))
     else:
         executables = set()

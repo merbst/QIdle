@@ -6,7 +6,6 @@ import logging
 import os
 import sys
 from pyqode.python.widgets import PyCodeEdit
-from versiontools import Version
 from PyQt4 import QtGui
 from pyqode.core.widgets import RecentFilesManager
 from qidle import icons, __version__, logger
@@ -31,7 +30,7 @@ class Application:
         return __version__
 
     def __init__(self):
-        logger.setup()
+        logger.setup(verbose=True)
         _logger().info('QIdle v%s', self.version_str)
         self.windows = []
         self.qapp = QtGui.QApplication(sys.argv)
@@ -67,11 +66,10 @@ class Application:
             import qidle
             import frosted
             import pies
-            import versiontools
             _logger().info('updating libraries.zip')
             embed_package_into_zip(
                 [jedi, pep8, pyqode, pyqode.core, pyqode.python, pyqode.qt, qidle,
-                 versiontools, frosted, pies])
+                 frosted, pies])
 
     def update_windows_menu(self):
         for w in self.windows:

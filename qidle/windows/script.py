@@ -276,7 +276,7 @@ class ScripWindow(WindowBase):
         self.ui.codeEdit.show_whitespaces = prefs.appearance.show_whitespaces
         scheme = ColorScheme(prefs.appearance.color_scheme)
         self.ui.codeEdit.syntax_highlighter.color_scheme = scheme
-        self.ui.shell.apply_preferences()
+        self.ui.shell.k()
         self.ui.textEditPgmOutput.apply_color_scheme(scheme)
         # editor settings
         self.ui.codeEdit.panels.get(FoldingPanel).highlight_caret_scope = \

@@ -19,7 +19,7 @@ def _logger(obj):
 
 
 class WindowBase(QtGui.QMainWindow):
-    closed = QtCore.Signal(QtGui.QMainWindow)
+    closed = QtCore.pyqtSignal(QtGui.QMainWindow)
 
     @property
     def app(self):

@@ -7,6 +7,7 @@ import os
 import sys
 from PyQt4 import QtCore
 from PyQt4.QtGui import QKeySequence
+from pyqode.core.api import CodeEdit
 from qidle.python import detect_system_interpreters
 
 
@@ -231,7 +232,7 @@ class Appearance(Section):
 
     @property
     def font(self):
-        return self.get_value('font', 'Source Code Pro')
+        return self.get_value('font', CodeEdit._DEFAULT_FONT)
 
     @font.setter
     def font(self, value):
