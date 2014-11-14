@@ -363,13 +363,13 @@ class PageInterpreters(Page):
         :param operation: Operation title (used for the info label)
         """
         self._stop_backend()
-        self._start_gif()
         self.ui.lblInfos.setText(operation)
         self._worker = worker_function
         self._package = package
         self._stop_backend()
         self.backend = BackendManager(self)
         process = BackendProcess(self.parent())
+        process.finished.connect(self._on_process_finished)
         self.backend._process = process
         server_script = server.__file__.replace('.pyc', '.py')
         port = self.backend.pick_free_port()
@@ -399,6 +399,10 @@ class PageInterpreters(Page):
                 args=['-s'] + [get_library_zip_path()])
         self.backend._process.started.connect(self._run_command)
 
+    def _on_process_finished(self):
+        self._stop_gif()
+        self._enable_buttons(True)
+
     def _need_root_perms(self, interpreter):
         """
         Checks if we need root perms for running the pip command.
@@ -419,6 +423,7 @@ class PageInterpreters(Page):
         """
         Run the pip command as soon as the connection has been established.
         """
+        self._start_gif()
         self.backend.send_request(self._worker, self._package,
                                   on_receive=self._on_command_finished)
 
