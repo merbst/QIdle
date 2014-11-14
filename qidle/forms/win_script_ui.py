@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_script.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_script.ui'
 #
-# Created: Fri Nov 14 14:18:56 2014
+# Created: Fri Nov 14 19:14:38 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -62,19 +62,19 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addWidget(self.textEditPgmOutput, 0, 0, 1, 1)
         self.dockWidgetProgramOutput.setWidget(self.dockWidgetContents_3)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetProgramOutput)
-        self.dockWidgetShell = QtGui.QDockWidget(MainWindow)
-        self.dockWidgetShell.setObjectName(_fromUtf8("dockWidgetShell"))
+        self.dockWidgetPyConsole = QtGui.QDockWidget(MainWindow)
+        self.dockWidgetPyConsole.setObjectName(_fromUtf8("dockWidgetPyConsole"))
         self.dockWidgetContents_4 = QtGui.QWidget()
         self.dockWidgetContents_4.setObjectName(_fromUtf8("dockWidgetContents_4"))
         self.gridLayout_5 = QtGui.QGridLayout(self.dockWidgetContents_4)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
-        self.shell = Shell(self.dockWidgetContents_4)
-        self.shell.setObjectName(_fromUtf8("shell"))
-        self.gridLayout_5.addWidget(self.shell, 0, 0, 1, 1)
-        self.dockWidgetShell.setWidget(self.dockWidgetContents_4)
-        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetShell)
+        self.pyconsole = IPythonConsole(self.dockWidgetContents_4)
+        self.pyconsole.setObjectName(_fromUtf8("pyconsole"))
+        self.gridLayout_5.addWidget(self.pyconsole, 0, 0, 1, 1)
+        self.dockWidgetPyConsole.setWidget(self.dockWidgetContents_4)
+        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetPyConsole)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 35))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 34))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -203,7 +203,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "QIdle", None))
         self.dockWidgetClassExplorer.setWindowTitle(_translate("MainWindow", "Structure", None))
         self.dockWidgetProgramOutput.setWindowTitle(_translate("MainWindow", "Program output", None))
-        self.dockWidgetShell.setWindowTitle(_translate("MainWindow", "Python console", None))
+        self.dockWidgetPyConsole.setWindowTitle(_translate("MainWindow", "Python console", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuRecents.setTitle(_translate("MainWindow", "Recents", None))
         self.menuRun.setTitle(_translate("MainWindow", "Run", None))
@@ -230,6 +230,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
-from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole, PyCodeEdit
-from qidle.widgets import Shell
+from qidle.widgets import IPythonConsole
+from pyqode.python.widgets import PyCodeEdit, PyOutlineTreeWidget, PyInteractiveConsole
 from . import qidle_rc

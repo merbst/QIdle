@@ -15,7 +15,7 @@ QIdle has the following features:
   call tips, JEDI CODE COMPLETION and many other features
 - 2 type of windows: script window (mono document) and project window (multiple
   documents)
-- IPython shell dock widget (a.k.a interactive interpreter) usable from both
+- IPython console dock widget (a.k.a interactive interpreter) usable from both
   window types.
 - Project support: simply open an existing directory to import a project
 - Debugger with breakpoints and watch windows

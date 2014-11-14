@@ -56,21 +56,21 @@ class ScriptWindow(WindowBase):
             if a.text() == 'Structure':
                 a.setIcon(icons.class_browser)
             if a.text() == 'Python console':
-                a.setIcon(icons.python_mimetype)
+                a.setIcon(icons.python_interpreter)
             if a.text() == 'Program output':
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
         self.ui.dockWidgetClassExplorer.setWindowIcon(icons.class_browser)
         self.ui.dockWidgetProgramOutput.setWindowIcon(icons.run)
-        self.ui.dockWidgetShell.setWindowIcon(icons.python_mimetype)
+        self.ui.dockWidgetPyConsole.setWindowIcon(icons.python_interpreter)
         self.apply_preferences(show_panels=False)
 
         self.dock_manager_right.add_dock_widget(
             self.ui.dockWidgetClassExplorer)
         self.dock_manager_bottom.add_dock_widget(
             self.ui.dockWidgetProgramOutput)
-        self.dock_manager_bottom.add_dock_widget(self.ui.dockWidgetShell)
+        self.dock_manager_bottom.add_dock_widget(self.ui.dockWidgetPyConsole)
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:

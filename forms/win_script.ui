@@ -63,7 +63,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidgetShell">
+  <widget class="QDockWidget" name="dockWidgetPyConsole">
    <property name="windowTitle">
     <string>Python console</string>
    </property>
@@ -73,7 +73,7 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="Shell" name="shell"/>
+      <widget class="IPythonConsole" name="pyconsole"/>
      </item>
     </layout>
    </widget>
@@ -84,7 +84,7 @@
      <x>0</x>
      <y>0</y>
      <width>924</width>
-     <height>35</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -335,7 +335,7 @@
    <header>pyqode.python.widgets</header>
   </customwidget>
   <customwidget>
-   <class>Shell</class>
+   <class>IPythonConsole</class>
    <extends>QTextEdit</extends>
    <header>qidle.widgets</header>
   </customwidget>

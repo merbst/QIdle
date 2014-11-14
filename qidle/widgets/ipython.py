@@ -13,7 +13,7 @@ except ImportError:
     from PyQt4.QtGui import QLabel
     from PyQt4.QtCore import Qt
 
-    class Shell(QLabel):
+    class IPythonConsole(QLabel):
         def __init__(self, parent):
             super().__init__(parent)
             self.setText('IPython not found...')
@@ -32,9 +32,9 @@ else:
     from IPython.qt.inprocess import QtInProcessKernelManager
     os.environ['QT_API'] = 'pyqt4'
 
-    class Shell(RichIPythonWidget):
+    class IPythonConsole(RichIPythonWidget):
         def __init__(self, parent):
-            super(Shell, self).__init__(parent)
+            super(IPythonConsole, self).__init__(parent)
             self._initialized = False
 
         def showEvent(self, e):
@@ -49,10 +49,10 @@ else:
                 self._initialized = True
                 self.apply_preferences()
                 _logger().info('shell initialized')
-            super(Shell, self).showEvent(e)
+            super(IPythonConsole, self).showEvent(e)
 
         def sizeHint(self):
-            sh = super(Shell, self).sizeHint()
+            sh = super(IPythonConsole, self).sizeHint()
             sh.setHeight(200)
             return sh
 
