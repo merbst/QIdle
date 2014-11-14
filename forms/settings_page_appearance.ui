@@ -31,6 +31,9 @@ padding: 10px;</string>
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout_2">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
      <property name="topMargin">
       <number>0</number>
      </property>
@@ -69,7 +72,14 @@ padding: 10px;</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinbox_font_size"/>
+      <widget class="QSpinBox" name="spinbox_font_size">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">

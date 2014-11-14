@@ -183,6 +183,9 @@ padding: 10px;</string>
       <string>Code completion</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -191,7 +194,14 @@ padding: 10px;</string>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QSpinBox" name="sb_cc_trigger_len"/>
+       <widget class="QSpinBox" name="sb_cc_trigger_len">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_6">
