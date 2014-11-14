@@ -12,7 +12,7 @@ from qidle import icons, __version__, logger
 from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.preferences import Preferences
 from qidle.system import embed_package_into_zip, get_library_zip_path
-from qidle.windows import ScripWindow
+from qidle.windows import ScriptWindow
 
 
 def _logger():
@@ -102,7 +102,7 @@ class Application:
         if active_window:
             active_window.save_state()
 
-        window = ScripWindow(self)
+        window = ScriptWindow(self)
         window.closed.connect(self._on_window_closed)
         self.windows.append(window)
         if path and os.path.exists(path):
@@ -140,8 +140,8 @@ class Application:
         assert win is not None
         # ensure types are corresponding (if we want to open a project from
         # a script window, a new proj window must be created)
-        if ((script and isinstance(win, ScripWindow) or
-                (not script and not isinstance(self, ScripWindow)))):
+        if ((script and isinstance(win, ScriptWindow) or
+                (not script and not isinstance(self, ScriptWindow)))):
             win.open(path)
         else:
             self._open_in_new(path, script)

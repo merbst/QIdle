@@ -202,9 +202,9 @@ class WindowBase(QtGui.QMainWindow):
         self.app.create_script_window()
 
     def _open_in_current(self, path, script):
-        from qidle.windows.script import ScripWindow
-        if ((script and isinstance(self, ScripWindow) or
-                (not script and not isinstance(self, ScripWindow)))):
+        from qidle.windows.script import ScriptWindow
+        if ((script and isinstance(self, ScriptWindow) or
+                (not script and not isinstance(self, ScriptWindow)))):
             self.open(path)
         else:
             self._open_in_new(path, script)

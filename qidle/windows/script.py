@@ -21,10 +21,10 @@ def _logger():
     return logging.getLogger(__name__)
 
 
-class ScripWindow(WindowBase):
+class ScriptWindow(WindowBase):
     def __init__(self, app):
         self.ui = win_script_ui.Ui_MainWindow()
-        super(ScripWindow, self).__init__(self.ui, app)
+        super(ScriptWindow, self).__init__(self.ui, app)
         self.setMinimumWidth(600)
         self.setMinimumHeight(480)
         args = []
@@ -89,7 +89,7 @@ class ScripWindow(WindowBase):
                         ev.ignore()
                 else:
                     ev.accept()
-        super(ScripWindow, self).closeEvent(ev)
+        super(ScriptWindow, self).closeEvent(ev)
         if ev.isAccepted():
             self.ui.codeEdit.modes.clear()
             self.ui.codeEdit.panels.clear()
