@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_appearance.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/settings_page_appearance.ui'
 #
-# Created: Tue Sep 30 12:12:14 2014
+# Created: Fri Nov 14 18:44:36 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,6 +37,7 @@ class Ui_Form(object):
         self.header.setObjectName(_fromUtf8("header"))
         self.verticalLayout.addWidget(self.header)
         self.formLayout_2 = QtGui.QFormLayout()
+        self.formLayout_2.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
         self.formLayout_2.setContentsMargins(-1, 0, -1, 0)
         self.formLayout_2.setObjectName(_fromUtf8("formLayout_2"))
         self.label_4 = QtGui.QLabel(Form)
@@ -56,6 +57,11 @@ class Ui_Form(object):
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.formLayout_2.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_3)
         self.spinbox_font_size = QtGui.QSpinBox(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.spinbox_font_size.sizePolicy().hasHeightForWidth())
+        self.spinbox_font_size.setSizePolicy(sizePolicy)
         self.spinbox_font_size.setObjectName(_fromUtf8("spinbox_font_size"))
         self.formLayout_2.setWidget(1, QtGui.QFormLayout.FieldRole, self.spinbox_font_size)
         self.label = QtGui.QLabel(Form)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_editor.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/settings_page_editor.ui'
 #
-# Created: Wed Oct  1 09:07:08 2014
+# Created: Fri Nov 14 18:44:36 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -114,11 +114,17 @@ class Ui_Form(object):
         self.groupBox_2 = QtGui.QGroupBox(Form)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.formLayout = QtGui.QFormLayout(self.groupBox_2)
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
         self.formLayout.setObjectName(_fromUtf8("formLayout"))
         self.label_3 = QtGui.QLabel(self.groupBox_2)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_3)
         self.sb_cc_trigger_len = QtGui.QSpinBox(self.groupBox_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.sb_cc_trigger_len.sizePolicy().hasHeightForWidth())
+        self.sb_cc_trigger_len.setSizePolicy(sizePolicy)
         self.sb_cc_trigger_len.setObjectName(_fromUtf8("sb_cc_trigger_len"))
         self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.sb_cc_trigger_len)
         self.label_6 = QtGui.QLabel(self.groupBox_2)
