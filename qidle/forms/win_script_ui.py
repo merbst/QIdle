@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/win_script.ui'
+# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_script.ui'
 #
-# Created: Thu Sep 25 15:05:02 2014
+# Created: Fri Nov 14 11:48:42 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
         self.dockWidgetContents_2.setObjectName(_fromUtf8("dockWidgetContents_2"))
         self.gridLayout_3 = QtGui.QGridLayout(self.dockWidgetContents_2)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.classExplorer = ClassExplorer(self.dockWidgetContents_2)
+        self.classExplorer = PyOutlineTreeWidget(self.dockWidgetContents_2)
         self.classExplorer.setObjectName(_fromUtf8("classExplorer"))
         self.classExplorer.headerItem().setText(0, _fromUtf8("1"))
         self.classExplorer.header().setVisible(False)
@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.dockWidgetShell.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetShell)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 924, 35))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -237,6 +237,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
-from qidle.widgets import Shell, ClassExplorer
-from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit
+from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit, PyOutlineTreeWidget
+from qidle.widgets import Shell
 from . import qidle_rc

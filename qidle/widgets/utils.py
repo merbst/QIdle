@@ -16,6 +16,9 @@ def add_interpreter_list(combo, interpreters, default, default_index=None, icon=
 
 
 def load_interpreters(combo, default=None, locals=True, virtualenvs=True):
+    def test():
+        pass
+
     combo.clear()
     if default is None:
         default = Preferences().interpreters.default
@@ -29,4 +32,3 @@ def load_interpreters(combo, default=None, locals=True, virtualenvs=True):
         default_index = add_interpreter_list(
             combo, Preferences().interpreters.locals, default, default_index)
     combo.setCurrentIndex(default_index if default_index is not None else 0)
-

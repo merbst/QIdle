@@ -35,7 +35,7 @@
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="ClassExplorer" name="classExplorer">
+      <widget class="PyOutlineTreeWidget" name="classExplorer">
        <attribute name="headerVisible">
         <bool>false</bool>
        </attribute>
@@ -85,7 +85,7 @@
      <x>0</x>
      <y>0</y>
      <width>924</width>
-     <height>25</height>
+     <height>35</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -352,9 +352,9 @@
    <header>qidle.widgets</header>
   </customwidget>
   <customwidget>
-   <class>ClassExplorer</class>
+   <class>PyOutlineTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>qidle.widgets</header>
+   <header>pyqode.python.widgets</header>
   </customwidget>
  </customwidgets>
  <resources>

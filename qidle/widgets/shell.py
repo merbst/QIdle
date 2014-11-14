@@ -22,9 +22,6 @@ except ImportError:
         #--- duck typing interface
         def apply_preferences(self):
             pass
-
-        def k(self):
-            pass
 else:
     from pyqode.core.api import ColorScheme
     from qidle.preferences import Preferences
