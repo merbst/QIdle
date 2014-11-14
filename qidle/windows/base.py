@@ -37,6 +37,12 @@ class WindowBase(QtGui.QMainWindow):
         self.path = None
         self.ui = ui
         self.ui.setupUi(self)
+        # we need to set proper menu roles for OS X
+        self.ui.actionAbout_QIdle.setMenuRole(QtGui.QAction.AboutRole)
+        self.ui.actionQuit.setMenuRole(QtGui.QAction.QuitRole)
+        self.ui.actionConfigure_IDLE.setText('Preferences')
+        self.ui.actionConfigure_IDLE.setMenuRole(QtGui.QAction.PreferencesRole)
+        self.ui.actionConfigureRun.setMenuRole(QtGui.QAction.NoRole)
         self._setup_mnu_file(app, ui)
         self._setup_windows_menu(ui)
         self._setup_help_menu()
