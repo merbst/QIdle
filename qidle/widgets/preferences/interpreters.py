@@ -397,7 +397,7 @@ class PageInterpreters(Page):
             self.backend.start(
                 server.__file__, interpreter=interpreter,
                 args=['-s'] + [get_library_zip_path()])
-        self.backend._process.started.connect(self._run_command)
+        QtCore.QTimer.singleShot(100, self._run_command)
 
     def _on_process_finished(self):
         self._stop_gif()
@@ -423,9 +423,14 @@ class PageInterpreters(Page):
         """
         Run the pip command as soon as the connection has been established.
         """
-        self._start_gif()
-        self.backend.send_request(self._worker, self._package,
-                                  on_receive=self._on_command_finished)
+        try:
+            self.backend.send_request(self._worker, self._package,
+                                      on_receive=self._on_command_finished)
+        except NotRunning:
+            print('try again')
+            QtCore.QTimer.singleShot(100, self._run_command)
+        else:
+            self._start_gif()
 
     def _on_command_finished(self, status, output):
         """

@@ -85,7 +85,10 @@ def run_pip_command(args):
     def get_output(log_file):
         with open(log_file, 'r') as f:
             output = f.read()
-        os.remove(log_file)
+        try:
+            os.remove(log_file)
+        except OSError:
+            pass
         return output
 
     log_file, old_stdout = setup_log_file()
