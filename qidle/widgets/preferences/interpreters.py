@@ -377,9 +377,15 @@ class PageInterpreters(Page):
             server_script = server.__file__.replace('.pyc', '.py')
             port = self.backend.pick_free_port()
             self.backend._port = port
-            cmd = '%s "%s %s %s --syspath %s"' % (
-                get_authentication_program(), interpreter, server_script,
-                str(port), get_library_zip_path())
+            auth = get_authentication_program()
+            if 'kdesu' in auth:
+                # no quotes around command when using kdesu
+                cmd = '%s %s %s %s --syspath %s'
+            else:
+                # gksu requires quotes around command
+                cmd = '%s "%s %s %s --syspath %s"'
+            cmd = cmd % (auth, interpreter, server_script,
+                         str(port), get_library_zip_path())
             process.start(cmd)
         else:
             self.backend.start(
