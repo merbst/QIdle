@@ -112,7 +112,7 @@ class Cache(Section):
                 'script_parameters': [],
                 'interpreter': self._settings.interpreters.default,
                 'interpreter_options': [],
-                'working_dir': None,
+                'working_dir': os.path.dirname(filename),
                 'env_vars': {
                     'PYTHONUNBUFFERED': '1'
                 }

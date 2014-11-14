@@ -204,16 +204,13 @@ class ScripWindow(WindowBase):
         self.ui.actionRun.setIcon(icons.stop)
         path = self.ui.codeEdit.file.path
         cfg = Preferences().cache.get_run_config_for_file(path)
+        _logger().info('run configuration: %r', cfg)
         opts = []
         if len(cfg['interpreter_options']):
             opts += cfg['interpreter_options']
         opts += [cfg['script']]
         if len(cfg['script_parameters']):
             opts += cfg['script_parameters']
-        _logger().info('script interpreter: %s', cfg['interpreter'])
-        _logger().info('script arguments: %r', opts)
-        _logger().info('working dir: %r', cfg['working_dir'])
-        _logger().info('environment variables: %r', cfg['env_vars'])
         self.ui.textEditPgmOutput.start_process(
             cfg['interpreter'], opts,
             cwd=cfg['working_dir'],
