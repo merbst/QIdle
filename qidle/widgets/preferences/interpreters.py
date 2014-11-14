@@ -13,7 +13,7 @@ from qidle.forms import settings_page_interpreters_ui
 from qidle.python import get_installed_packages, is_system_interpreter, \
     upgrade_package, uninstall_package, install_package
 from qidle.preferences import Preferences
-from qidle.system import get_library_zip_path, WINDOWS, LINUX, \
+from qidle.system import get_library_zip_path, WINDOWS, LINUX, DARWIN, \
     get_authentication_program
 from qidle.widgets.preferences.base import Page
 from qidle.widgets.utils import load_interpreters
@@ -369,14 +369,13 @@ class PageInterpreters(Page):
         self._package = package
         self._stop_backend()
         self.backend = BackendManager(self)
-        if self._need_root_perms(interpreter):
+        process = BackendProcess(self.parent())
+        self.backend._process = process
+        server_script = server.__file__.replace('.pyc', '.py')
+        port = self.backend.pick_free_port()
+        self.backend._port = port
+        if LINUX and self._need_root_perms(interpreter):
             _logger().info('running pip command with root privileges')
-            # self.backend.start()
-            process = BackendProcess(self.parent())
-            self.backend._process = process
-            server_script = server.__file__.replace('.pyc', '.py')
-            port = self.backend.pick_free_port()
-            self.backend._port = port
             auth = get_authentication_program()
             if 'kdesu' in auth:
                 # no quotes around command when using kdesu
@@ -385,7 +384,14 @@ class PageInterpreters(Page):
                 # gksu requires quotes around command
                 cmd = '%s "%s %s %s --syspath %s"'
             cmd = cmd % (auth, interpreter, server_script,
-                         str(port), get_library_zip_path())
+                     str(port), get_library_zip_path())
+            process.start(cmd)
+        elif DARWIN and self._need_root_perms(interpreter):
+            cmd = 'sudo %s %s %s --syspath %s' % (interpreter, server_script,
+                 str(port), get_library_zip_path())
+            auth_process = QtCore.QProcess()
+            auth_process.start('pseudo')
+            auth_process.waitForFinished()
             process.start(cmd)
         else:
             self.backend.start(
@@ -404,6 +410,8 @@ class PageInterpreters(Page):
         :param interpreter: path of the interpreter.
         """
         if LINUX and not interpreter.startswith('/home'):
+            return True
+        elif DARWIN and not interpreter.startswith(('/usr/local', '/Users/')):
             return True
         return False
 
@@ -425,7 +433,8 @@ class PageInterpreters(Page):
         _logger().info('pip command finished: %d - %s', status, output)
         self._stop_gif()
         self.ui.widgetInfos.setVisible(True)
-        self.backend.stop()
+        self.backend._process.kill()
+        self.backend = None
         if status:
             self._refresh_packages()
         else:

@@ -107,6 +107,8 @@ def get_authentication_program():
         for program in ['gksu', 'kdesu']:
             if which(program) is not None:
                 return program
+    elif DARWIN:
+        return 'pseudo'  # https://github.com/sstephenson/pseudo
     return None
 
 
