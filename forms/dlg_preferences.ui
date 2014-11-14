@@ -63,7 +63,7 @@
          <string>Editor</string>
         </property>
         <property name="icon">
-         <iconset theme="text">
+         <iconset theme="accessories-text-editor">
           <normaloff/>
          </iconset>
         </property>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_script.ui'
 #
-# Created: Fri Nov 14 11:48:42 2014
+# Created: Fri Nov 14 12:04:18 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -102,9 +102,6 @@ class Ui_MainWindow(object):
         self.toolBarRun = QtGui.QToolBar(MainWindow)
         self.toolBarRun.setObjectName(_fromUtf8("toolBarRun"))
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBarRun)
-        self.toolBarTools = QtGui.QToolBar(MainWindow)
-        self.toolBarTools.setObjectName(_fromUtf8("toolBarTools"))
-        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBarTools)
         self.actionOpen_file = QtGui.QAction(MainWindow)
         icon = QtGui.QIcon.fromTheme(_fromUtf8("document-open"))
         self.actionOpen_file.setIcon(icon)
@@ -114,7 +111,7 @@ class Ui_MainWindow(object):
         self.actionOpen_directory.setIcon(icon)
         self.actionOpen_directory.setObjectName(_fromUtf8("actionOpen_directory"))
         self.actionSave = QtGui.QAction(MainWindow)
-        icon = QtGui.QIcon.fromTheme(_fromUtf8("applications-x-python"))
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-save"))
         self.actionSave.setIcon(icon)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
         self.actionSave_as = QtGui.QAction(MainWindow)
@@ -220,7 +217,6 @@ class Ui_MainWindow(object):
         self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.toolBarSave.setWindowTitle(_translate("MainWindow", "File toolbar", None))
         self.toolBarRun.setWindowTitle(_translate("MainWindow", "Run toolbar", None))
-        self.toolBarTools.setWindowTitle(_translate("MainWindow", "Tools toolbar", None))
         self.actionOpen_file.setText(_translate("MainWindow", "Open file", None))
         self.actionOpen_directory.setText(_translate("MainWindow", "Open directory", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
@@ -237,6 +233,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
-from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit, PyOutlineTreeWidget
+from pyqode.python.widgets import PyOutlineTreeWidget, PyCodeEdit, PyInteractiveConsole
 from qidle.widgets import Shell
 from . import qidle_rc

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/dlg_preferences.ui'
+# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/dlg_preferences.ui'
 #
-# Created: Tue Sep 16 14:11:13 2014
-#      by: PyQt4 UI code generator 4.11.1
+# Created: Fri Nov 14 11:55:36 2014
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -49,7 +49,7 @@ class Ui_Dialog(object):
         icon = QtGui.QIcon.fromTheme(_fromUtf8("applications-graphics"))
         item_0.setIcon(0, icon)
         item_0 = QtGui.QTreeWidgetItem(self.categories)
-        icon = QtGui.QIcon.fromTheme(_fromUtf8("text"))
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("accessories-text-editor"))
         item_0.setIcon(0, icon)
         item_1 = QtGui.QTreeWidgetItem(item_0)
         item_1 = QtGui.QTreeWidgetItem(item_0)

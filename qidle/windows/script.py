@@ -37,12 +37,6 @@ class ScripWindow(WindowBase):
         self.ui.dockWidgetShell.hide()
         self.restore_state()
         self.ui.dockWidgetProgramOutput.hide()
-        # no need for this panel, we have the class explorer tree which is more
-        # convenient.
-        try:
-            self.ui.codeEdit.panels.remove('SymbolBrowserPanel')
-        except KeyError:
-            pass  # panel not installed
         self.ui.codeEdit.dirty_changed.connect(self._on_dirty_changed)
 
         # Edit menu
@@ -62,13 +56,11 @@ class ScripWindow(WindowBase):
 
         for a in self.createPopupMenu().actions():
             if a.text() == 'Class explorer':
-                a.setIcon(QtGui.QIcon(':/icons/view-tree.png'))
-                self.ui.toolBarTools.addAction(a)
+                a.setIcon(icons.class_browser)
             if a.text() == 'Shell':
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'terminal',
                     QtGui.QIcon(':/icons/terminal.png')))
-                self.ui.toolBarTools.addAction(a)
             if a.text() == 'Program output':
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'media-playback-start',
