@@ -24,10 +24,9 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidgetClassExplorer">
    <property name="windowTitle">
-    <string>Class explorer</string>
+    <string>Structure</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -66,7 +65,7 @@
   </widget>
   <widget class="QDockWidget" name="dockWidgetShell">
    <property name="windowTitle">
-    <string>Shell</string>
+    <string>Python console</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>

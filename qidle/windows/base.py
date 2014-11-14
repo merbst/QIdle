@@ -12,6 +12,7 @@ from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.icons import IconProvider
 from qidle.preferences import Preferences
 from qidle.dialogs import DlgPreferences
+from qidle.widgets.dock_manager import DockManager
 
 
 def _logger(obj):
@@ -39,9 +40,16 @@ class WindowBase(QtGui.QMainWindow):
         self._setup_mnu_file(app, ui)
         self._setup_windows_menu(ui)
         self._setup_help_menu()
-        self._setup_status_bar()
         ui.actionConfigure_IDLE.triggered.connect(self.edit_preferences)
         self._setup_icons()
+        self.dock_manager_right = DockManager(self)
+        self.dock_manager_right.setObjectName('dockManagerRight')
+        self.dock_manager_right.setWindowTitle('Dock manager right')
+        self.addToolBar(QtCore.Qt.RightToolBarArea, self.dock_manager_right)
+        self.dock_manager_bottom = DockManager(self)
+        self.dock_manager_bottom.setObjectName('dockManagerBottom')
+        self.dock_manager_bottom.setWindowTitle('Dock manager bottom')
+        self.addToolBar(QtCore.Qt.BottomToolBarArea, self.dock_manager_bottom)
 
     def apply_preferences(self):
         raise NotImplementedError()

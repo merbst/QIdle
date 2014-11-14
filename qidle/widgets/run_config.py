@@ -94,8 +94,3 @@ class RunConfigWidget(QtGui.QWidget):
             'env_vars': self._get_env_vars(),
         }
         return config
-
-
-class Foo:
-    def __init__(self):
-        pass

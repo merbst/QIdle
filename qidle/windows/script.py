@@ -33,8 +33,6 @@ class ScriptWindow(WindowBase):
             args = ['-s'] + [get_library_zip_path()]
         self.ui.codeEdit.backend.start(server.__file__, interpreter, args)
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
-        self.ui.dockWidgetClassExplorer.hide()
-        self.ui.dockWidgetShell.hide()
         self.restore_state()
         self.ui.dockWidgetProgramOutput.hide()
         self.ui.codeEdit.dirty_changed.connect(self._on_dirty_changed)
@@ -55,18 +53,24 @@ class ScriptWindow(WindowBase):
         mode.out_of_doc.connect(self._goto_requested)
 
         for a in self.createPopupMenu().actions():
-            if a.text() == 'Class explorer':
+            if a.text() == 'Structure':
                 a.setIcon(icons.class_browser)
-            if a.text() == 'Shell':
-                a.setIcon(QtGui.QIcon.fromTheme(
-                    'terminal',
-                    QtGui.QIcon(':/icons/terminal.png')))
+            if a.text() == 'Python console':
+                a.setIcon(icons.python_mimetype)
             if a.text() == 'Program output':
                 a.setIcon(QtGui.QIcon.fromTheme(
                     'media-playback-start',
                     QtGui.QIcon(':/icons/media-playback-start.png')))
-        self.ui.codeEdit.cursorPositionChanged.connect(self._update_status_bar)
+        self.ui.dockWidgetClassExplorer.setWindowIcon(icons.class_browser)
+        self.ui.dockWidgetProgramOutput.setWindowIcon(icons.run)
+        self.ui.dockWidgetShell.setWindowIcon(icons.python_mimetype)
         self.apply_preferences(show_panels=False)
+
+        self.dock_manager_right.add_dock_widget(
+            self.ui.dockWidgetClassExplorer)
+        self.dock_manager_bottom.add_dock_widget(
+            self.ui.dockWidgetProgramOutput)
+        self.dock_manager_bottom.add_dock_widget(self.ui.dockWidgetShell)
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
@@ -126,7 +130,6 @@ class ScriptWindow(WindowBase):
         # disabled till save as
         self.ui.actionRun.setDisabled(True)
         self.ui.actionConfigureRun.setDisabled(True)
-        self._update_status_bar()
         _logger().debug('new file created')
         self.ui.codeEdit.show()
         self.ui.codeEdit.panels.refresh()
@@ -249,11 +252,6 @@ class ScriptWindow(WindowBase):
         self.app.qapp.processEvents()
         TextHelper(widget).goto_line(line, col)
         widget.setFocus(True)
-
-    def _update_status_bar(self):
-        l, c = TextHelper(self.ui.codeEdit).cursor_position()
-        self.lbl_cursor_pos.setText('%d:%d' % (l + 1, c + 1))
-        self.lbl_encoding.setText(self.ui.codeEdit.file.encoding)
 
     def apply_preferences(self, show_panels=True):
         _logger().info('applying preferences on editor: %s' %

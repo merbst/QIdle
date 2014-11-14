@@ -94,7 +94,7 @@ def init():
     help_contents = icon(':/icons/help.png', 'help-contents')
     clear = icon(':/icons/edit-clear.png', 'edit-clear')
     configure = icon(':/icons/system-run.png', 'system-run')
-    terminal = icon(':/icons/terminal.png')
+    terminal = icon(':/icons/terminal.png', 'terminal')
     class_browser = icon(':/pyqode_python_icons/rc/class.png')
     window_close = icon(':/icons/dialog-close.png', 'window-close')
     application_exit = icon(':/icons/exit.png', 'exit')

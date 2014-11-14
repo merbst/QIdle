@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_script.ui'
 #
-# Created: Fri Nov 14 12:04:18 2014
+# Created: Fri Nov 14 14:18:56 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,9 +38,6 @@ class Ui_MainWindow(object):
         self.codeEdit.setObjectName(_fromUtf8("codeEdit"))
         self.gridLayout.addWidget(self.codeEdit, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        MainWindow.setStatusBar(self.statusbar)
         self.dockWidgetClassExplorer = QtGui.QDockWidget(MainWindow)
         self.dockWidgetClassExplorer.setObjectName(_fromUtf8("dockWidgetClassExplorer"))
         self.dockWidgetContents_2 = QtGui.QWidget()
@@ -204,9 +201,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "QIdle", None))
-        self.dockWidgetClassExplorer.setWindowTitle(_translate("MainWindow", "Class explorer", None))
+        self.dockWidgetClassExplorer.setWindowTitle(_translate("MainWindow", "Structure", None))
         self.dockWidgetProgramOutput.setWindowTitle(_translate("MainWindow", "Program output", None))
-        self.dockWidgetShell.setWindowTitle(_translate("MainWindow", "Shell", None))
+        self.dockWidgetShell.setWindowTitle(_translate("MainWindow", "Python console", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuRecents.setTitle(_translate("MainWindow", "Recents", None))
         self.menuRun.setTitle(_translate("MainWindow", "Run", None))
@@ -233,6 +230,6 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file", None))
         self.actionNew_project.setText(_translate("MainWindow", "New project", None))
 
-from pyqode.python.widgets import PyOutlineTreeWidget, PyCodeEdit, PyInteractiveConsole
+from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole, PyCodeEdit
 from qidle.widgets import Shell
 from . import qidle_rc
