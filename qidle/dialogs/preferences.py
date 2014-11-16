@@ -17,7 +17,7 @@ class DlgPreferences(QtGui.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self._apply_callback = apply_callback
-        self.setWindowIcon(icons.qidle)
+        self.setWindowIcon(icons.preferences)
 
         # general
         page = PageGeneral(self.ui.pages)
@@ -26,6 +26,7 @@ class DlgPreferences(QtGui.QDialog):
             'General', QtCore.Qt.MatchExactly)[0]
         general.setData(0, QtCore.Qt.UserRole, page)
         self.ui.pages.setCurrentIndex(0)
+        general.setIcon(0, icons.preferences)
 
         # appearance
         page = PageAppearance(self.ui.pages)
@@ -34,6 +35,7 @@ class DlgPreferences(QtGui.QDialog):
             'Appearance', QtCore.Qt.MatchExactly)[0]
         appearance.setData(0, QtCore.Qt.UserRole, page)
         self.appearance = page
+        appearance.setIcon(0, icons.appearance)
 
         # editor
         page = PageEditor(self.ui.pages)
@@ -41,6 +43,7 @@ class DlgPreferences(QtGui.QDialog):
         editor = self.ui.categories.findItems(
             'Editor', QtCore.Qt.MatchExactly)[0]
         editor.setData(0, QtCore.Qt.UserRole, page)
+        editor.setIcon(0, icons.text_edit)
 
         # editor modes
         page = PageEditorModes(self.ui.pages)

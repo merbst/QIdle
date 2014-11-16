@@ -49,6 +49,8 @@ list_remove = None
 go_up = None
 go_down = None
 qidle = None
+appearance = None
+text_edit = None
 
 
 def init():
@@ -77,6 +79,8 @@ def init():
     global go_up
     global go_down
     global qidle
+    global appearance
+    global text_edit
 
     new_file = icon(':/icons/document-new.png', 'document-new')
     open_file = icon(':/icons/document-open.png', 'document-open')
@@ -103,6 +107,10 @@ def init():
     go_up = icon(':/icons/go-up.png', 'go-up')
     go_down = icon(':/icons/go-up.png', 'go-down')
     qidle = icon(':/icons/QIdle.png')
+    appearance = icon(':/icons/applications-graphics.png',
+                      'applications-graphics')
+    text_edit = icon(':/icons/application-x-text-edit.png',
+                     'accessories-text-editor')
 
 
 class IconProvider(QtGui.QFileIconProvider):
