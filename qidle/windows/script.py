@@ -93,13 +93,13 @@ class ScriptWindow(WindowBase):
                         ev.ignore()
                 else:
                     ev.accept()
-        super(ScriptWindow, self).closeEvent(ev)
         if ev.isAccepted():
             self.ui.codeEdit.modes.clear()
             self.ui.codeEdit.panels.clear()
             self.ui.codeEdit.file.close()
             self.ui.codeEdit.backend.stop()
             self.save_state()
+        super(ScriptWindow, self).closeEvent(ev)
 
     def restore_state(self):
         prefs = Preferences()

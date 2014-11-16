@@ -121,7 +121,10 @@ class WindowBase(QtGui.QMainWindow):
                 ev.ignore()
         if ev.isAccepted():
             super(WindowBase, self).closeEvent(ev)
-            self.closed.emit(self)
+            QtCore.QTimer.singleShot(1, self._emit_closed)
+
+    def _emit_closed(self):
+        self.closed.emit(self)
 
     def _setup_icons(self):
         self.ui.actionNew_file.setIcon(icons.new_file)
