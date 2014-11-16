@@ -44,3 +44,8 @@ Here is the expected list of milestones till version 1.0:
 - [ ] 1.0: implement debugger interface
 - [ ] 1.x: add more features (such as refactoring, add editors for more
   languages (cython, json, html, c))
+
+Screenshots
+-----------
+
+.. image:: https://raw.githubusercontent.com/ColinDuquesnoy/QIdle/master/share/screenshot.png
