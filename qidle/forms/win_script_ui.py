@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_script.ui'
 #
-# Created: Fri Nov 14 19:14:38 2014
+# Created: Sun Nov 16 12:41:18 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
