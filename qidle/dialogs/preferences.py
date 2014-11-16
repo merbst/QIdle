@@ -102,9 +102,7 @@ class DlgPreferences(QtGui.QDialog):
         dlg = cls(parent, callback)
         if dlg.exec_() == DlgPreferences.Accepted:
             dlg.apply()
-            dlg.appearance.ui.edit_preview.modes.clear()
-            dlg.appearance.ui.edit_preview.panels.clear()
-            dlg.appearance.ui.edit_preview.backend.stop()
+        dlg.appearance.ui.edit_preview.close()
 
     def reset(self):
         w = self.ui.pages.currentWidget()
