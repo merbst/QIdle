@@ -160,7 +160,7 @@ class PageInterpreters(Page):
                     'Ensure pip and pyqode.python has been installed for the '
                     'target intepreter' %
                     self.ui.combo_interpreters.currentText())
-                self._on_refresh_finished(False, None)
+                self._on_refresh_finished(None)
             else:
                 # waiting for the backend to start, retry in a few milliseconds
                 QtCore.QTimer.singleShot(100, self._send_request)
@@ -173,7 +173,7 @@ class PageInterpreters(Page):
         self.ui.widgetInfos.hide()
         self.ui.lblMovie.hide()
 
-    def _on_refresh_finished(self, status, results):
+    def _on_refresh_finished(self, results):
         """
         Display the refreshed list of packages when the backend command
         finished.
@@ -181,14 +181,12 @@ class PageInterpreters(Page):
         :param status: Command status
         :param results: Command results
         """
+        status, output = results
         self._stop_gif()
         self._stop_backend()
         self._enable_buttons(True)
-        if status is False:
-            _logger().info('packages refresh failed')
-            return
-        self.ui.table_packages.setRowCount(len(results))
-        for i, data in enumerate(sorted(results, key=lambda x: x[0])):
+        self.ui.table_packages.setRowCount(len(output))
+        for i, data in enumerate(sorted(output, key=lambda x: x[0])):
             for c, val in enumerate(data):
                 item = QtGui.QTableWidgetItem(
                     val)
@@ -432,7 +430,7 @@ class PageInterpreters(Page):
         else:
             self._start_gif()
 
-    def _on_command_finished(self, status, output):
+    def _on_command_finished(self, results):
         """
         Displays command results if the command failed or refreshes the list
         of packages.
@@ -440,6 +438,7 @@ class PageInterpreters(Page):
         :param status: Command status. False if the command failed.
         :param output: Command output.
         """
+        status, output = results
         _logger().info('pip command finished: %d - %s', status, output)
         self._stop_gif()
         self.ui.widgetInfos.setVisible(True)
