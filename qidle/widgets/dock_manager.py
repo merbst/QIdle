@@ -90,7 +90,7 @@ class DockManager(QtWidgets.QToolBar):
     """
 
     def __init__(self, parent):
-        super().__init__(parent)
+        super(DockManager, self).__init__(parent)
         self.setStyleSheet(self.qss)
         self.setMovable(False)
         self.setFloatable(False)

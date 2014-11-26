@@ -20,7 +20,6 @@ def f(x):
 class Foo:
     def __init__(self):
         byte_string = 'newline:\n also newline:\x0a'
-        text_string = u"Cyrillic Я is \u042f."
         self.makeSense(whatever=1)
 
     def makeSense(self, whatever):

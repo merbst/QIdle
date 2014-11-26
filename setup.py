@@ -25,7 +25,8 @@ with open('README.rst', 'r') as readme:
 
 # install requirements
 requirements = [
-    'pyqode.python', 'ipython', 'pyzmq', 'virtualenv'
+    'pyqode.python', 'ipython', 'pyzmq', 'virtualenv', 'pip>=1.5.6',
+    'setuptools>=7.0'
 ]
 
 

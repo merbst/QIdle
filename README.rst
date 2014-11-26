@@ -33,6 +33,8 @@ You can install from the git repository::
 
     pip install git+https://github.com/ColinDuquesnoy/QIdle.git
 
+Then you can run bootstrap.py (it will warn you if there are any missing
+requirements)
 
 Road-map
 --------
