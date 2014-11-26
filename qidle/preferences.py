@@ -11,6 +11,24 @@ from pyqode.core.api import CodeEdit
 from qidle.python import detect_system_interpreters
 
 
+class Preferences(QtCore.QSettings):
+    #: settings version, updated it to clear user settings for the next
+    # release
+    version = '0'
+    names = ('QIdle', 'QIdle%s' % version)
+
+    def __init__(self):
+        super(Preferences, self).__init__(*self.names)
+        self.script_window = ScriptWindow(self)
+        self.project_window = ProjectWindow(self)
+        self.key_bindings = KeyBindings(self)
+        self.cache = Cache(self)
+        self.interpreters = Interpreters(self)
+        self.general = General(self)
+        self.appearance = Appearance(self)
+        self.editor = Editor(self)
+
+
 class Section(object):
     def __init__(self, settings, prefix):
         self._settings = settings
@@ -23,30 +41,57 @@ class Section(object):
         self._settings.setValue('%s/%s' % (self.prefix, key), value)
 
 
-class MainWindow(Section):
+class ScriptWindow(Section):
     def __init__(self, settings):
-        super(MainWindow, self).__init__(settings, self.__class__.__name__)
+        super(ScriptWindow, self).__init__(settings, self.__class__.__name__)
 
     @property
-    def script_window_geometry(self):
+    def geometry(self):
         v = self.get_value('script_window_geometry')
         if v:
             return bytes(v)
         return b''
 
-    @script_window_geometry.setter
-    def script_window_geometry(self, value):
+    @geometry.setter
+    def geometry(self, value):
         self.set_value('script_window_geometry', value)
 
     @property
-    def script_window_state(self):
+    def state(self):
         v = self.get_value('script_window_state')
         if v:
             return bytes(v)
         return b''
 
-    @script_window_state.setter
-    def script_window_state(self, value):
+    @state.setter
+    def state(self, value):
+        self.set_value('script_window_state', value)
+
+
+class ProjectWindow(Section):
+    def __init__(self, settings):
+        super(ProjectWindow, self).__init__(settings, self.__class__.__name__)
+
+    @property
+    def geometry(self):
+        v = self.get_value('script_window_geometry')
+        if v:
+            return bytes(v)
+        return b''
+
+    @geometry.setter
+    def geometry(self, value):
+        self.set_value('script_window_geometry', value)
+
+    @property
+    def state(self):
+        v = self.get_value('script_window_state')
+        if v:
+            return bytes(v)
+        return b''
+
+    @state.setter
+    def state(self, value):
         self.set_value('script_window_state', value)
 
 
@@ -434,20 +479,3 @@ class Editor(Section):
     @panels.setter
     def panels(self, value):
         self.set_value('panels', repr(value))
-
-
-class Preferences(QtCore.QSettings):
-    #: settings version, updated it to clear user settings for the next
-    # release
-    version = ''
-    names = ('QIdle', 'QIdle%s' % version)
-
-    def __init__(self):
-        super(Preferences, self).__init__(*self.names)
-        self.main_window = MainWindow(self)
-        self.key_bindings = KeyBindings(self)
-        self.cache = Cache(self)
-        self.interpreters = Interpreters(self)
-        self.general = General(self)
-        self.appearance = Appearance(self)
-        self.editor = Editor(self)

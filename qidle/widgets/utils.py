@@ -9,9 +9,13 @@ def add_interpreter_list(combo, interpreters, default, default_index=None, icon=
         icon = icons.python_interpreter
     for interpreter in sorted(interpreters):
         index =combo.count()
-        combo.addItem(icon, interpreter)
-        if interpreter == default:
-            default_index = index
+        try:
+            combo.addItem(icon, interpreter)
+        except TypeError:
+            pass
+        else:
+            if interpreter == default:
+                default_index = index
     return default_index
 
 

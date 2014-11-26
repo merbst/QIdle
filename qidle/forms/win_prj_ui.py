@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_prj.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_prj.ui'
 #
-# Created: Wed Nov 26 13:26:36 2014
+# Created: Wed Nov 26 19:53:22 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,6 +24,17 @@ class Ui_MainWindow(object):
         self.tabWidget.setObjectName("tabWidget")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
+        self.dockWidgetFiles = QtWidgets.QDockWidget(MainWindow)
+        self.dockWidgetFiles.setObjectName("dockWidgetFiles")
+        self.dockWidgetContents = QtWidgets.QWidget()
+        self.dockWidgetContents.setObjectName("dockWidgetContents")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.dockWidgetContents)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.fsTree = FileSystemTreeView(self.dockWidgetContents)
+        self.fsTree.setObjectName("fsTree")
+        self.gridLayout_2.addWidget(self.fsTree, 0, 0, 1, 1)
+        self.dockWidgetFiles.setWidget(self.dockWidgetContents)
+        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.dockWidgetFiles)
         self.dockWidgetClassExplorer = QtWidgets.QDockWidget(MainWindow)
         self.dockWidgetClassExplorer.setObjectName("dockWidgetClassExplorer")
         self.dockWidgetContents_2 = QtWidgets.QWidget()
@@ -60,7 +71,7 @@ class Ui_MainWindow(object):
         self.dockWidgetPyConsole.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetPyConsole)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 35))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 34))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -85,17 +96,6 @@ class Ui_MainWindow(object):
         self.toolBarRun = QtWidgets.QToolBar(MainWindow)
         self.toolBarRun.setObjectName("toolBarRun")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBarRun)
-        self.dockWidgetFiles = QtWidgets.QDockWidget(MainWindow)
-        self.dockWidgetFiles.setObjectName("dockWidgetFiles")
-        self.dockWidgetContents = QtWidgets.QWidget()
-        self.dockWidgetContents.setObjectName("dockWidgetContents")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.dockWidgetContents)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.fsTree = FileSystemTreeView(self.dockWidgetContents)
-        self.fsTree.setObjectName("fsTree")
-        self.gridLayout_2.addWidget(self.fsTree, 0, 0, 1, 1)
-        self.dockWidgetFiles.setWidget(self.dockWidgetContents)
-        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.dockWidgetFiles)
         self.actionOpen_file = QtWidgets.QAction(MainWindow)
         icon = QtGui.QIcon.fromTheme("document-open")
         self.actionOpen_file.setIcon(icon)
@@ -199,6 +199,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "QIdle"))
+        self.dockWidgetFiles.setWindowTitle(_translate("MainWindow", "Files"))
         self.dockWidgetClassExplorer.setWindowTitle(_translate("MainWindow", "Structure"))
         self.dockWidgetProgramOutput.setWindowTitle(_translate("MainWindow", "Program output"))
         self.dockWidgetPyConsole.setWindowTitle(_translate("MainWindow", "Python console"))
@@ -212,7 +213,6 @@ class Ui_MainWindow(object):
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.toolBarSave.setWindowTitle(_translate("MainWindow", "File toolbar"))
         self.toolBarRun.setWindowTitle(_translate("MainWindow", "Run toolbar"))
-        self.dockWidgetFiles.setWindowTitle(_translate("MainWindow", "Files"))
         self.actionOpen_file.setText(_translate("MainWindow", "Open file"))
         self.actionOpen_directory.setText(_translate("MainWindow", "Open directory"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
@@ -229,7 +229,7 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
 
-from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole
-from pyqode.core.widgets import FileSystemTreeView, SplittableCodeEditTabWidget
+from pyqode.core.widgets import SplittableCodeEditTabWidget, FileSystemTreeView
 from qidle.widgets import IPythonConsole
+from pyqode.python.widgets import PyInteractiveConsole, PyOutlineTreeWidget
 from . import qidle_rc

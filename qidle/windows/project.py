@@ -74,18 +74,19 @@ class ProjectWindow(WindowBase):
 
     def closeEvent(self, ev):
         self.ui.tabWidget.closeEvent(ev)
+        self.save_state()
         super(ProjectWindow, self).closeEvent(ev)
 
     def restore_state(self):
         prefs = Preferences()
         if prefs.general.restore_scr_window_state:
-            self.restoreGeometry(prefs.main_window.script_window_geometry)
-            self.restoreState(prefs.main_window.script_window_state)
+            self.restoreGeometry(prefs.project_window.geometry)
+            self.restoreState(prefs.project_window.state)
 
     def save_state(self):
         prefs = Preferences()
-        prefs.main_window.script_window_geometry = self.saveGeometry()
-        prefs.main_window.script_window_state = self.saveState()
+        prefs.project_window.geometry = self.saveGeometry()
+        prefs.project_window.state = self.saveState()
 
     def open(self, path):
         self.ui.fsTree.set_root_path(path)

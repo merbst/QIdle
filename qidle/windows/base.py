@@ -120,6 +120,7 @@ class WindowBase(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             if button != QtWidgets.QMessageBox.Yes:
                 ev.ignore()
+        self.app.remember_path(self.path)
         if ev.isAccepted():
             super(WindowBase, self).closeEvent(ev)
             QtCore.QTimer.singleShot(1, self._emit_closed)
@@ -239,7 +240,7 @@ class WindowBase(QtWidgets.QMainWindow):
             self.app.create_project_window(path)
 
     def _on_open_file_triggered(self):
-        path = QtWidgets.QFileDialog.getOpenFileName(
+        path, filter = QtWidgets.QFileDialog.getOpenFileName(
             self, 'Open script', self.path,
             filter='Python files (*.py *.pyw)')
         if path:

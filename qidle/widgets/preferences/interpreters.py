@@ -234,7 +234,8 @@ class PageInterpreters(Page):
     def _add_local(self):
         """
         Adds a local interpeter.        """
-        path = QtWidgets.QFileDialog.getOpenFileName(self, 'Add local interpreter')
+        path, filter = QtWidgets.QFileDialog.getOpenFileName(
+            self, 'Add local interpreter')
         if path:
             lst = Preferences().interpreters.locals
             lst.append(path)

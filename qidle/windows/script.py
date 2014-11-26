@@ -104,13 +104,13 @@ class ScriptWindow(WindowBase):
     def restore_state(self):
         prefs = Preferences()
         if prefs.general.restore_scr_window_state:
-            self.restoreGeometry(prefs.main_window.script_window_geometry)
-            self.restoreState(prefs.main_window.script_window_state)
+            self.restoreGeometry(prefs.script_window.geometry)
+            self.restoreState(prefs.script_window.state)
 
     def save_state(self):
         prefs = Preferences()
-        prefs.main_window.script_window_geometry = self.saveGeometry()
-        prefs.main_window.script_window_state = self.saveState()
+        prefs.script_window.geometry = self.saveGeometry()
+        prefs.script_window.state = self.saveState()
 
     def new(self):
         base_title = 'Untitled'
@@ -153,7 +153,7 @@ class ScriptWindow(WindowBase):
         self.app.update_windows_menu()
 
     def save_as(self):
-        path = QtWidgets.QFileDialog.getSaveFileName(
+        path, filter = QtWidgets.QFileDialog.getSaveFileName(
             self, 'Save file as', filter='Python files (*.py)',
             directory=self.path)
         if path:

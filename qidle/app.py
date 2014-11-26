@@ -3,6 +3,7 @@ Contains the application class.
 
 """
 import logging
+import mimetypes
 import os
 import sys
 from pyqode.qt import QtWidgets
@@ -38,12 +39,16 @@ class Application:
         self.recent_files_manager = RecentFilesManager(*Preferences.names)
         self._current = None
         self.qapp.focusChanged.connect(self.on_focus_changed)
+        self._setup_custom_mimetypes()
+
+    def _setup_custom_mimetypes(self):
+        mimetypes.add_type('text/xml', 'ui')
 
     def on_focus_changed(self, prev, new):
         if new:
             parent = new
             while (not isinstance(parent, QtWidgets.QMainWindow) and
-                parent is not None):
+                parent.parent() is not None):
                 parent = parent.parent()
             if self._current != parent and parent is not None:
                 self._current = parent

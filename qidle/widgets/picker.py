@@ -65,10 +65,10 @@ class FilePicker(QtWidgets.QWidget):
             ret = QtWidgets.QFileDialog.getExistingDirectory(
                 self, 'Choose a directory', self.line_edit.text())
         else:
-            ret = QtWidgets.QFileDialog.getOpenFileName(
+            path, filter = QtWidgets.QFileDialog.getOpenFileName(
                 self, 'Choose a file', self.line_edit.text())
-        if ret:
-            self.line_edit.setText(ret)
+        if path:
+            self.line_edit.setText(path)
 
     def _on_path_changed(self, path):
         palette = self.palette()

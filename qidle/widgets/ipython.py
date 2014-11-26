@@ -25,7 +25,7 @@ except (ImportError, RuntimeError):
     # IPython not available for the selected QT_API
     class IPythonConsole(QLabel):
         def __init__(self, parent):
-            super().__init__(parent)
+            super(IPythonConsole, self).__init__(parent)
             self.setText('IPython not found...')
             self.setAlignment(Qt.AlignCenter)
 
@@ -73,4 +73,3 @@ else:
                 self.style_sheet = styles.default_light_style_template % dict(
                     bgcolor=background.name(), fgcolor=foreground.name(),
                     select="#ccc")
-

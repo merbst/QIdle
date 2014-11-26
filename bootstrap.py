@@ -11,6 +11,7 @@ The bootstrap script let you run the editor from source checkout:
 
         python bootstrap.py --qt 4
 
+This script has been largely inspired by the bootstrap script of SpyderIDE.
 """
 import logging
 logger = logging.getLogger('boostrap')
@@ -22,21 +23,22 @@ time_start = time.time()
 import os.path as osp
 import sys
 
-#--- bootstrapping QIdle
+
+# --------- bootstrapping QIdle
 logger.info("Executing QIdle from source checkout")
 
-#--- patching sys.path
+# ------ patching sys.path
 DEVPATH = osp.dirname(osp.abspath(__file__))
 sys.path.insert(0, DEVPATH)
 logger.info("01. Patched sys.path with %s", DEVPATH)
 
-#--- configure argument parser
+# ------ configure argument parser
 from qidle.argparser import parse_args
 args = parse_args()
 logger.info('02. Parsed command line arguments: %r', args)
 
 
-#--- check qt api
+# ------ check qt api
 if args.qt == 5:
     os.environ['QT_API'] = 'pyqt5'
 else:
@@ -55,7 +57,7 @@ except ImportError:
     except ImportError:
         # Total failure, pyqt not found
         logger.exception('03. Failed to import Qt. Please install PyQt4 or '
-                          'PyQt5')
+                         'PyQt5')
         sys.exit(1)
 api = os.environ['QT_API'].replace('p', 'P').replace('q', 'Q')
 logger.info('03. Imported %s' % api)
@@ -67,15 +69,15 @@ else:
     from PyQt5.QtCore import QT_VERSION_STR
 logger.info('    [Qt %s, %s %s]' % (QT_VERSION_STR, api, PYQT_VERSION_STR))
 
-#--- check pyqode root package
+# ------ check pyqode root package
 try:
     import pyqode
     from pyqode.qt import __version__ as qt_version
     from pyqode.core import __version__ as core_version
     from pyqode.python import __version__ as python_version
 except ImportError:
-    logger.exception('04. Cannot import pyQode: please install the following packages:'
-                     'pyqode.qt, pyqode.core, pyqode.python')
+    logger.exception('04. Cannot import pyQode: please install the following '
+                     'packages: pyqode.qt, pyqode.core, pyqode.python')
     sys.exit(1)
 else:
     logger.info('04. Imported pyQode')
@@ -85,7 +87,7 @@ else:
         logger.warning('Wrong pyQode version, you need pyqode >= 2.4')
         sys.exit(1)
 
-#--- check IPython
+# ------ check IPython
 try:
     from IPython import __version__ as IPython_version
 except ImportError:
@@ -103,7 +105,7 @@ else:
         logger.info('    [IPython %s, pyzmq %s]' % (
             IPython_version, __version__))
 
-#--- check virtualenv
+# ------ check virtualenv
 try:
     from virtualenv import __version__
 except ImportError:
@@ -112,7 +114,8 @@ except ImportError:
 else:
     logger.info('06. Imported virtualenv %s' % __version__)
 
-#--- check setupools
+
+# ------ check setupools
 try:
     from setuptools import __version__
 except ImportError:
@@ -123,7 +126,7 @@ else:
     logger.info('07. Imported setuptools %s' % __version__)
 
 
-#--- check pip
+# ------ check pip
 try:
     from pip import __version__
 except ImportError:
@@ -132,6 +135,7 @@ except ImportError:
 else:
     logger.info('08. Imported pip %s' % __version__)
 
+# ------ run the application
 from qidle import versions
 from qidle.main import main
 all_versions = versions.get_versions()
