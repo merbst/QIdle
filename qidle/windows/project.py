@@ -1,6 +1,6 @@
 import logging
 import os
-from pyqode.qt import QtGui
+from pyqode.qt import QtGui, QtWidgets, QtCore
 from pyqode.python.widgets import PyCodeEdit
 import sys
 
@@ -139,9 +139,20 @@ class ProjectWindow(WindowBase):
         pass
 
     def _on_tv_activated(self, index):
+        def is_binary_string(path):
+            textchars = (bytearray([7, 8, 9, 10, 12, 13, 27]) +
+                         bytearray(range(0x20, 0x100)))
+            check_if_binary = lambda bytes: bool(
+                bytes.translate(None, textchars))
+            with open(path, 'rb') as f:
+                return check_if_binary(f.read())
+
         path = self.ui.fsTree.filePath(index)
         if os.path.isfile(path):
-            self.ui.tabWidget.open_document(path)
+            if is_binary_string(path):
+                QtWidgets.QDesktopServices.openUrl(QtCore.QUrl(path))
+            else:
+                self.ui.tabWidget.open_document(path)
 
     def _on_current_editor_changed(self, new):
         self.ui.classExplorer.set_editor(new)
