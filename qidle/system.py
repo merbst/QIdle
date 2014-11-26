@@ -52,6 +52,7 @@ def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
     with ZipFile(zip_path, 'w') as myzip:
         for package in packages:
             pfile = package.__file__
+            pfile = pfile.replace('.pyc', '.py')
             path = pfile if not '__init__.py' in pfile else os.path.dirname(
                 pfile)
             _logger().debug(' - adding %s ' % package.__name__)
@@ -68,7 +69,6 @@ def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
                                 os.path.splitext(f)[1] not in ['.pyc', '.zip']:
                             fn = os.path.join(dirpath, f)
                             arcname = os.path.relpath(fn, parent_path)
-                            # print('   - %s' % arcname)
                             myzip.write(fn, arcname=arcname)
             else:
                 arcname = os.path.split(path)[1]
