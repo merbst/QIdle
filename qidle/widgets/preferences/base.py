@@ -1,7 +1,7 @@
 """
 Contains the base class for preferences pages.
 """
-from PyQt4 import QtGui
+from pyqode.qt import QtGui, QtWidgets
 
 
 HEADER_STYLE = '''border-radius: 3px;
@@ -11,7 +11,7 @@ padding: 10px;
 '''
 
 
-class Page(QtGui.QWidget):
+class Page(QtWidgets.QWidget):
     def __init__(self, ui, parent=None):
         super(Page, self).__init__(parent)
         self.ui = ui

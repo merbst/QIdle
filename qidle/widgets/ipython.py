@@ -1,4 +1,4 @@
-# from PyQt4.QtGui import QApplication
+# from pyqode.qt.QtGui import QApplication
 import logging
 import os
 
@@ -6,13 +6,23 @@ import os
 def _logger():
     return logging.getLogger()
 
+from pyqode.qt.QtWidgets import QLabel
+from pyqode.qt.QtCore import Qt
+from pyqode.core.api import ColorScheme
 
+mem = os.environ['QT_API']
 try:
     from IPython.qt.console import styles
-except ImportError:
-    from PyQt4.QtGui import QLabel
-    from PyQt4.QtCore import Qt
 
+    from qidle.preferences import Preferences
+    if os.environ['QT_API'] == 'pyqt4':
+        os.environ['QT_API'] = 'pyqt'
+    from IPython.qt.console.rich_ipython_widget import RichIPythonWidget
+    from IPython.qt.inprocess import QtInProcessKernelManager
+    os.environ['QT_API'] = mem
+except (ImportError, RuntimeError):
+    os.environ['QT_API'] = mem
+    # IPython not available for the selected QT_API
     class IPythonConsole(QLabel):
         def __init__(self, parent):
             super().__init__(parent)
@@ -23,15 +33,6 @@ except ImportError:
         def apply_preferences(self):
             pass
 else:
-    from pyqode.core.api import ColorScheme
-    from qidle.preferences import Preferences
-
-    if os.environ['QT_API'] == 'pyqt4':
-        os.environ['QT_API'] = 'pyqt'
-    from IPython.qt.console.rich_ipython_widget import RichIPythonWidget
-    from IPython.qt.inprocess import QtInProcessKernelManager
-    os.environ['QT_API'] = 'pyqt4'
-
     class IPythonConsole(RichIPythonWidget):
         def __init__(self, parent):
             super(IPythonConsole, self).__init__(parent)

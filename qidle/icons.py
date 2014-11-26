@@ -3,7 +3,7 @@ This module contains the icon definitions, taking icon theme into account on
 linux.
 
 """
-from PyQt4 import QtGui
+from pyqode.qt import QtGui, QtWidgets
 
 
 def icon(path, theme=None):
@@ -115,11 +115,11 @@ def init():
                       'applications-graphics')
     text_edit = icon(':/icons/application-x-text-edit.png',
                      'accessories-text-editor')
-    folder = QtGui.QFileIconProvider().icon(QtGui.QFileIconProvider.Folder)
-    file = QtGui.QFileIconProvider().icon(QtGui.QFileIconProvider.File)
+    folder = QtWidgets.QFileIconProvider().icon(QtWidgets.QFileIconProvider.Folder)
+    file = QtWidgets.QFileIconProvider().icon(QtWidgets.QFileIconProvider.File)
 
 
-class IconProvider(QtGui.QFileIconProvider):
+class IconProvider(QtWidgets.QFileIconProvider):
     def icon(self, file_infos):
         global python_mimetype
         if file_infos.suffix() == 'py':

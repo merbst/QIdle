@@ -1,6 +1,6 @@
 import logging
 import os
-from PyQt4 import QtGui
+from pyqode.qt import QtGui
 from pyqode.python.widgets import PyCodeEdit
 import sys
 

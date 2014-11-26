@@ -4,10 +4,10 @@ promoted widget in Qt Designer.
 
 """
 import os
-from PyQt4 import QtCore, QtGui
+from pyqode.qt import QtCore, QtGui, QtWidgets
 
 
-class FilePicker(QtGui.QWidget):
+class FilePicker(QtWidgets.QWidget):
     """
     File picker widget combines a line edit and a tool button. It lets you
     choose a file by clicking on the tool button or by typing the path in the
@@ -43,17 +43,17 @@ class FilePicker(QtGui.QWidget):
     def __init__(self, parent=None):
         super(FilePicker, self).__init__(parent)
         self._pick_dirs = True
-        layout = QtGui.QHBoxLayout()
+        layout = QtWidgets.QHBoxLayout()
         layout.setMargin(0)
-        self.line_edit = QtGui.QLineEdit()
+        self.line_edit = QtWidgets.QLineEdit()
         self.path = os.path.expanduser('~')
         layout.addWidget(self.line_edit)
-        self.tool_button = QtGui.QToolButton()
+        self.tool_button = QtWidgets.QToolButton()
         self.tool_button.setText('...')
         layout.addWidget(self.tool_button)
         self.setLayout(layout)
-        completer = QtGui.QCompleter(self)
-        self._mdl = QtGui.QDirModel(completer)
+        completer = QtWidgets.QCompleter(self)
+        self._mdl = QtWidgets.QDirModel(completer)
         completer.setModel(self._mdl)
         self.line_edit.setCompleter(completer)
         self.pick_dirs = False
@@ -62,10 +62,10 @@ class FilePicker(QtGui.QWidget):
 
     def _pick(self):
         if self.pick_dirs:
-            ret = QtGui.QFileDialog.getExistingDirectory(
+            ret = QtWidgets.QFileDialog.getExistingDirectory(
                 self, 'Choose a directory', self.line_edit.text())
         else:
-            ret = QtGui.QFileDialog.getOpenFileName(
+            ret = QtWidgets.QFileDialog.getOpenFileName(
                 self, 'Choose a file', self.line_edit.text())
         if ret:
             self.line_edit.setText(ret)

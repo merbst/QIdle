@@ -2,7 +2,7 @@
 This module contains the preferences dialog implementation.
 
 """
-from PyQt4 import QtGui, QtCore
+from pyqode.qt import QtCore, QtWidgets
 from qidle import icons
 from qidle.forms.dlg_preferences_ui import Ui_Dialog
 from qidle.widgets.preferences import (
@@ -11,7 +11,7 @@ from qidle.widgets.preferences import (
 )
 
 
-class DlgPreferences(QtGui.QDialog):
+class DlgPreferences(QtWidgets.QDialog):
     def __init__(self, parent, apply_callback):
         super(DlgPreferences, self).__init__(parent)
         self.ui = Ui_Dialog()

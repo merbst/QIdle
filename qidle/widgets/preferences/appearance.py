@@ -1,7 +1,7 @@
 """
 Contains the general settings page.
 """
-from PyQt4 import QtGui
+from pyqode.qt import QtGui, QtWidgets
 from pyqode.core.api.syntax_highlighter import PYGMENTS_STYLES, ColorScheme
 from pyqode.python.backend import server
 from qidle.forms.settings_page_appearance_ui import Ui_Form
@@ -58,7 +58,7 @@ print(f.__doc__)
         self.ui.edit_preview.font_size = self.ui.spinbox_font_size.value()
 
     def _choose_font(self):
-        font, ok = QtGui.QFontDialog.getFont(
+        font, ok = QtWidgets.QFontDialog.getFont(
             self.ui.edit_preview.font(), self)
         self.ui.line_edit_font.setText(font.family())
         self.ui.edit_preview.font_name = font.family()

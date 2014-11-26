@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import weakref
-from PyQt4 import QtCore, QtGui
+from pyqode.qt import QtCore, QtGui, QtWidgets
 from pyqode.core.widgets import MenuRecentFiles
 from qidle import icons
 from qidle.dialogs.ask_open import DlgAskOpenScript
@@ -19,8 +19,8 @@ def _logger(obj):
     return logging.getLogger(__name__ + '[%s]' % obj.__class__.__name__)
 
 
-class WindowBase(QtGui.QMainWindow):
-    closed = QtCore.pyqtSignal(QtGui.QMainWindow)
+class WindowBase(QtWidgets.QMainWindow):
+    closed = QtCore.pyqtSignal(QtWidgets.QMainWindow)
 
     @property
     def app(self):
@@ -38,12 +38,13 @@ class WindowBase(QtGui.QMainWindow):
         self.ui = ui
         self.ui.setupUi(self)
         # we need to set proper menu roles for OS X
-        self.ui.actionAbout_QIdle.setMenuRole(QtGui.QAction.AboutRole)
-        self.ui.actionQuit.setMenuRole(QtGui.QAction.QuitRole)
+        self.ui.actionAbout_QIdle.setMenuRole(QtWidgets.QAction.AboutRole)
+        self.ui.actionQuit.setMenuRole(QtWidgets.QAction.QuitRole)
         if sys.platform == 'win32':
             self.ui.actionConfigure_IDLE.setText('Preferences')
-        self.ui.actionConfigure_IDLE.setMenuRole(QtGui.QAction.PreferencesRole)
-        self.ui.actionConfigureRun.setMenuRole(QtGui.QAction.NoRole)
+        self.ui.actionConfigure_IDLE.setMenuRole(
+            QtWidgets.QAction.PreferencesRole)
+        self.ui.actionConfigureRun.setMenuRole(QtWidgets.QAction.NoRole)
         self._setup_mnu_file(app, ui)
         self._setup_windows_menu(ui)
         self._setup_help_menu()
@@ -82,7 +83,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def zoom_height(self):
         _logger(self).debug('zoom height')
-        desktop = QtGui.QApplication.instance().desktop()
+        desktop = QtWidgets.QApplication.instance().desktop()
         if sys.platform == 'win32':
             difference = (self.frameGeometry().height() -
                           self.geometry().height())
@@ -101,7 +102,7 @@ class WindowBase(QtGui.QMainWindow):
         self.ui.menuWindows.addMenu(self.ui.menuTools)
         self.ui.menuWindows.addSeparator()
         for win in open_windows:
-            action = QtGui.QAction(self)
+            action = QtWidgets.QAction(self)
             if win == self:
                 action.setDisabled(True)
             action.setText(win.windowTitle())
@@ -113,11 +114,11 @@ class WindowBase(QtGui.QMainWindow):
         nb_windows = len(self._open_windows)
         _logger(self).debug('number of windows: %d', nb_windows)
         if Preferences().general.confirm_application_exit and nb_windows == 1:
-            button = QtGui.QMessageBox.question(
+            button = QtWidgets.QMessageBox.question(
                 self, "Confirm exit",
                 "Are you sure you want to exit QIdle?",
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            if button != QtGui.QMessageBox.Yes:
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            if button != QtWidgets.QMessageBox.Yes:
                 ev.ignore()
         if ev.isAccepted():
             super(WindowBase, self).closeEvent(ev)
@@ -143,10 +144,10 @@ class WindowBase(QtGui.QMainWindow):
         self.ui.actionQuit.setIcon(icons.application_exit)
 
     def _setup_status_bar(self):
-        self.lbl_cursor_pos = QtGui.QLabel()
+        self.lbl_cursor_pos = QtWidgets.QLabel()
         self.lbl_cursor_pos.setText('na')
         self.statusBar().addPermanentWidget(self.lbl_cursor_pos)
-        self.lbl_encoding = QtGui.QLabel()
+        self.lbl_encoding = QtWidgets.QLabel()
         self.lbl_encoding.setText('na')
         self.statusBar().addPermanentWidget(self.lbl_encoding)
 
@@ -183,11 +184,11 @@ class WindowBase(QtGui.QMainWindow):
     def _setup_windows_menu(self, ui):
         ui.actionZoom_height.triggered.connect(self.zoom_height)
         ui.menuTools.addActions(self.createPopupMenu().actions())
-        action_prev_window = QtGui.QAction(self)
+        action_prev_window = QtWidgets.QAction(self)
         action_prev_window.setShortcut('Alt+Up')
         action_prev_window.triggered.connect(self._show_prev_window)
         self.addAction(action_prev_window)
-        action_next_window = QtGui.QAction(self)
+        action_next_window = QtWidgets.QAction(self)
         action_next_window.setShortcut('Alt+Down')
         action_next_window.triggered.connect(self._show_next_window)
         self.addAction(action_next_window)
@@ -238,7 +239,7 @@ class WindowBase(QtGui.QMainWindow):
             self.app.create_project_window(path)
 
     def _on_open_file_triggered(self):
-        path = QtGui.QFileDialog.getOpenFileName(
+        path = QtWidgets.QFileDialog.getOpenFileName(
             self, 'Open script', self.path,
             filter='Python files (*.py *.pyw)')
         if path:
@@ -257,7 +258,7 @@ class WindowBase(QtGui.QMainWindow):
                     self._open_in_current_window(path, script)
 
     def _on_open_project_triggered(self):
-        path = QtGui.QFileDialog.getExistingDirectory(
+        path = QtWidgets.QFileDialog.getExistingDirectory(
             self, 'Open project', os.path.expanduser('~'))
         if path:
             script = os.path.isfile(path)
@@ -292,7 +293,7 @@ class WindowBase(QtGui.QMainWindow):
 
     def _show_python_docs(self):
         _logger(self).info('opening python docs in the default browser')
-        QtGui.QDesktopServices.openUrl(
+        QtWidgets.QDesktopServices.openUrl(
             QtCore.QUrl('https://docs.python.org/3/'))
 
     def _quit(self):

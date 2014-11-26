@@ -3,27 +3,27 @@ This module contains a dock manager widget and all the classes needed to make
 it work.
 
 """
-from PyQt4 import QtCore, QtGui
+from pyqode.qt import QtCore, QtGui, QtWidgets
 from pyqode.core.api.utils import drift_color
 
 
-class VButton(QtGui.QPushButton):
+class VButton(QtWidgets.QPushButton):
     def __init__(self, text, parent):
         super(VButton, self).__init__(parent)
         self.setText(text)
         self.setFlat(True)
         self.setSizePolicy(
-            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.setCheckable(True)
 
     def _on_clicked(self):
         self.clearFocus()
 
     def paintEvent(self, event):
-        painter = QtGui.QStylePainter(self)
+        painter = QtWidgets.QStylePainter(self)
         painter.rotate(90)
         painter.translate(0, -self.width())
-        painter.drawControl(QtGui.QStyle.CE_PushButton, self.getSyleOptions())
+        painter.drawControl(QtWidgets.QStyle.CE_PushButton, self.getSyleOptions())
 
     def sizeHint(self):
         size = super(VButton, self).sizeHint()
@@ -31,42 +31,42 @@ class VButton(QtGui.QPushButton):
         return size
 
     def getSyleOptions(self):
-        options = QtGui.QStyleOptionButton()
+        options = QtWidgets.QStyleOptionButton()
         options.initFrom(self)
         size = options.rect.size()
         size.transpose()
         options.rect.setSize(size)
         if self.isFlat():
-            options.features |= QtGui.QStyleOptionButton.Flat
+            options.features |= QtWidgets.QStyleOptionButton.Flat
         if self.menu():
-            options.features |= QtGui.QStyleOptionButton.HasMenu
+            options.features |= QtWidgets.QStyleOptionButton.HasMenu
         if self.autoDefault() or self.isDefault():
-            options.features |= QtGui.QStyleOptionButton.AutoDefaultButton
+            options.features |= QtWidgets.QStyleOptionButton.AutoDefaultButton
         if self.isDefault():
-            options.features |= QtGui.QStyleOptionButton.DefaultButton
+            options.features |= QtWidgets.QStyleOptionButton.DefaultButton
         if self.isDown() or (self.menu() and self.menu().isVisible()):
-            options.state |= QtGui.QStyle.State_Sunken
+            options.state |= QtWidgets.QStyle.State_Sunken
         if self.isChecked():
-            options.state |= QtGui.QStyle.State_On
+            options.state |= QtWidgets.QStyle.State_On
         if not self.isFlat() and not self.isDown():
-            options.state |= QtGui.QStyle.State_Raised
+            options.state |= QtWidgets.QStyle.State_Raised
         options.text = self.text()
         options.icon = self.icon()
         options.iconSize = self.iconSize()
         return options
 
 
-class HButton(QtGui.QPushButton):
+class HButton(QtWidgets.QPushButton):
     def __init__(self, text, parent):
         super(HButton, self).__init__(parent)
         self.setText(text)
         self.setFlat(True)
         self.setSizePolicy(
-            QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.setCheckable(True)
 
 
-class DockManager(QtGui.QToolBar):
+class DockManager(QtWidgets.QToolBar):
     qss = """
     QToolBar{
         padding: 2px;

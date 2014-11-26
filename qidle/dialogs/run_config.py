@@ -1,11 +1,10 @@
-from PyQt4 import QtGui
+from pyqode.qt import QtWidgets
 from qidle import icons
 from qidle.preferences import Preferences
 from qidle.forms import dlg_script_run_config_ui
-from qidle.widgets import RunConfigWidget
 
 
-class DlgScriptRunConfig(QtGui.QDialog):
+class DlgScriptRunConfig(QtWidgets.QDialog):
     def __init__(self, parent):
         super(DlgScriptRunConfig, self).__init__(parent)
         self.ui = dlg_script_run_config_ui.Ui_Dialog()

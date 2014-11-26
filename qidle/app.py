@@ -5,7 +5,7 @@ Contains the application class.
 import logging
 import os
 import sys
-from PyQt4 import QtGui
+from pyqode.qt import QtWidgets
 from qidle import icons, __version__, logger
 from pyqode.core.widgets import RecentFilesManager
 from qidle.dialogs.ask_open import DlgAskOpenScript
@@ -28,11 +28,11 @@ class Application:
     def version_str(self):
         return __version__
 
-    def __init__(self):
-        logger.setup(verbose=True)
+    def __init__(self, files, verbose):
+        logger.setup(verbose=verbose)
         _logger().info('QIdle v%s', self.version_str)
         self.windows = []
-        self.qapp = QtGui.QApplication(sys.argv)
+        self.qapp = QtWidgets.QApplication(sys.argv)
         icons.init()
         self._init_libraries()
         self.recent_files_manager = RecentFilesManager(*Preferences.names)
@@ -42,7 +42,7 @@ class Application:
     def on_focus_changed(self, prev, new):
         if new:
             parent = new
-            while (not isinstance(parent, QtGui.QMainWindow) and
+            while (not isinstance(parent, QtWidgets.QMainWindow) and
                 parent is not None):
                 parent = parent.parent()
             if self._current != parent and parent is not None:

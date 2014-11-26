@@ -1,12 +1,12 @@
 import os
 import sys
-from PyQt4 import QtGui
+from pyqode.qt import QtWidgets
 from qidle import icons
 from qidle.forms import widget_run_cfg_ui
 from qidle.widgets.utils import load_interpreters
 
 
-class RunConfigWidget(QtGui.QWidget):
+class RunConfigWidget(QtWidgets.QWidget):
     """
     Widget used to edit a run configuration.
     """
@@ -76,9 +76,9 @@ class RunConfigWidget(QtGui.QWidget):
             index = self.ui.tableWidgetEnvVars.rowCount()
             self.ui.tableWidgetEnvVars.insertRow(index)
             self.ui.tableWidgetEnvVars.setItem(
-                index, 0, QtGui.QTableWidgetItem(key))
+                index, 0, QtWidgets.QTableWidgetItem(key))
             self.ui.tableWidgetEnvVars.setItem(
-                index, 1, QtGui.QTableWidgetItem(value))
+                index, 1, QtWidgets.QTableWidgetItem(value))
 
     def get_config(self):
         config = {

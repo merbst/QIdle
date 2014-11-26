@@ -2,14 +2,12 @@
 This module contains the create virtualenv dialog.
 """
 import os
-from PyQt4 import QtGui
-import sys
+from pyqode.qt import QtGui, QtWidgets
 from qidle.forms.dlg_create_virtualenv_ui import Ui_Dialog
-from qidle.system import WINDOWS
 from qidle.widgets.utils import load_interpreters
 
 
-class DlgCreateVirtualEnv(QtGui.QDialog):
+class DlgCreateVirtualEnv(QtWidgets.QDialog):
     def __init__(self, parent):
         super(DlgCreateVirtualEnv, self).__init__(parent)
         self.ui = Ui_Dialog()

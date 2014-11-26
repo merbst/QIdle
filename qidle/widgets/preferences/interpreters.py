@@ -1,6 +1,6 @@
 import logging
 import os
-from PyQt4 import QtCore, QtGui
+from pyqode.qt import QtCore, QtGui, QtWidgets
 
 from pyqode.core.api.client import BackendProcess
 from pyqode.core.backend import NotRunning
@@ -47,7 +47,7 @@ class PageInterpreters(Page):
         self.ui.lblMovie.setMovie(self.movie)
         self.ui.combo_interpreters.currentIndexChanged.connect(
             self._refresh_packages)
-        self.menu_cfg = QtGui.QMenu(self.ui.bt_cfg)
+        self.menu_cfg = QtWidgets.QMenu(self.ui.bt_cfg)
         self.action_add_local = self.menu_cfg.addAction('add local')
         self.action_create_virtualenv = self.menu_cfg.addAction(
             'create virtual env')
@@ -154,7 +154,7 @@ class PageInterpreters(Page):
                 # backend stopped working, may happen if pip or another
                 # package is missing for the target interpreter's
                 # site-packages
-                QtGui.QMessageBox.warning(
+                QtWidgets.QMessageBox.warning(
                     self, 'Refresh failed',
                     'Failed to refresh packages list for %s\n'
                     'Ensure pip and pyqode.python has been installed for the '
@@ -188,7 +188,7 @@ class PageInterpreters(Page):
         self.ui.table_packages.setRowCount(len(output))
         for i, data in enumerate(sorted(output, key=lambda x: x[0])):
             for c, val in enumerate(data):
-                item = QtGui.QTableWidgetItem(
+                item = QtWidgets.QTableWidgetItem(
                     val)
                 self.ui.table_packages.setItem(i, c, item)
 
@@ -234,7 +234,7 @@ class PageInterpreters(Page):
     def _add_local(self):
         """
         Adds a local interpeter.        """
-        path = QtGui.QFileDialog.getOpenFileName(self, 'Add local interpreter')
+        path = QtWidgets.QFileDialog.getOpenFileName(self, 'Add local interpreter')
         if path:
             lst = Preferences().interpreters.locals
             lst.append(path)
@@ -339,8 +339,8 @@ class PageInterpreters(Page):
         Asks the user the list of packages to install (each package is
         separated by a space.
         """
-        package, status = QtGui.QInputDialog.getText(self, 'Install package',
-                                             'Package:')
+        package, status = QtWidgets.QInputDialog.getText(
+            self, 'Install package', 'Package:')
         if not status:
             return
         _logger().info('installing packages: %r', package)
@@ -447,7 +447,7 @@ class PageInterpreters(Page):
         if status:
             self._refresh_packages()
         else:
-            QtGui.QMessageBox.warning(self, 'Pip command failed', output)
+            QtWidgets.QMessageBox.warning(self, 'Pip command failed', output)
 
 
 class CreateVirtualEnvThread(QtCore.QThread):

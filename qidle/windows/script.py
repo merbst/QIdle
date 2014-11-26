@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 
-from PyQt4 import QtGui
+from pyqode.qt import QtGui, QtWidgets
 
 from pyqode.core.api import TextHelper, ColorScheme
 from pyqode.core.modes import RightMarginMode, CodeCompletionMode
@@ -74,19 +74,19 @@ class ScriptWindow(WindowBase):
 
     def closeEvent(self, ev):
         if self.ui.codeEdit.dirty:
-            mbox = QtGui.QMessageBox(self)
+            mbox = QtWidgets.QMessageBox(self)
             mbox.setText("The document has been modified.")
             mbox.setInformativeText("Do you want to save your changes?")
             mbox.setStandardButtons(
-                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard |
-                QtGui.QMessageBox.Cancel)
-            mbox.setIcon(QtGui.QMessageBox.Warning)
-            mbox.setDefaultButton(QtGui.QMessageBox.Save)
+                QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard |
+                QtWidgets.QMessageBox.Cancel)
+            mbox.setIcon(QtWidgets.QMessageBox.Warning)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.Save)
             ret = mbox.exec_()
-            if ret == QtGui.QMessageBox.Cancel:
+            if ret == QtWidgets.QMessageBox.Cancel:
                 ev.ignore()
             else:
-                if ret == QtGui.QMessageBox.Save:
+                if ret == QtWidgets.QMessageBox.Save:
                     if self.save():
                         ev.accept()
                     else:
@@ -153,7 +153,7 @@ class ScriptWindow(WindowBase):
         self.app.update_windows_menu()
 
     def save_as(self):
-        path = QtGui.QFileDialog.getSaveFileName(
+        path = QtWidgets.QFileDialog.getSaveFileName(
             self, 'Save file as', filter='Python files (*.py)',
             directory=self.path)
         if path:
@@ -182,7 +182,7 @@ class ScriptWindow(WindowBase):
             try:
                 self.ui.codeEdit.file.save()
             except OSError as e:
-                QtGui.QMessageBox.warning(
+                QtWidgets.QMessageBox.warning(
                     self, 'Failed to save file',
                     'Failed to save file.\n\n%s' % e)
             self.app.remember_path(self.ui.codeEdit.file.path)

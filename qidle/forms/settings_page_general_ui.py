@@ -1,103 +1,89 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/QIdle/forms/settings_page_general.ui'
+# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/settings_page_general.ui'
 #
-# Created: Tue Sep 30 12:12:14 2014
-#      by: PyQt4 UI code generator 4.11.2
+# Created: Wed Nov 26 13:26:37 2014
+#      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+from pyqode.qt import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName(_fromUtf8("Form"))
+        Form.setObjectName("Form")
         Form.resize(714, 665)
-        self.verticalLayout = QtGui.QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.header = QtGui.QLabel(Form)
-        self.header.setStyleSheet(_fromUtf8("border-radius: 3px;\n"
+        self.verticalLayout = QtWidgets.QVBoxLayout(Form)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.header = QtWidgets.QLabel(Form)
+        self.header.setStyleSheet("border-radius: 3px;\n"
 "background-color: rgb(161, 161, 161);\n"
-"padding: 10px;"))
+"padding: 10px;")
         self.header.setAlignment(QtCore.Qt.AlignCenter)
-        self.header.setObjectName(_fromUtf8("header"))
+        self.header.setObjectName("header")
         self.verticalLayout.addWidget(self.header)
-        self.groupBox = QtGui.QGroupBox(Form)
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.groupBox)
-        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        self.cb_reopen = QtGui.QCheckBox(self.groupBox)
+        self.groupBox = QtWidgets.QGroupBox(Form)
+        self.groupBox.setObjectName("groupBox")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.cb_reopen = QtWidgets.QCheckBox(self.groupBox)
         self.cb_reopen.setChecked(True)
-        self.cb_reopen.setObjectName(_fromUtf8("cb_reopen"))
+        self.cb_reopen.setObjectName("cb_reopen")
         self.verticalLayout_3.addWidget(self.cb_reopen)
-        self.cb_confirm_exit = QtGui.QCheckBox(self.groupBox)
+        self.cb_confirm_exit = QtWidgets.QCheckBox(self.groupBox)
         self.cb_confirm_exit.setChecked(True)
-        self.cb_confirm_exit.setObjectName(_fromUtf8("cb_confirm_exit"))
+        self.cb_confirm_exit.setObjectName("cb_confirm_exit")
         self.verticalLayout_3.addWidget(self.cb_confirm_exit)
         self.verticalLayout.addWidget(self.groupBox)
-        self.groupBox_2 = QtGui.QGroupBox(Form)
-        self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
-        self.verticalLayout_4 = QtGui.QVBoxLayout(self.groupBox_2)
-        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
-        self.rb_open_scr_in_new = QtGui.QRadioButton(self.groupBox_2)
+        self.groupBox_2 = QtWidgets.QGroupBox(Form)
+        self.groupBox_2.setObjectName("groupBox_2")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.rb_open_scr_in_new = QtWidgets.QRadioButton(self.groupBox_2)
         self.rb_open_scr_in_new.setChecked(True)
-        self.rb_open_scr_in_new.setObjectName(_fromUtf8("rb_open_scr_in_new"))
+        self.rb_open_scr_in_new.setObjectName("rb_open_scr_in_new")
         self.verticalLayout_4.addWidget(self.rb_open_scr_in_new)
-        self.rb_open_scr_in_same = QtGui.QRadioButton(self.groupBox_2)
+        self.rb_open_scr_in_same = QtWidgets.QRadioButton(self.groupBox_2)
         self.rb_open_scr_in_same.setChecked(False)
-        self.rb_open_scr_in_same.setObjectName(_fromUtf8("rb_open_scr_in_same"))
+        self.rb_open_scr_in_same.setObjectName("rb_open_scr_in_same")
         self.verticalLayout_4.addWidget(self.rb_open_scr_in_same)
-        self.rb_open_scr_ask = QtGui.QRadioButton(self.groupBox_2)
-        self.rb_open_scr_ask.setObjectName(_fromUtf8("rb_open_scr_ask"))
+        self.rb_open_scr_ask = QtWidgets.QRadioButton(self.groupBox_2)
+        self.rb_open_scr_ask.setObjectName("rb_open_scr_ask")
         self.verticalLayout_4.addWidget(self.rb_open_scr_ask)
-        self.cb_restore_prev_scrwin_state = QtGui.QCheckBox(self.groupBox_2)
+        self.cb_restore_prev_scrwin_state = QtWidgets.QCheckBox(self.groupBox_2)
         self.cb_restore_prev_scrwin_state.setChecked(False)
-        self.cb_restore_prev_scrwin_state.setObjectName(_fromUtf8("cb_restore_prev_scrwin_state"))
+        self.cb_restore_prev_scrwin_state.setObjectName("cb_restore_prev_scrwin_state")
         self.verticalLayout_4.addWidget(self.cb_restore_prev_scrwin_state)
         self.verticalLayout.addWidget(self.groupBox_2)
-        self.groupBox_3 = QtGui.QGroupBox(Form)
+        self.groupBox_3 = QtWidgets.QGroupBox(Form)
         self.groupBox_3.setEnabled(False)
-        self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
-        self.verticalLayout_5 = QtGui.QVBoxLayout(self.groupBox_3)
-        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
-        self.rb_open_proj_in_new = QtGui.QRadioButton(self.groupBox_3)
+        self.groupBox_3.setObjectName("groupBox_3")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_3)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.rb_open_proj_in_new = QtWidgets.QRadioButton(self.groupBox_3)
         self.rb_open_proj_in_new.setChecked(True)
-        self.rb_open_proj_in_new.setObjectName(_fromUtf8("rb_open_proj_in_new"))
+        self.rb_open_proj_in_new.setObjectName("rb_open_proj_in_new")
         self.verticalLayout_5.addWidget(self.rb_open_proj_in_new)
-        self.rb_open_proj_in_same = QtGui.QRadioButton(self.groupBox_3)
-        self.rb_open_proj_in_same.setObjectName(_fromUtf8("rb_open_proj_in_same"))
+        self.rb_open_proj_in_same = QtWidgets.QRadioButton(self.groupBox_3)
+        self.rb_open_proj_in_same.setObjectName("rb_open_proj_in_same")
         self.verticalLayout_5.addWidget(self.rb_open_proj_in_same)
-        self.rb_open_proj_ask = QtGui.QRadioButton(self.groupBox_3)
-        self.rb_open_proj_ask.setObjectName(_fromUtf8("rb_open_proj_ask"))
+        self.rb_open_proj_ask = QtWidgets.QRadioButton(self.groupBox_3)
+        self.rb_open_proj_ask.setObjectName("rb_open_proj_ask")
         self.verticalLayout_5.addWidget(self.rb_open_proj_ask)
-        self.cb_restore_prev_projwin_state = QtGui.QCheckBox(self.groupBox_3)
+        self.cb_restore_prev_projwin_state = QtWidgets.QCheckBox(self.groupBox_3)
         self.cb_restore_prev_projwin_state.setChecked(True)
-        self.cb_restore_prev_projwin_state.setObjectName(_fromUtf8("cb_restore_prev_projwin_state"))
+        self.cb_restore_prev_projwin_state.setObjectName("cb_restore_prev_projwin_state")
         self.verticalLayout_5.addWidget(self.cb_restore_prev_projwin_state)
         self.verticalLayout.addWidget(self.groupBox_3)
-        self.groupBox_4 = QtGui.QGroupBox(Form)
-        self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
-        self.verticalLayout_6 = QtGui.QVBoxLayout(self.groupBox_4)
-        self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
-        self.cb_save_before_run = QtGui.QCheckBox(self.groupBox_4)
+        self.groupBox_4 = QtWidgets.QGroupBox(Form)
+        self.groupBox_4.setObjectName("groupBox_4")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_4)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.cb_save_before_run = QtWidgets.QCheckBox(self.groupBox_4)
         self.cb_save_before_run.setChecked(True)
-        self.cb_save_before_run.setObjectName(_fromUtf8("cb_save_before_run"))
+        self.cb_save_before_run.setObjectName("cb_save_before_run")
         self.verticalLayout_6.addWidget(self.cb_save_before_run)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_6.addItem(spacerItem)
         self.verticalLayout.addWidget(self.groupBox_4)
 
@@ -105,21 +91,21 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Form", None))
-        self.header.setText(_translate("Form", "Configure general settings", None))
-        self.groupBox.setTitle(_translate("Form", "Startup/Shutdown", None))
-        self.cb_reopen.setText(_translate("Form", "Reopen last window (project or script) on startup", None))
-        self.cb_confirm_exit.setText(_translate("Form", "Confirm application exit ", None))
-        self.groupBox_2.setTitle(_translate("Form", "Script opening", None))
-        self.rb_open_scr_in_new.setText(_translate("Form", "Open script in a new window", None))
-        self.rb_open_scr_in_same.setText(_translate("Form", "Open script in the same window (replace current script)", None))
-        self.rb_open_scr_ask.setText(_translate("Form", "Ask each time", None))
-        self.cb_restore_prev_scrwin_state.setText(_translate("Form", "Restore state of previous window", None))
-        self.groupBox_3.setTitle(_translate("Form", "Project opening", None))
-        self.rb_open_proj_in_new.setText(_translate("Form", "Open project in new window", None))
-        self.rb_open_proj_in_same.setText(_translate("Form", "Open project in the same window (replace current project)", None))
-        self.rb_open_proj_ask.setText(_translate("Form", "Ask each time", None))
-        self.cb_restore_prev_projwin_state.setText(_translate("Form", "Restore state of previous window", None))
-        self.groupBox_4.setTitle(_translate("Form", "Save", None))
-        self.cb_save_before_run.setText(_translate("Form", "Save editors before run", None))
-
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.header.setText(_translate("Form", "Configure general settings"))
+        self.groupBox.setTitle(_translate("Form", "Startup/Shutdown"))
+        self.cb_reopen.setText(_translate("Form", "Reopen last window (project or script) on startup"))
+        self.cb_confirm_exit.setText(_translate("Form", "Confirm application exit "))
+        self.groupBox_2.setTitle(_translate("Form", "Script opening"))
+        self.rb_open_scr_in_new.setText(_translate("Form", "Open script in a new window"))
+        self.rb_open_scr_in_same.setText(_translate("Form", "Open script in the same window (replace current script)"))
+        self.rb_open_scr_ask.setText(_translate("Form", "Ask each time"))
+        self.cb_restore_prev_scrwin_state.setText(_translate("Form", "Restore state of previous window"))
+        self.groupBox_3.setTitle(_translate("Form", "Project opening"))
+        self.rb_open_proj_in_new.setText(_translate("Form", "Open project in new window"))
+        self.rb_open_proj_in_same.setText(_translate("Form", "Open project in the same window (replace current project)"))
+        self.rb_open_proj_ask.setText(_translate("Form", "Ask each time"))
+        self.cb_restore_prev_projwin_state.setText(_translate("Form", "Restore state of previous window"))
+        self.groupBox_4.setTitle(_translate("Form", "Save"))
+        self.cb_save_before_run.setText(_translate("Form", "Save editors before run"))

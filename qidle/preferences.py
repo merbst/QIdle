@@ -5,8 +5,8 @@ Provides an easy way to access the application preferences.
 import json
 import os
 import sys
-from PyQt4 import QtCore
-from PyQt4.QtGui import QKeySequence
+from pyqode.qt import QtCore
+from pyqode.qt.QtGui import QKeySequence
 from pyqode.core.api import CodeEdit
 from qidle.python import detect_system_interpreters
 

@@ -1,7 +1,7 @@
 """
 This module contains the editor modes confifuration widget.
 """
-from PyQt4 import QtCore, QtGui
+from pyqode.qt import QtCore, QtWidgets
 from pyqode.python.widgets import PyCodeEdit
 from qidle.forms.settings_page_modes_ui import Ui_Form
 from qidle.preferences import Preferences
@@ -37,7 +37,7 @@ class PageEditorModes(Page):
             enabled = True
             if mode in editor.modes.keys():
                 enabled = editor.modes[mode]
-            item = QtGui.QListWidgetItem(mode, self.ui.lw_modes)
+            item = QtWidgets.QListWidgetItem(mode, self.ui.lw_modes)
             item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
             item.setCheckState(
                 QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
