@@ -210,6 +210,15 @@ class General(Section):
         self.set_value('open_scr_action', repr(value))
 
     @property
+    def open_project_action(self):
+        return int(self.get_value(
+            'open_project_action', repr(self.OpenActions.NEW)))
+
+    @open_project_action.setter
+    def open_project_action(self, value):
+        self.set_value('open_project_action', repr(value))
+
+    @property
     def restore_scr_window_state(self):
         return eval(self.get_value('restore_scr_window_state', 'False'))
 

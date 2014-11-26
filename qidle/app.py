@@ -5,14 +5,13 @@ Contains the application class.
 import logging
 import os
 import sys
-from pyqode.python.widgets import PyCodeEdit
 from PyQt4 import QtGui
-from pyqode.core.widgets import RecentFilesManager
 from qidle import icons, __version__, logger
+from pyqode.core.widgets import RecentFilesManager
 from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.preferences import Preferences
 from qidle.system import embed_package_into_zip, get_library_zip_path
-from qidle.windows import ScriptWindow
+from qidle.windows import ScriptWindow, ProjectWindow
 
 
 def _logger():
@@ -41,14 +40,18 @@ class Application:
         self.qapp.focusChanged.connect(self.on_focus_changed)
 
     def on_focus_changed(self, prev, new):
-        if new and isinstance(new, PyCodeEdit):
-            parent = new.parent()
+        if new:
+            parent = new
             while (not isinstance(parent, QtGui.QMainWindow) and
-                    parent is not None):
+                parent is not None):
                 parent = parent.parent()
-            if self._current != parent:
+            if self._current != parent and parent is not None:
                 self._current = parent
-                _logger().info('current window changed: %s', parent.path)
+                if self._current is not None:
+                    _logger().info('current window changed: %r',
+                                   self._current)
+                else:
+                    _logger().info('current window changed: None')
 
     def _init_libraries(self):
         if (not '.dev' in self.version_str and
@@ -77,11 +80,14 @@ class Application:
 
     def activate_window(self, window):
         self.qapp.setActiveWindow(window)
-        window.show()
+        if isinstance(window, ProjectWindow):
+            window.showMaximized()
+        else:
+            window.show()
         window.raise_()
         window.setFocus()
         self._current = window
-        _logger().info('showing window: %s' % window.path)
+        _logger().info('showing window: %s' % window)
 
     def create_script_window(self, path=None):
         """
@@ -111,7 +117,35 @@ class Application:
             window.new()
         self.update_windows_menu()
         self.activate_window(window)
-        window._configure_shortcuts()
+        window.configure_shortcuts()
+        return window
+
+    def create_project_window(self, path):
+        """
+        Creates a new project window.
+
+        :param path: Optional file to open in the script window. None to
+                     create a new project.
+
+        :return: ScriptWindow
+        """
+        # first look if the requested path is not already open
+        if path:
+            for w in self.windows:
+                if w.path == path:
+                    self.activate_window(w)
+                    return w
+        active_window = self.qapp.activeWindow()
+        if active_window:
+            active_window.save_state()
+
+        window = ProjectWindow(self)
+        window.closed.connect(self._on_window_closed)
+        self.windows.append(window)
+        window.open(path)
+        self.update_windows_menu()
+        self.activate_window(window)
+        window.configure_shortcuts()
         return window
 
     def _on_window_closed(self, window):
@@ -128,43 +162,41 @@ class Application:
         for w in self.windows:
             w.update_recents_menu()
 
-    def _open_in_new(self, path, script):
+    def _open_in_new_window(self, path, script):
         if script:
             self.create_script_window(path)
         else:
-            # todo create project window
-            pass
+            self.create_project_window(path)
 
-    def _open_in_current(self, path, script):
+    def _open_in_current_window(self, path, script):
         win = self._current
         assert win is not None
-        # ensure types are corresponding (if we want to open a project from
-        # a script window, a new proj window must be created)
+        # makes sure window types are corresponding (if we want to open a
+        # project from a script window, a new proj window must be created)
         if ((script and isinstance(win, ScriptWindow) or
-                (not script and not isinstance(self, ScriptWindow)))):
+                (not script and isinstance(win, ProjectWindow)))):
             win.open(path)
         else:
-            self._open_in_new(path, script)
+            self._open_in_new_window(path, script)
 
     def open_recent(self, path):
         _logger().info('open recent file: %s', path)
         script = os.path.isfile(path)
-        action = Preferences().general.open_scr_action
-        if action == Preferences().general.OpenActions.NEW:
-            self._open_in_new(path, script)
-        elif action == Preferences().general.OpenActions.CURRENT:
-            self._open_in_current(path, script)
+        if script:
+            action = Preferences().general.open_scr_action
         else:
-            if script:
-                # ask
-                val = DlgAskOpenScript.ask(self.qapp.activeWindow())
-                if val == Preferences().general.OpenActions.NEW:
-                    self._open_in_new(path, script)
-                elif val == Preferences().general.OpenActions.CURRENT:
-                    self._open_in_current(path, script)
-            else:
-                # todo ask for projects
-                pass
+            action = Preferences().general.open_project_action
+        if action == Preferences().general.OpenActions.NEW:
+            self._open_in_new_window(path, script)
+        elif action == Preferences().general.OpenActions.CURRENT:
+            self._open_in_current_window(path, script)
+        else:
+            # ask
+            val = DlgAskOpenScript.ask(self.qapp.activeWindow())
+            if val == Preferences().general.OpenActions.NEW:
+                self._open_in_new_window(path, script)
+            elif val == Preferences().general.OpenActions.CURRENT:
+                self._open_in_current_window(path, script)
 
     def apply_preferences(self):
         for w in self.windows:
@@ -178,8 +210,10 @@ class Application:
                 self.create_script_window()
             else:
                 _logger().info('reopen last window: %s' % path)
-                # todo create the correct window type based on the file path
-                self.create_script_window(path)
+                if os.path.isfile(path):
+                    self.create_script_window(path)
+                else:
+                    self.create_project_window(path)
         else:
             # create untitled script window
             self.create_script_window()

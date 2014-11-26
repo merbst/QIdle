@@ -6,4 +6,5 @@ This package contains the various type of main window of the application:
    - project: ProjectWindow (multi-document window)
 
 """
+from .project import ProjectWindow
 from .script import ScriptWindow

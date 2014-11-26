@@ -172,8 +172,9 @@ class WindowBase(QtGui.QMainWindow):
         self.ui.menuFile.addAction(self.ui.actionQuit)
         ui.actionNew_file.triggered.connect(self._on_new_file_triggered)
         ui.actionOpen_file.triggered.connect(self._on_open_file_triggered)
-        self.ui.actionNew_project.setDisabled(True)
-        self.ui.actionOpen_directory.setDisabled(True)
+        ui.actionNew_project.triggered.connect(self._on_new_project_triggered)
+        ui.actionOpen_directory.triggered.connect(
+            self._on_open_project_triggered)
         ui.actionSave.triggered.connect(self.save)
         ui.actionSave_as.triggered.connect(self.save_as)
         self.ui.actionClose.triggered.connect(self._close)
@@ -194,7 +195,7 @@ class WindowBase(QtGui.QMainWindow):
     def _setup_help_menu(self):
         self.ui.actionPython_docs.triggered.connect(self._show_python_docs)
 
-    def _configure_shortcuts(self):
+    def configure_shortcuts(self):
         self.addActions(self.ui.menuFile.actions())
         # menu edit already added
         self.addActions(self.ui.menuRun.actions())
@@ -219,20 +220,22 @@ class WindowBase(QtGui.QMainWindow):
         self.save_state()
         self.app.create_script_window()
 
-    def _open_in_current(self, path, script):
+    def _on_new_project_triggered(self):
+        pass
+
+    def _open_in_current_window(self, path, script):
         from qidle.windows.script import ScriptWindow
         if ((script and isinstance(self, ScriptWindow) or
                 (not script and not isinstance(self, ScriptWindow)))):
             self.open(path)
         else:
-            self._open_in_new(path, script)
+            self._open_in_new_window(path, script)
 
-    def _open_in_new(self, path, script):
+    def _open_in_new_window(self, path, script):
         if script:
             self.app.create_script_window(path)
         else:
-            # todo create project window
-            pass
+            self.app.create_project_window(path)
 
     def _on_open_file_triggered(self):
         path = QtGui.QFileDialog.getOpenFileName(
@@ -242,16 +245,34 @@ class WindowBase(QtGui.QMainWindow):
             script = os.path.isfile(path)
             action = Preferences().general.open_scr_action
             if action == Preferences().general.OpenActions.NEW:
-                self._open_in_new(path, script)
+                self._open_in_new_window(path, script)
             elif action == Preferences().general.OpenActions.CURRENT:
-                self._open_in_current(path, script)
+                self._open_in_current_window(path, script)
             else:
                 # ask
                 val = DlgAskOpenScript.ask(self)
                 if val == Preferences().general.OpenActions.NEW:
-                    self._open_in_new(path, script)
+                    self._open_in_new_window(path, script)
                 elif val == Preferences().general.OpenActions.CURRENT:
-                    self._open_in_current(path, script)
+                    self._open_in_current_window(path, script)
+
+    def _on_open_project_triggered(self):
+        path = QtGui.QFileDialog.getExistingDirectory(
+            self, 'Open project', os.path.expanduser('~'))
+        if path:
+            script = os.path.isfile(path)
+            action = Preferences().general.open_project_action
+            if action == Preferences().general.OpenActions.NEW:
+                self._open_in_new_window(path, script)
+            elif action == Preferences().general.OpenActions.CURRENT:
+                self._open_in_current_window(path, script)
+            else:
+                # ask
+                val = DlgAskOpenScript.ask(self)
+                if val == Preferences().general.OpenActions.NEW:
+                    self._open_in_new_window(path, script)
+                elif val == Preferences().general.OpenActions.CURRENT:
+                    self._open_in_current_window(path, script)
 
     def _show_prev_window(self):
         i = self.app.windows.index(self)
@@ -281,3 +302,6 @@ class WindowBase(QtGui.QMainWindow):
     def _close(self):
         # not sure why but if we don't do that using a timer we get a segfault
         QtCore.QTimer.singleShot(1, self.close)
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self.path)

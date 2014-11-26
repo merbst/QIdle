@@ -51,6 +51,8 @@ go_down = None
 qidle = None
 appearance = None
 text_edit = None
+folder = None
+file = None
 
 
 def init():
@@ -81,6 +83,8 @@ def init():
     global qidle
     global appearance
     global text_edit
+    global folder
+    global file
 
     new_file = icon(':/icons/document-new.png', 'document-new')
     open_file = icon(':/icons/document-open.png', 'document-open')
@@ -111,6 +115,8 @@ def init():
                       'applications-graphics')
     text_edit = icon(':/icons/application-x-text-edit.png',
                      'accessories-text-editor')
+    folder = QtGui.QFileIconProvider().icon(QtGui.QFileIconProvider.Folder)
+    file = QtGui.QFileIconProvider().icon(QtGui.QFileIconProvider.File)
 
 
 class IconProvider(QtGui.QFileIconProvider):
