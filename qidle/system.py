@@ -2,6 +2,7 @@ import functools
 import logging
 import os
 import platform
+import tempfile
 from zipfile import ZipFile
 from qidle import __version__
 
@@ -51,7 +52,16 @@ def embed_package_into_zip(packages, zip_path=get_library_zip_path()):
     _logger().debug('creating zip file with external libraries: %s' % zip_path)
     with ZipFile(zip_path, 'w') as myzip:
         for package in packages:
-            pfile = package.__file__
+            if package.__name__ == 'pyqode':
+                # pyqode root package does not have a __init__.py when
+                # installed from pypi (this depends on the setuptools version,
+                # different implementation has been used over the time for
+                # installing namespace packages.
+                pfile = os.path.join(tempfile.gettempdir(), '__init__.py')
+                with open(pfile, 'w') as f:
+                    pass
+            else:
+                pfile = package.__file__
             pfile = pfile.replace('.pyc', '.py')
             path = pfile if not '__init__.py' in pfile else os.path.dirname(
                 pfile)
