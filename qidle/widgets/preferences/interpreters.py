@@ -122,9 +122,6 @@ class PageInterpreters(Page):
         """
         Enable/Disable buttons.
         """
-        print('enable', enable)
-        if not enable:
-            pass
         self.ui.combo_interpreters.setEnabled(enable)
         self.ui.bt_cfg.setEnabled(enable)
         self.ui.bt_install_package.setEnabled(enable)
@@ -433,7 +430,6 @@ class PageInterpreters(Page):
             self.backend.send_request(self._worker, self._package,
                                       on_receive=self._on_command_finished)
         except NotRunning:
-            print('try again')
             QtCore.QTimer.singleShot(100, self._run_command)
         else:
             self._start_gif()
