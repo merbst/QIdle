@@ -112,12 +112,19 @@ class PageInterpreters(Page):
         self.backend = BackendManager(self)
         self.backend.start(
             server.__file__, interpreter=interpreter,
-            args=['-s',  get_library_zip_path()])
+            args=['-s',  get_library_zip_path()], error_callback=self._on_backend_error)
+
+    def _on_backend_error(self, *args):
+        self._enable_buttons(True)
+        self._stop_gif()
 
     def _enable_buttons(self, enable):
         """
         Enable/Disable buttons.
         """
+        print('enable', enable)
+        if not enable:
+            pass
         self.ui.combo_interpreters.setEnabled(enable)
         self.ui.bt_cfg.setEnabled(enable)
         self.ui.bt_install_package.setEnabled(enable)
@@ -137,9 +144,9 @@ class PageInterpreters(Page):
         # stop previous backend, it will be run by a different interpreter
         self._start_gif()
         self._clear_packages()
+        self._enable_buttons(False)
         self._start_backend(interpreter)
         self._send_request()
-        self._enable_buttons(False)
 
     def _send_request(self):
         """
