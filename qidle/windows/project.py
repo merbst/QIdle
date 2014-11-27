@@ -30,6 +30,7 @@ class ProjectWindow(WindowBase):
         self.ui.fsTree.file_deleted.connect(self._on_file_deleted)
         self.ui.fsTree.file_renamed.connect(self._on_file_renamed)
         self.ui.fsTree.file_created.connect(self._on_file_created)
+        self.ui.fsTree.ignore_directories('.qidle')
 
         # Edit menu
         self.addActions(self.ui.menuFile.actions())
@@ -72,6 +73,12 @@ class ProjectWindow(WindowBase):
 
         self._on_current_editor_changed(None)
 
+        self._combo_run_configs = QtWidgets.QComboBox()
+        self._combo_run_configs.addItem('n/a')
+        self._combo_run_configs.setToolTip('Choose run configuration')
+        self.ui.toolBarRun.insertWidget(self.ui.actionConfigureRun,
+                                        self._combo_run_configs)
+
     def closeEvent(self, ev):
         self.ui.tabWidget.closeEvent(ev)
         self.save_state()
@@ -95,6 +102,9 @@ class ProjectWindow(WindowBase):
         self.setWindowTitle('%s [%s] - QIdle %s (Python %s)' % (
             os.path.split(path)[1], path, self.app.version_str,
             '.'.join([str(i) for i in sys.version_info[:3]])))
+        meta_dir = os.path.join(path, '.qidle')
+        if not os.path.exists(meta_dir):
+            os.makedirs(meta_dir)
 
     def _on_dirty_changed(self, dirty):
         self.ui.actionSave.setEnabled(dirty)

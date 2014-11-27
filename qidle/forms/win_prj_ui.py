@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_prj.ui'
+# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_prj.ui'
 #
-# Created: Wed Nov 26 19:53:22 2014
+# Created: Thu Nov 27 12:24:21 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.dockWidgetPyConsole.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetPyConsole)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 34))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 35))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -220,7 +220,9 @@ class Ui_MainWindow(object):
         self.actionClose.setText(_translate("MainWindow", "Close window"))
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
         self.actionRun.setText(_translate("MainWindow", "Run"))
+        self.actionRun.setToolTip(_translate("MainWindow", "Run the selected configuration"))
         self.actionConfigureRun.setText(_translate("MainWindow", "Configure"))
+        self.actionConfigureRun.setToolTip(_translate("MainWindow", "Configure run"))
         self.actionConfigure_IDLE.setText(_translate("MainWindow", "Configure QIdle"))
         self.actionZoom_height.setText(_translate("MainWindow", "Zoom height"))
         self.actionAbout_QIdle.setText(_translate("MainWindow", "About QIdle"))
@@ -229,7 +231,7 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
 
-from pyqode.core.widgets import SplittableCodeEditTabWidget, FileSystemTreeView
-from qidle.widgets import IPythonConsole
 from pyqode.python.widgets import PyInteractiveConsole, PyOutlineTreeWidget
+from qidle.widgets import IPythonConsole
+from pyqode.core.widgets import FileSystemTreeView, SplittableCodeEditTabWidget
 from . import qidle_rc
