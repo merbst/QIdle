@@ -47,9 +47,14 @@ class Application:
     def on_focus_changed(self, prev, new):
         if new:
             parent = new
-            while (not isinstance(parent, QtWidgets.QMainWindow) and
-                parent.parent() is not None):
-                parent = parent.parent()
+            try:
+                while (not isinstance(parent, QtWidgets.QMainWindow) and
+                        parent.parent() is not None):
+                    parent = parent.parent()
+            except TypeError:
+                # TypeError: 'NoneType' object is not callable
+                # happen with the IPythonConsole
+                pass
             if self._current != parent and parent is not None:
                 self._current = parent
                 if self._current is not None:
