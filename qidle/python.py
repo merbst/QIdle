@@ -56,7 +56,9 @@ def detect_system_interpreters():
             if 'python' in path.lower():
                 if 'scripts' in path.lower():
                      path = os.path.abspath(os.path.join(path, os.pardir))
-                executables.add(os.path.join(path, 'python.exe'))
+                path = os.path.join(path, 'python.exe')
+                if os.path.exists(path):
+                    executables.add(path)
     ret_val = list(set(executables))
     _logger().debug('system interpreters: %r' % ret_val)
     return ret_val
