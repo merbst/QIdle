@@ -14,15 +14,14 @@ The bootstrap script let you run the editor from source checkout:
 This script has been largely inspired by the bootstrap script of SpyderIDE.
 """
 import logging
+import os
+import time
+import os.path as osp
+import sys
 logger = logging.getLogger('boostrap')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.INFO)
-import os
-import time
 time_start = time.time()
-import os.path as osp
-import sys
-
 
 # --------- bootstrapping QIdle
 logger.info("Executing QIdle from source checkout")
