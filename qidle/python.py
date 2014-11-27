@@ -25,7 +25,7 @@ def detect_system_interpreters():
         if not os.path.isfile(path):
             return False
         try:
-            tmp_dir = os.path.join(tempfile.gettempdir(), 'version')
+            tmp_dir = os.path.join(tempfile.gettempdir(), 'qidle', 'version')
             with open(tmp_dir, 'w') as stderr:
                 output = subprocess.check_output([path, '--version'],
                                                  stderr=stderr).decode()
@@ -80,17 +80,14 @@ def get_installed_packages(*args):
 def run_pip_command(args):
     def setup_log_file():
         old_stdout = sys.stdout
-        log_file = 'tmp'
+        log_file = os.path.join(tempfile.gettempdir(), 'qidle', 'pip.output')
+        os.makedirs(os.path.dirname(log_file))
         sys.stdout = open(log_file, 'w')
         return log_file, old_stdout
 
     def get_output(log_file):
         with open(log_file, 'r') as f:
             output = f.read()
-        try:
-            os.remove(log_file)
-        except OSError:
-            pass
         return output
 
     log_file, old_stdout = setup_log_file()
