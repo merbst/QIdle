@@ -58,6 +58,12 @@ except ImportError:
         logger.exception('03. Failed to import Qt. Please install PyQt4 or '
                          'PyQt5')
         sys.exit(1)
+# if the user wanted to run the app with pyqt5 but pyqt5 is not available,
+# we need to update args.qt so that it reflects the available API
+if os.environ['QT_API'] == 'pyqt5':
+    args.qt = 5
+else:
+    args.qt = 4
 api = os.environ['QT_API'].replace('p', 'P').replace('q', 'Q')
 logger.info('03. Imported %s' % api)
 if os.environ['QT_API'] == 'pyqt4':
@@ -142,4 +148,4 @@ logger.info("09. Imported QIdle %s (%s)" % (
     all_versions['qidle'], versions.get_vcs_revision()))
 logger.info("    [Python %s %dbits, on %s]" % (
     all_versions['python'], all_versions['bitness'], all_versions['system']))
-main()
+main(args=args)
