@@ -39,7 +39,7 @@ class PageInterpreters(Page):
     def __init__(self, parent=None):
         self.ui = settings_page_interpreters_ui.Ui_Form()
         self.movie = QtGui.QMovie(':/icons/loader.gif')
-        self.backend = None
+        self.backend = BackendManager(self)
         super(PageInterpreters, self).__init__(self.ui, parent)
         self._create_virtualenv_thread = None
         self.ui.table_packages.itemSelectionChanged.connect(
@@ -73,17 +73,12 @@ class PageInterpreters(Page):
         self.ui.bt_uninstall_package.clicked.connect(self._uninstall)
         self.ui.bt_install_package.clicked.connect(self._install)
 
-    def __del__(self):
-        self._stop_backend()
-
-    def _stop_backend(self):
+    def stop_backend(self):
         """
         Stops the backend process used to execute pip command on a foreign
         interpreter.
         """
-        if self.backend is not None:
-            self.backend.stop()
-            self.backend = None
+        self.backend.stop()
 
     def _start_gif(self):
         """
@@ -108,8 +103,7 @@ class PageInterpreters(Page):
         Starts the backend process for the specified interpreter
         :param interpreter: The python interpreter used to run the backend.
         """
-        self._stop_backend()
-        self.backend = BackendManager(self)
+        self.stop_backend()
         self.backend.start(
             server.__file__, interpreter=interpreter,
             args=['-s',  get_library_zip_path()], error_callback=self._on_backend_error)
@@ -185,9 +179,13 @@ class PageInterpreters(Page):
         :param status: Command status
         :param results: Command results
         """
-        status, output = results
+        try:
+            status, output = results
+        except ValueError:
+            status = False
+            output = []
         self._stop_gif()
-        self._stop_backend()
+        self.stop_backend()
         self._enable_buttons(True)
         self.ui.table_packages.setRowCount(len(output))
         for i, data in enumerate(sorted(output, key=lambda x: x[0])):
@@ -365,11 +363,11 @@ class PageInterpreters(Page):
             item is separated by a space.
         :param operation: Operation title (used for the info label)
         """
-        self._stop_backend()
+        self.stop_backend()
         self.ui.lblInfos.setText(operation)
         self._worker = worker_function
         self._package = package
-        self._stop_backend()
+        self.stop_backend()
         self.backend = BackendManager(self)
         process = BackendProcess(self.parent())
         process.finished.connect(self._on_process_finished)

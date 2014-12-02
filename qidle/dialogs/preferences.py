@@ -64,6 +64,7 @@ class DlgPreferences(QtWidgets.QDialog):
         self.ui.pages.addWidget(page)
         interpreters = self.ui.categories.findItems(
             'Interpreters', QtCore.Qt.MatchExactly)[0]
+        self.interpreters = page
         interpreters.setData(0, QtCore.Qt.UserRole, page)
 
         # show general settings
@@ -103,6 +104,8 @@ class DlgPreferences(QtWidgets.QDialog):
         if dlg.exec_() == DlgPreferences.Accepted:
             dlg.apply()
         dlg.appearance.ui.edit_preview.close()
+        dlg.interpreters.stop_backend()
+        dlg.deleteLater()
 
     def reset(self):
         w = self.ui.pages.currentWidget()

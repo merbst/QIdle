@@ -123,7 +123,7 @@ class WindowBase(QtWidgets.QMainWindow):
         self.app.remember_path(self.path)
         if ev.isAccepted():
             super(WindowBase, self).closeEvent(ev)
-            QtCore.QTimer.singleShot(1, self._emit_closed)
+            self._emit_closed()
 
     def _emit_closed(self):
         self.closed.emit(self)
@@ -299,11 +299,11 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def _quit(self):
         # not sure why but if we don't do that using a timer we get a segfault
-        QtCore.QTimer.singleShot(1, self.app.qapp.closeAllWindows)
+        self.app.qapp.closeAllWindows()
 
     def _close(self):
         # not sure why but if we don't do that using a timer we get a segfault
-        QtCore.QTimer.singleShot(1, self.close)
+        self.close()
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self.path)
