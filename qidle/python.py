@@ -25,13 +25,18 @@ def detect_system_interpreters():
         if not os.path.isfile(path):
             return False
         try:
-            tmp_dir = os.path.join(tempfile.gettempdir(), 'qidle', 'version')
-            with open(tmp_dir, 'w') as stderr:
+            tmp_dir = os.path.join(tempfile.gettempdir(), 'qidle')
+            try:
+                os.makedirs(tmp_dir)
+            except OSError:
+                pass
+            tmp_path = os.path.join(tmp_dir, 'version')
+            with open(tmp_path, 'w') as stderr:
                 output = subprocess.check_output([path, '--version'],
                                                  stderr=stderr).decode()
             if not output:
                 # Python2 print version to stderr (at least on OSX)
-                with open(tmp_dir, 'r') as stderr:
+                with open(tmp_path, 'r') as stderr:
                     output = stderr.read()
             version = output.split(' ')[1]
         except (IndexError, OSError) as e:
