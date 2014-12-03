@@ -99,7 +99,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>35</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -200,7 +200,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionConfigureRun"/>
    <addaction name="actionRun"/>
   </widget>
   <action name="actionOpen_file">

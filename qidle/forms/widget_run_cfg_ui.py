@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/widget_run_cfg.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/widget_run_cfg.ui'
 #
-# Created: Wed Nov 26 13:26:40 2014
+# Created: Wed Dec  3 21:30:28 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,7 +30,7 @@ class Ui_Form(object):
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lineEditScriptParams)
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_3)
         self.comboBoxInterpreter = QtWidgets.QComboBox(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -38,22 +38,16 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.comboBoxInterpreter.sizePolicy().hasHeightForWidth())
         self.comboBoxInterpreter.setSizePolicy(sizePolicy)
         self.comboBoxInterpreter.setObjectName("comboBoxInterpreter")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.comboBoxInterpreter)
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.comboBoxInterpreter)
         self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setObjectName("label_4")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_4)
+        self.formLayout.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_4)
         self.lineEdidInterpreterOpts = QtWidgets.QLineEdit(Form)
         self.lineEdidInterpreterOpts.setObjectName("lineEdidInterpreterOpts")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.lineEdidInterpreterOpts)
-        self.label_5 = QtWidgets.QLabel(Form)
-        self.label_5.setObjectName("label_5")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_5)
-        self.pickerWorkingDir = FilePicker(Form)
-        self.pickerWorkingDir.setObjectName("pickerWorkingDir")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.pickerWorkingDir)
+        self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.lineEdidInterpreterOpts)
         self.label_6 = QtWidgets.QLabel(Form)
         self.label_6.setObjectName("label_6")
-        self.formLayout.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_6)
+        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_6)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.tableWidgetEnvVars = QtWidgets.QTableWidget(Form)
@@ -95,7 +89,13 @@ class Ui_Form(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)
-        self.formLayout.setLayout(5, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
+        self.formLayout.setLayout(6, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setObjectName("label_5")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_5)
+        self.pickerWorkingDir = FilePicker(Form)
+        self.pickerWorkingDir.setObjectName("pickerWorkingDir")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pickerWorkingDir)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -107,11 +107,11 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "Script parameters:"))
         self.label_3.setText(_translate("Form", "Interpreter:"))
         self.label_4.setText(_translate("Form", "Interpreter options:"))
-        self.label_5.setText(_translate("Form", "Working directory:"))
         self.label_6.setText(_translate("Form", "Environment variables"))
         item = self.tableWidgetEnvVars.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Name"))
         item = self.tableWidgetEnvVars.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Value"))
+        self.label_5.setText(_translate("Form", "Working directory:"))
 
 from qidle.widgets.picker import FilePicker

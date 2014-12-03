@@ -1,0 +1,12 @@
+[
+    {
+        "env_vars": {
+            "PYTHONUNBUFFERED": "1"
+        },
+        "interpreter_options": [],
+        "name": "bootstrap",
+        "script": "bootstrap.py",
+        "script_parameters": [],
+        "working_dir": "."
+    }
+]

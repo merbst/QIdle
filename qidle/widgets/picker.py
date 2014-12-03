@@ -28,6 +28,14 @@ class FilePicker(QtWidgets.QWidget):
         self._on_path_changed(value)
 
     @property
+    def default_directory(self):
+        return self._default_dir
+
+    @default_directory.setter
+    def default_directory(self, value):
+        self._default_dir = value
+
+    @property
     def pick_dirs(self):
         return self._pick_dirs
 
@@ -42,6 +50,7 @@ class FilePicker(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(FilePicker, self).__init__(parent)
+        self._default_dir = os.path.expanduser('~')
         self._pick_dirs = True
         layout = QtWidgets.QHBoxLayout()
         layout.setMargin(0)
@@ -61,12 +70,15 @@ class FilePicker(QtWidgets.QWidget):
         self.line_edit.textChanged.connect(self._on_path_changed)
 
     def _pick(self):
+        directory = self.line_edit.text()
+        if not directory:
+            directory = self.default_directory
         if self.pick_dirs:
-            ret = QtWidgets.QFileDialog.getExistingDirectory(
-                self, 'Choose a directory', self.line_edit.text())
+            path = QtWidgets.QFileDialog.getExistingDirectory(
+                self, 'Choose a directory', directory)
         else:
             path, filter = QtWidgets.QFileDialog.getOpenFileName(
-                self, 'Choose a file', self.line_edit.text())
+                self, 'Choose a file', directory)
         if path:
             self.line_edit.setText(path)
 

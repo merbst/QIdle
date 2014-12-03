@@ -4,7 +4,8 @@ from pyqode.qt import QtGui, QtWidgets, QtCore
 from pyqode.python.widgets import PyCodeEdit
 import sys
 
-from qidle import icons
+from qidle import icons, project
+from qidle.dialogs.project_run_config import DlgProjectRunConfig
 from qidle.forms import win_prj_ui
 from qidle.preferences import Preferences
 from qidle.windows.base import WindowBase
@@ -74,10 +75,11 @@ class ProjectWindow(WindowBase):
         self._on_current_editor_changed(None)
 
         self._combo_run_configs = QtWidgets.QComboBox()
-        self._combo_run_configs.addItem('n/a')
         self._combo_run_configs.setToolTip('Choose run configuration')
-        self.ui.toolBarRun.insertWidget(self.ui.actionConfigureRun,
+        self.ui.toolBarRun.insertWidget(self.ui.actionRun,
                                         self._combo_run_configs)
+        self._combo_run_configs.activated.connect(
+            self._on_run_config_activated)
 
     def closeEvent(self, ev):
         self.ui.tabWidget.closeEvent(ev)
@@ -105,6 +107,27 @@ class ProjectWindow(WindowBase):
         meta_dir = os.path.join(path, '.qidle')
         if not os.path.exists(meta_dir):
             os.makedirs(meta_dir)
+        self._make_combo_run_configs()
+
+    def _on_run_config_activated(self, index):
+        if index == 0:
+            self.configure_run()
+
+    def _make_combo_run_configs(self):
+        self._combo_run_configs.clear()
+        self._combo_run_configs.addItem('Edit configurations...')
+        self._combo_run_configs.setItemIcon(0, icons.configure)
+        self._combo_run_configs.insertSeparator(1)
+        if self.path is None:
+            return
+        configs = project.get_run_configurations(self.path)
+        for cfg in configs:
+            i = self._combo_run_configs.count()
+            self._combo_run_configs.addItem(cfg['name'])
+            self._combo_run_configs.setItemIcon(i, icons.python_interpreter)
+        if len(configs):
+            self._combo_run_configs.setCurrentIndex(
+                self._combo_run_configs.count() - 1)
 
     def _on_dirty_changed(self, dirty):
         self.ui.actionSave.setEnabled(dirty)
@@ -116,10 +139,29 @@ class ProjectWindow(WindowBase):
         self.ui.tabWidget.save_current()
 
     def configure_run(self):
-        pass
+        DlgProjectRunConfig.edit_configs(self, self.path)
+        self._make_combo_run_configs()
 
     def run_script(self):
         self.ui.tabWidget.save_all()
+        _logger().info('running script')
+        self.ui.actionRun.setText('Stop')
+        self.ui.actionRun.setIcon(icons.stop)
+        configs = project.get_run_configurations(self.path)
+        for cfg in configs:
+            if cfg['name'] == self._combo_run_configs.currentText():
+                break
+        _logger().info('run configuration: %r', cfg)
+        opts = []
+        if len(cfg['interpreter_options']):
+            opts += cfg['interpreter_options']
+        opts += [cfg['script']]
+        if len(cfg['script_parameters']):
+            opts += cfg['script_parameters']
+        self.ui.textEditPgmOutput.start_process(
+            Preferences().cache.get_project_interpreter(self.path), opts,
+            cwd=cfg['working_dir'],
+            env=cfg['env_vars'])
 
     def _on_script_finished(self):
         _logger().info('script finished')

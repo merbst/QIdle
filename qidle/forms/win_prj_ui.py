@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_prj.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_prj.ui'
 #
-# Created: Thu Nov 27 12:24:21 2014
+# Created: Wed Dec  3 23:19:46 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.dockWidgetPyConsole.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidgetPyConsole)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 35))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 938, 34))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -190,7 +190,6 @@ class Ui_MainWindow(object):
         self.toolBarSave.addSeparator()
         self.toolBarSave.addAction(self.actionSave)
         self.toolBarSave.addAction(self.actionSave_as)
-        self.toolBarRun.addAction(self.actionConfigureRun)
         self.toolBarRun.addAction(self.actionRun)
 
         self.retranslateUi(MainWindow)
@@ -231,7 +230,7 @@ class Ui_MainWindow(object):
         self.actionNew_file.setText(_translate("MainWindow", "New file"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
 
-from pyqode.python.widgets import PyInteractiveConsole, PyOutlineTreeWidget
+from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole
 from qidle.widgets import IPythonConsole
-from pyqode.core.widgets import FileSystemTreeView, SplittableCodeEditTabWidget
+from pyqode.core.widgets import SplittableCodeEditTabWidget, FileSystemTreeView
 from . import qidle_rc

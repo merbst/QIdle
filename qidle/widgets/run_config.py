@@ -24,7 +24,7 @@ class RunConfigWidget(QtWidgets.QWidget):
         self.ui.toolButtonAdd.setIcon(icons.list_add)
 
     def _rm_current_row(self):
-        self.ui.tableWidgetEnvVars.takeRow(
+        self.ui.tableWidgetEnvVars.removeRow(
             self.ui.tableWidgetEnvVars.currentRow())
 
     def _table_env_var_sel_changed(self):

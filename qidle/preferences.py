@@ -131,6 +131,18 @@ class Cache(Section):
     def __init__(self, settings):
         super(Cache, self).__init__(settings, 'cache')
 
+    def get_project_interpreter(self, prj_path):
+        interpreters = json.loads(self.get_value('project_interpreters', '{}'))
+        try:
+            return interpreters[prj_path]
+        except KeyError:
+            return self._settings.interpreters.default
+
+    def set_project_interpreter(self, prj_path, interpreter):
+        interpreters = json.loads(self.get_value('project_interpreters', '{}'))
+        interpreters[prj_path] = interpreter
+        self.set_value('project_interpreters', json.dumps(interpreters))
+
     @property
     def run_configs(self):
         """
