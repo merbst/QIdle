@@ -53,7 +53,7 @@ class FilePicker(QtWidgets.QWidget):
         self._default_dir = os.path.expanduser('~')
         self._pick_dirs = True
         layout = QtWidgets.QHBoxLayout()
-        layout.setMargin(0)
+        layout.setContentsMargins(0, 0, 0, 0)
         self.line_edit = QtWidgets.QLineEdit()
         self.path = os.path.expanduser('~')
         layout.addWidget(self.line_edit)
