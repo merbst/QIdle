@@ -82,9 +82,14 @@ class ProjectWindow(WindowBase):
             self._on_run_config_activated)
 
     def closeEvent(self, ev):
-        self.ui.tabWidget.closeEvent(ev)
-        self.save_state()
-        super(ProjectWindow, self).closeEvent(ev)
+        nb_windows = len(self._open_windows)
+        _logger().debug('number of windows: %d', nb_windows)
+        if nb_windows != 1 or self.quit_confirmation():
+            self.ui.tabWidget.closeEvent(ev)
+        if ev.isAccepted():
+            self.save_state()
+            self._emit_closed()
+            super(ProjectWindow, self).closeEvent(ev)
 
     def restore_state(self):
         prefs = Preferences()

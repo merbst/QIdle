@@ -110,21 +110,6 @@ class WindowBase(QtWidgets.QMainWindow):
             action.triggered.connect(self._show_window_from_action)
             self.ui.menuWindows.addAction(action)
 
-    def closeEvent(self, ev):
-        nb_windows = len(self._open_windows)
-        _logger(self).debug('number of windows: %d', nb_windows)
-        if Preferences().general.confirm_application_exit and nb_windows == 1:
-            button = QtWidgets.QMessageBox.question(
-                self, "Confirm exit",
-                "Are you sure you want to exit QIdle?",
-                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            if button != QtWidgets.QMessageBox.Yes:
-                ev.ignore()
-        self.app.remember_path(self.path)
-        if ev.isAccepted():
-            super(WindowBase, self).closeEvent(ev)
-            self._emit_closed()
-
     def _emit_closed(self):
         self.closed.emit(self)
 
@@ -297,9 +282,18 @@ class WindowBase(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl('https://docs.python.org/3/'))
 
+    def quit_confirmation(self):
+        if Preferences().general.confirm_application_exit:
+            button = QtWidgets.QMessageBox.question(
+                self, "Confirm exit",
+                "Are you sure you want to exit QIdle?",
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            return button == QtWidgets.QMessageBox.Yes
+        return True
+
     def _quit(self):
-        # not sure why but if we don't do that using a timer we get a segfault
-        self.app.qapp.closeAllWindows()
+        if self.quit_confirmation():
+            self.app.qapp.closeAllWindows()
 
     def _close(self):
         # not sure why but if we don't do that using a timer we get a segfault
