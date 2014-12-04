@@ -41,7 +41,7 @@ class ScriptWindow(WindowBase):
         mnu = self.ui.codeEdit.get_context_menu()
         self.addActions(self.ui.menuFile.actions())
         self.addActions(mnu.actions())
-        self.ui.menuEdit.addActions(mnu.actions())
+        # self.ui.menuEdit.addActions(mnu.actions())
 
         self.ui.actionConfigureRun.triggered.connect(self.configure_run)
         self.ui.actionRun.triggered.connect(self.on_action_run_triggered)
