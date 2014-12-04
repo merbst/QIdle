@@ -72,25 +72,33 @@ class ScriptWindow(WindowBase):
             self.ui.dockWidgetProgramOutput)
         self.dock_manager_bottom.add_dock_widget(self.ui.dockWidgetPyConsole)
 
+    def _perform_close_event(self, ev):
+        if self.ui.codeEdit.dirty:
+            mbox = QtWidgets.QMessageBox(self)
+            mbox.setText("The document has been modified.")
+            mbox.setInformativeText("Do you want to save your changes?")
+            mbox.setStandardButtons(
+                QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard |
+                QtWidgets.QMessageBox.Cancel)
+            mbox.setIcon(QtWidgets.QMessageBox.Warning)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.Save)
+            ret = mbox.exec_()
+            ev.accept()
+            # cancel may come from the mbox or from the save file dialog
+            if ret == QtWidgets.QMessageBox.Cancel or (
+                    ret == QtWidgets.QMessageBox.Save and not self.save()):
+                ev.ignore()
+
     def closeEvent(self, ev):
         nb_windows = len(self._open_windows)
         _logger().debug('number of windows: %d', nb_windows)
-        if nb_windows != 1 or self.quit_confirmation():
-            if self.ui.codeEdit.dirty:
-                mbox = QtWidgets.QMessageBox(self)
-                mbox.setText("The document has been modified.")
-                mbox.setInformativeText("Do you want to save your changes?")
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard |
-                    QtWidgets.QMessageBox.Cancel)
-                mbox.setIcon(QtWidgets.QMessageBox.Warning)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.Save)
-                ret = mbox.exec_()
-                ev.accept()
-                # cancel may come from the mbox or from the save file dialog
-                if ret == QtWidgets.QMessageBox.Cancel or (
-                        ret == QtWidgets.QMessageBox.Save and not self.save()):
-                    ev.ignore()
+        quit = True
+        if nb_windows == 1:
+            quit = self.quit_confirmation()
+        if quit:
+            self._perform_close_event(ev)
+        else:
+            ev.ignore()
         if ev.isAccepted():
             self.ui.codeEdit.modes.clear()
             self.ui.codeEdit.panels.clear()
@@ -178,6 +186,7 @@ class ScriptWindow(WindowBase):
         if self.path == 'Untitled':
             return self.save_as()
         else:
+            self.app.remember_path(self.ui.codeEdit.file.path)
             try:
                 self.ui.codeEdit.file.save()
             except OSError as e:
@@ -185,8 +194,9 @@ class ScriptWindow(WindowBase):
                     QtWidgets.QMessageBox.warning(
                         self, 'Failed to save file',
                         'Failed to save file.\n\n%s' % e)
-            self.app.remember_path(self.ui.codeEdit.file.path)
+                    return False
             return True
+
 
     def configure_run(self):
         path = self.ui.codeEdit.file.path

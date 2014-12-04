@@ -31,6 +31,7 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def __init__(self, ui, app):
         super(WindowBase, self).__init__()
+        self._quitting = False
         self._app = weakref.ref(app)
         self._height = None
         # path of the script, 'Untitled' if new file not saved to disk.
@@ -283,17 +284,21 @@ class WindowBase(QtWidgets.QMainWindow):
             QtCore.QUrl('https://docs.python.org/3/'))
 
     def quit_confirmation(self):
-        if Preferences().general.confirm_application_exit:
+        if Preferences().general.confirm_application_exit and \
+                not self._quitting:
             button = QtWidgets.QMessageBox.question(
                 self, "Confirm exit",
                 "Are you sure you want to exit QIdle?",
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            return button == QtWidgets.QMessageBox.Yes
+            res = button == QtWidgets.QMessageBox.Yes
+            return res
         return True
 
     def _quit(self):
         if self.quit_confirmation():
+            self._quitting = True
             self.app.qapp.closeAllWindows()
+            self._quitting = False
 
     def _close(self):
         # not sure why but if we don't do that using a timer we get a segfault

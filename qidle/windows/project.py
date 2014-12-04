@@ -84,8 +84,13 @@ class ProjectWindow(WindowBase):
     def closeEvent(self, ev):
         nb_windows = len(self._open_windows)
         _logger().debug('number of windows: %d', nb_windows)
-        if nb_windows != 1 or self.quit_confirmation():
+        quit = True
+        if nb_windows == 1:
+            quit = self.quit_confirmation()
+        if quit:
             self.ui.tabWidget.closeEvent(ev)
+        else:
+            ev.ignore()
         if ev.isAccepted():
             self.save_state()
             self._emit_closed()
