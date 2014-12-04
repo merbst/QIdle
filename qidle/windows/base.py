@@ -294,7 +294,7 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def _show_python_docs(self):
         _logger(self).info('opening python docs in the default browser')
-        QtWidgets.QDesktopServices.openUrl(
+        QtGui.QDesktopServices.openUrl(
             QtCore.QUrl('https://docs.python.org/3/'))
 
     def _quit(self):
