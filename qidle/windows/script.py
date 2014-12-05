@@ -233,13 +233,13 @@ class ScriptWindow(WindowBase):
         self.ui.textEditPgmOutput.stop_process()
 
     def on_action_run_triggered(self):
-        if self.ui.actionRun.text() == 'Run':
+        if 'Run' in self.ui.actionRun.text():
             if Preferences().general.save_before_run:
                 self.save(ignore_os_errors=True)
             self.run_script()
             self.ui.dockWidgetProgramOutput.show()
             self.ui.textEditPgmOutput.setFocus(True)
-        elif self.ui.actionRun.text() == 'Stop':
+        elif 'Stop' in self.ui.actionRun.text():
             self.stop_script()
 
     def _goto_requested(self, obj, line=0):
