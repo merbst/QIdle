@@ -1,5 +1,7 @@
 import logging
 import os
+from pyqode.core.api import TextHelper
+from pyqode.python.backend import server
 from pyqode.qt import QtGui, QtWidgets, QtCore
 from pyqode.python.widgets import PyCodeEdit
 import sys
@@ -8,6 +10,7 @@ from qidle import icons, project
 from qidle.dialogs.project_run_config import DlgProjectRunConfig
 from qidle.forms import win_prj_ui
 from qidle.preferences import Preferences
+from qidle.system import get_library_zip_path
 from qidle.windows.base import WindowBase
 from qidle.widgets.fs_context_menu import PyFileSystemContextMenu
 
@@ -27,7 +30,7 @@ class ProjectWindow(WindowBase):
         self.ui.tabWidget.current_changed.connect(
             self._on_current_editor_changed)
         self.ui.tabWidget.last_tab_closed.connect(self._on_last_tab_closed)
-        self.ui.fsTree.set_context_menu(PyFileSystemContextMenu())
+        self.ui.fsTree.set_context_menu(PyFileSystemContextMenu(self))
         self.ui.fsTree.file_deleted.connect(self._on_file_deleted)
         self.ui.fsTree.file_renamed.connect(self._on_file_renamed)
         self.ui.fsTree.file_created.connect(self._on_file_created)
@@ -74,6 +77,7 @@ class ProjectWindow(WindowBase):
 
         self._on_current_editor_changed(None)
 
+        self._lock_combo_run_configs_updates = False
         self._combo_run_configs = QtWidgets.QComboBox()
         self._combo_run_configs.setToolTip('Choose run configuration')
         self.ui.toolBarRun.insertWidget(self.ui.actionRun,
@@ -117,13 +121,17 @@ class ProjectWindow(WindowBase):
         meta_dir = os.path.join(path, '.qidle')
         if not os.path.exists(meta_dir):
             os.makedirs(meta_dir)
-        self._make_combo_run_configs()
+        self.update_combo_run_configs()
 
     def _on_run_config_activated(self, index):
         if index == 0:
             self.configure_run()
+        if index != -1 and not self._lock_combo_run_configs_updates:
+            Preferences().cache.set_project_config(
+                self.path, self._combo_run_configs.currentText())
 
-    def _make_combo_run_configs(self):
+    def update_combo_run_configs(self):
+        self._lock_combo_run_configs_updates = True
         self._combo_run_configs.clear()
         self._combo_run_configs.addItem('Edit configurations...')
         self._combo_run_configs.setItemIcon(0, icons.configure)
@@ -131,13 +139,20 @@ class ProjectWindow(WindowBase):
         if self.path is None:
             return
         configs = project.get_run_configurations(self.path)
+        config = Preferences().cache.get_project_config(self.path)
+        index = -1
         for cfg in configs:
             i = self._combo_run_configs.count()
             self._combo_run_configs.addItem(cfg['name'])
             self._combo_run_configs.setItemIcon(i, icons.python_interpreter)
-        if len(configs):
+            if config == cfg['name']:
+                index = i
+        if index != -1:
+            self._combo_run_configs.setCurrentIndex(index)
+        elif len(configs):
             self._combo_run_configs.setCurrentIndex(
                 self._combo_run_configs.count() - 1)
+        self._lock_combo_run_configs_updates = False
 
     def _on_dirty_changed(self, dirty):
         self.ui.actionSave.setEnabled(dirty)
@@ -150,9 +165,20 @@ class ProjectWindow(WindowBase):
 
     def configure_run(self):
         DlgProjectRunConfig.edit_configs(self, self.path)
-        self._make_combo_run_configs()
+        self.update_combo_run_configs()
+        self._update_backends()
+
+    def current_interpreter(self):
+        return Preferences().cache.get_project_interpreter(
+            self.path)
+
+    def _update_backends(self):
+        # restart each backend with updated parameters (interpreter)
+        for w in self.ui.tabWidget.widgets(include_clones=True):
+            self._restart_backend(w)
 
     def run_script(self):
+        self.ui.dockWidgetProgramOutput.show()
         self.ui.tabWidget.save_all()
         _logger().info('running script')
         self.ui.actionRun.setText('Stop')
@@ -169,7 +195,7 @@ class ProjectWindow(WindowBase):
         if len(cfg['script_parameters']):
             opts += cfg['script_parameters']
         self.ui.textEditPgmOutput.start_process(
-            Preferences().cache.get_project_interpreter(self.path), opts,
+            self.current_interpreter(), opts,
             cwd=cfg['working_dir'],
             env=cfg['env_vars'])
 
@@ -200,6 +226,17 @@ class ProjectWindow(WindowBase):
     def apply_preferences(self, show_panels=True):
         pass
 
+    def _open_document(self, path):
+        tab = self.ui.tabWidget.open_document(path)
+        self._restart_backend(tab)
+        try:
+            mode = tab.modes.get('GoToAssignmentsMode')
+        except KeyError:
+            pass
+        else:
+            mode.out_of_doc.connect(self._on_go_out_of_document)
+        return tab
+
     def _on_tv_activated(self, index):
         def is_binary_string(path):
             textchars = (bytearray([7, 8, 9, 10, 12, 13, 27]) +
@@ -214,7 +251,12 @@ class ProjectWindow(WindowBase):
             if is_binary_string(path):
                 QtWidgets.QDesktopServices.openUrl(QtCore.QUrl(path))
             else:
-                self.ui.tabWidget.open_document(path)
+                self._open_document(path)
+
+    def _on_go_out_of_document(self, assignment):
+        tab = self._open_document(assignment.module_path)
+        QtWidgets.QApplication.instance().processEvents()
+        TextHelper(tab).goto_line(assignment.line, assignment.column)
 
     def _on_current_editor_changed(self, new):
         self.ui.classExplorer.set_editor(new)

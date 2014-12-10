@@ -115,7 +115,8 @@ def init():
                       'applications-graphics')
     text_edit = icon(':/icons/application-x-text-edit.png',
                      'accessories-text-editor')
-    folder = QtWidgets.QFileIconProvider().icon(QtWidgets.QFileIconProvider.Folder)
+    folder = QtWidgets.QFileIconProvider().icon(
+        QtWidgets.QFileIconProvider.Folder)
     file = QtWidgets.QFileIconProvider().icon(QtWidgets.QFileIconProvider.File)
 
 

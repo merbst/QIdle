@@ -10,26 +10,62 @@ class RunConfigWidget(QtWidgets.QWidget):
     """
     Widget used to edit a run configuration.
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, mode=0):
         super(RunConfigWidget, self).__init__(parent)
+        self._mode = mode
         self.ui = widget_run_cfg_ui.Ui_Form()
         self.ui.setupUi(self)
+        self.ui.tableWidgetEnvVars.horizontalHeader().setResizeMode(
+            QtWidgets.QHeaderView.ResizeToContents)
         self.ui.toolButtonRemove.setDisabled(True)
         self.ui.pickerWorkingDir.pick_dirs = True
         self.ui.toolButtonAdd.clicked.connect(self._add_row)
-        self.ui.tableWidgetEnvVars.itemSelectionChanged.connect(
+        self.ui.tableWidgetEnvVars.currentCellChanged.connect(
             self._table_env_var_sel_changed)
         self.ui.toolButtonRemove.clicked.connect(self._rm_current_row)
         self.ui.toolButtonRemove.setIcon(icons.list_remove)
         self.ui.toolButtonAdd.setIcon(icons.list_add)
+        self.ui.pickerScript.line_edit.textChanged.connect(
+            self._update_working_dir)
+        self.set_mode(mode)
+
+    def set_mode(self, mode=0):
+        """
+        Sets the widget mode: Script or Project. Depending on the mode some
+        widgets will be hidden or shown.
+
+        :param mode: Mode: Script = 0, Project = 1.
+        """
+        if mode == 0:
+            # Script Mode
+            self.ui.lblInterpreter.show()
+            self.ui.comboBoxInterpreter.show()
+            self.ui.lineEditName.hide()
+            self.ui.lblName.hide()
+        else:
+            # Project Mode
+            self.ui.lineEditName.show()
+            self.ui.lblName.show()
+            self.ui.lblInterpreter.hide()
+            self.ui.comboBoxInterpreter.hide()
+            self.ui.pickerScript.line_edit.textChanged.connect(
+                self._update_name)
+        self._mode = mode
+
+    def _update_name(self):
+        if self.ui.lineEditName.text().strip() in ['Unnamed', '']:
+            path = self.ui.pickerScript.path
+            if os.path.exists(path) and os.path.isfile(path):
+                self.ui.lineEditName.setText(
+                    os.path.splitext(os.path.split(path)[1])[0])
 
     def _rm_current_row(self):
         self.ui.tableWidgetEnvVars.removeRow(
             self.ui.tableWidgetEnvVars.currentRow())
 
-    def _table_env_var_sel_changed(self):
-        self.ui.toolButtonRemove.setEnabled(
-            len(self.ui.tableWidgetEnvVars.selectedItems()))
+    def _table_env_var_sel_changed(self, current_row, _, prev_row, *args):
+        if current_row != prev_row:
+            self.ui.toolButtonRemove.setEnabled(current_row != -1)
 
     def _add_row(self):
         self.ui.tableWidgetEnvVars.insertRow(
@@ -43,6 +79,10 @@ class RunConfigWidget(QtWidgets.QWidget):
             if name_item and val_item:
                 env_vars[name_item.text()] = val_item.text()
         return env_vars
+
+    def _update_working_dir(self, text):
+        if os.path.exists(text) and os.path.isfile(text):
+            self.ui.pickerWorkingDir.path = os.path.dirname(text)
 
     def set_config(self, config):
         """
@@ -64,14 +104,18 @@ class RunConfigWidget(QtWidgets.QWidget):
         self.ui.pickerScript.path = config['script']
         self.ui.lineEditScriptParams.setText(
             ' '.join(config['script_parameters']))
-        interpreter = config['interpreter']
-        load_interpreters(self.ui.comboBoxInterpreter, default=interpreter)
+        if self._mode == 0:
+            interpreter = config['interpreter']
+            load_interpreters(self.ui.comboBoxInterpreter, default=interpreter)
+        else:
+            self.ui.lineEditName.setText(config['name'])
         interpreter_options = config['interpreter_options']
         self.ui.lineEdidInterpreterOpts.setText(' '.join(interpreter_options))
         working_dir = config['working_dir']
         if working_dir is None:
             working_dir = os.path.dirname(config['script'])
         self.ui.pickerWorkingDir.path = working_dir
+        self.ui.tableWidgetEnvVars.setRowCount(0)
         for key, value in config['env_vars'].items():
             index = self.ui.tableWidgetEnvVars.rowCount()
             self.ui.tableWidgetEnvVars.insertRow(index)
@@ -86,11 +130,14 @@ class RunConfigWidget(QtWidgets.QWidget):
             'script_parameters':
                 self.ui.lineEditScriptParams.text().split(' ') if
                 self.ui.lineEditScriptParams.text() else '',
-            'interpreter': self.ui.comboBoxInterpreter.currentText(),
             'interpreter_options':
                 self.ui.lineEdidInterpreterOpts.text().split(' ') if
                 self.ui.lineEdidInterpreterOpts.text() else '',
             'working_dir': self.ui.pickerWorkingDir.path,
             'env_vars': self._get_env_vars(),
         }
+        if self._mode == 0:
+            config['interpreter'] = self.ui.comboBoxInterpreter.currentText()
+        else:
+            config['name'] = self.ui.lineEditName.text()
         return config

@@ -36,6 +36,23 @@ from qidle.argparser import parse_args
 args = parse_args()
 logger.info('02. Parsed command line arguments: %r', args)
 
+# ------ check pyqode packages
+try:
+    import pyqode
+    from pyqode.qt import __version__ as qt_version
+    from pyqode.core import __version__ as core_version
+    from pyqode.python import __version__ as python_version
+except ImportError:
+    logger.exception('03. Cannot import pyQode: please install the following '
+                     'packages: pyqode.qt, pyqode.core, pyqode.python')
+    sys.exit(1)
+else:
+    logger.info('03. Imported pyQode')
+    logger.info('    [pyqode.qt %s, pyqode.core %s, pyqode.python %s]' %
+                (qt_version, core_version, python_version))
+    if core_version.replace('.dev', '') < '2.4':
+        logger.warning('Wrong pyQode version, you need pyqode >= 2.4')
+        sys.exit(1)
 
 # ------ check qt api
 if args.qt == 5:
@@ -55,7 +72,7 @@ except ImportError:
         import pyqode.qt
     except ImportError:
         # Total failure, pyqt not found
-        logger.exception('03. Failed to import Qt. Please install PyQt4 or '
+        logger.exception('04. Failed to import Qt. Please install PyQt4 or '
                          'PyQt5')
         sys.exit(1)
 # if the user wanted to run the app with pyqt5 but pyqt5 is not available,
@@ -65,7 +82,7 @@ if os.environ['QT_API'] == 'pyqt5':
 else:
     args.qt = 4
 api = os.environ['QT_API'].replace('p', 'P').replace('q', 'Q')
-logger.info('03. Imported %s' % api)
+logger.info('04. Imported %s' % api)
 if os.environ['QT_API'] == 'pyqt4':
     from PyQt4.Qt import PYQT_VERSION_STR
     from PyQt4.QtCore import QT_VERSION_STR
@@ -73,24 +90,6 @@ else:
     from PyQt5.QtCore import PYQT_VERSION_STR
     from PyQt5.QtCore import QT_VERSION_STR
 logger.info('    [Qt %s, %s %s]' % (QT_VERSION_STR, api, PYQT_VERSION_STR))
-
-# ------ check pyqode root package
-try:
-    import pyqode
-    from pyqode.qt import __version__ as qt_version
-    from pyqode.core import __version__ as core_version
-    from pyqode.python import __version__ as python_version
-except ImportError:
-    logger.exception('04. Cannot import pyQode: please install the following '
-                     'packages: pyqode.qt, pyqode.core, pyqode.python')
-    sys.exit(1)
-else:
-    logger.info('04. Imported pyQode')
-    logger.info('    [pyqode.qt %s, pyqode.core %s, pyqode.python %s]' %
-                (qt_version, core_version, python_version))
-    if core_version.replace('.dev', '') < '2.4':
-        logger.warning('Wrong pyQode version, you need pyqode >= 2.4')
-        sys.exit(1)
 
 # ------ check IPython
 try:

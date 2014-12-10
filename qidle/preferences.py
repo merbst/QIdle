@@ -143,6 +143,18 @@ class Cache(Section):
         interpreters[prj_path] = interpreter
         self.set_value('project_interpreters', json.dumps(interpreters))
 
+    def get_project_config(self, prj_path):
+        configs = json.loads(self.get_value('projects_config', '{}'))
+        try:
+            return configs[prj_path]
+        except KeyError:
+            return None
+
+    def set_project_config(self, prj_path, config):
+        configs = json.loads(self.get_value('projects_config', '{}'))
+        configs[prj_path] = config
+        self.set_value('projects_config', json.dumps(configs))
+
     @property
     def run_configs(self):
         """
@@ -477,14 +489,10 @@ class Editor(Section):
     @property
     def panels(self):
         default = {
-            'EncodingPanel': True,
             'LineNumberPanel': True,
             'CheckerPanel': True,
             'FoldingPanel': True,
-            'GlobalCheckerPanel': True,
-            'QuickDocPanel': True,
-            'SearchAndReplacePanel': True,
-            'CalltipsMode': True
+            'GlobalCheckerPanel': False,
         }
         return eval(self.get_value('panels', repr(default)))
 

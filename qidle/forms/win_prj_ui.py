@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_prj.ui'
 #
-# Created: Wed Dec  3 23:19:46 2014
+# Created: Tue Dec  9 20:22:21 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,6 +19,8 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget = SplittableCodeEditTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
@@ -185,9 +187,6 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuOptions.menuAction())
         self.menubar.addAction(self.menuWindows.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-        self.toolBarSave.addAction(self.actionNew_file)
-        self.toolBarSave.addAction(self.actionOpen_file)
-        self.toolBarSave.addSeparator()
         self.toolBarSave.addAction(self.actionSave)
         self.toolBarSave.addAction(self.actionSave_as)
         self.toolBarRun.addAction(self.actionRun)
@@ -212,25 +211,31 @@ class Ui_MainWindow(object):
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.toolBarSave.setWindowTitle(_translate("MainWindow", "File toolbar"))
         self.toolBarRun.setWindowTitle(_translate("MainWindow", "Run toolbar"))
-        self.actionOpen_file.setText(_translate("MainWindow", "Open file"))
-        self.actionOpen_directory.setText(_translate("MainWindow", "Open directory"))
+        self.actionOpen_file.setText(_translate("MainWindow", "Open script"))
+        self.actionOpen_file.setToolTip(_translate("MainWindow", "Open an existing script in a new window"))
+        self.actionOpen_directory.setText(_translate("MainWindow", "Open project"))
+        self.actionOpen_directory.setToolTip(_translate("MainWindow", "Open/import exisiting project\n"
+"\n"
+"You can open any directory, even with projects created in other IDE!"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionSave_as.setText(_translate("MainWindow", "Save as"))
         self.actionClose.setText(_translate("MainWindow", "Close window"))
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
         self.actionRun.setText(_translate("MainWindow", "Run"))
         self.actionRun.setToolTip(_translate("MainWindow", "Run the selected configuration"))
-        self.actionConfigureRun.setText(_translate("MainWindow", "Configure"))
-        self.actionConfigureRun.setToolTip(_translate("MainWindow", "Configure run"))
+        self.actionConfigureRun.setText(_translate("MainWindow", "Edit configurations"))
+        self.actionConfigureRun.setToolTip(_translate("MainWindow", "Edit run configurations"))
         self.actionConfigure_IDLE.setText(_translate("MainWindow", "Configure QIdle"))
         self.actionZoom_height.setText(_translate("MainWindow", "Zoom height"))
         self.actionAbout_QIdle.setText(_translate("MainWindow", "About QIdle"))
         self.actionHelp_content.setText(_translate("MainWindow", "QIdle Help"))
         self.actionPython_docs.setText(_translate("MainWindow", "Python docs"))
         self.actionNew_file.setText(_translate("MainWindow", "New file"))
+        self.actionNew_file.setToolTip(_translate("MainWindow", "Create a new script (in a new window)"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
+        self.actionNew_project.setToolTip(_translate("MainWindow", "Create a new project"))
 
 from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole
-from qidle.widgets import IPythonConsole
 from pyqode.core.widgets import SplittableCodeEditTabWidget, FileSystemTreeView
+from qidle.widgets import IPythonConsole
 from . import qidle_rc

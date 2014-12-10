@@ -9,7 +9,7 @@ from pyqode.core.modes import RightMarginMode, CodeCompletionMode
 from pyqode.core.panels import FoldingPanel
 from pyqode.python.backend import server
 
-from qidle import icons
+from qidle import icons, commons
 from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
@@ -27,11 +27,6 @@ class ScriptWindow(WindowBase):
         super(ScriptWindow, self).__init__(self.ui, app)
         self.setMinimumWidth(600)
         self.setMinimumHeight(480)
-        args = []
-        interpreter = Preferences().interpreters.default
-        if sys.executable != interpreter:
-            args = ['-s'] + [get_library_zip_path()]
-        self.ui.codeEdit.backend.start(server.__file__, interpreter, args)
         self.ui.classExplorer.set_editor(self.ui.codeEdit)
         self.restore_state()
         self.ui.dockWidgetProgramOutput.hide()
@@ -141,11 +136,20 @@ class ScriptWindow(WindowBase):
         self.ui.codeEdit.show()
         self.ui.codeEdit.panels.refresh()
 
+    def current_interpreter(self):
+        cfg = Preferences().cache.get_run_config_for_file(self.path)
+        if cfg is None:
+            interpreter = Preferences().interpreters.default
+        else:
+            interpreter = cfg['interpreter']
+        return interpreter
+
     def open(self, path):
         self._title = '%s [%s] - QIdle %s (Python %s)' % (
             os.path.split(path)[1], path, self.app.version_str,
             '.'.join([str(i) for i in sys.version_info[:3]]))
         self.path = path
+        self._restart_backend(self.ui.codeEdit)
         self.ui.codeEdit.file.open(path)
         self.setWindowTitle(self._title)
         self._on_dirty_changed(False)
@@ -197,10 +201,10 @@ class ScriptWindow(WindowBase):
                     return False
             return True
 
-
     def configure_run(self):
         path = self.ui.codeEdit.file.path
         DlgScriptRunConfig.edit_config(self, path)
+        self._restart_backend(self.ui.codeEdit)
         _logger().info('run configuration edited')
 
     def run_script(self):
@@ -304,17 +308,16 @@ class ScriptWindow(WindowBase):
             else:
                 m.enabled = True
 
-        # panels
-        for m in self.ui.codeEdit.panels:
-            if m.name in prefs.editor.panels:
-                m.enabled = prefs.editor.panels[m.name]
+        # disable unwanted panels
+        for name, state in prefs.editor.panels.items():
+            try:
+                panel = self.ui.codeEdit.panels.get(name)
+            except KeyError:
+                pass
             else:
-                m.enabled = True
-            if m.name in ['EncodingPanel', 'QuickDocPanel',
-                          'SearchAndReplacePanel']:
-                m.setVisible(False)
-            elif show_panels:
-                m.setVisible(m.enabled)
+                if name not in commons.DYNAMIC_PANELS:
+                    panel.setEnabled(state)
+                    panel.setVisible(state)
 
     def setFocus(self, reason=None):
         _logger().debug('setFocus: %r', reason)

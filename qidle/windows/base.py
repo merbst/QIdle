@@ -5,6 +5,8 @@ import logging
 import os
 import sys
 import weakref
+from pyqode.core.backend import server
+from pyqode.core.modes import CheckerMode
 from pyqode.qt import QtCore, QtGui, QtWidgets
 from pyqode.core.widgets import MenuRecentFiles
 from qidle import icons
@@ -12,6 +14,7 @@ from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.icons import IconProvider
 from qidle.preferences import Preferences
 from qidle.dialogs import DlgPreferences
+from qidle.system import get_library_zip_path
 from qidle.widgets.dock_manager import DockManager
 
 
@@ -77,6 +80,9 @@ class WindowBase(QtWidgets.QMainWindow):
 
     def update_recents_menu(self):
         self.menu_recents.update_actions()
+
+    def current_interpreter(self):
+        raise NotImplementedError()
 
     def edit_preferences(self):
         DlgPreferences.edit_preferences(
@@ -277,6 +283,20 @@ class WindowBase(QtWidgets.QMainWindow):
             i = 0
         window = self.app.windows[i]
         self.app.activate_window(window)
+
+    def _restart_backend(self, editor):
+        """
+        Restart the backend process of `editor`. The goal is to
+        :param editor: pyqode.core.api.CodeEdit or subclass
+        """
+        editor.backend.start(
+            editor.backend.server_script, self.current_interpreter(),
+            [] if sys.executable == self.current_interpreter() else
+            ['-s'] + [get_library_zip_path()])
+        # update checker modes for the new interpreter syntax.
+        for mode in editor.modes:
+            if isinstance(mode, CheckerMode):
+                mode.request_analysis()
 
     def _show_python_docs(self):
         _logger(self).info('opening python docs in the default browser')

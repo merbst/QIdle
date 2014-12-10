@@ -3,10 +3,27 @@
         "env_vars": {
             "PYTHONUNBUFFERED": "1"
         },
-        "interpreter_options": [],
+        "interpreter_options": "",
+        "name": "build_ui",
+        "script": "setup.py",
+        "script_parameters": [
+            "build_ui"
+        ],
+        "working_dir": "."
+    },
+    {
+        "env_vars": {
+            "PYTHONUNBUFFERED": "1",
+            "QT_API": "pyqt5"
+        },
+        "interpreter": "/usr/bin/python3.4",
+        "interpreter_options": "",
         "name": "bootstrap",
         "script": "bootstrap.py",
-        "script_parameters": [],
+        "script_parameters": [
+            "--qt",
+            "5"
+        ],
         "working_dir": "."
     }
 ]

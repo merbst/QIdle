@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/win_script.ui'
+# Form implementation generated from reading ui file '/home/colin/Desktop/QIdle/forms/win_script.ui'
 #
-# Created: Wed Nov 26 13:26:37 2014
+# Created: Mon Dec  8 21:01:51 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,6 +19,8 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
         self.codeEdit = PyCodeEdit(self.centralwidget)
         self.codeEdit.setObjectName("codeEdit")
@@ -201,8 +203,12 @@ class Ui_MainWindow(object):
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.toolBarSave.setWindowTitle(_translate("MainWindow", "File toolbar"))
         self.toolBarRun.setWindowTitle(_translate("MainWindow", "Run toolbar"))
-        self.actionOpen_file.setText(_translate("MainWindow", "Open file"))
+        self.actionOpen_file.setText(_translate("MainWindow", "Open script"))
+        self.actionOpen_file.setToolTip(_translate("MainWindow", "Open an exisiting script in a new window"))
         self.actionOpen_directory.setText(_translate("MainWindow", "Open directory"))
+        self.actionOpen_directory.setToolTip(_translate("MainWindow", "Open/import an existing project.\n"
+"\n"
+"You can open any directory, even if the project directory was created by another IDE."))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionSave_as.setText(_translate("MainWindow", "Save as"))
         self.actionClose.setText(_translate("MainWindow", "Close window"))
@@ -214,9 +220,11 @@ class Ui_MainWindow(object):
         self.actionAbout_QIdle.setText(_translate("MainWindow", "About QIdle"))
         self.actionHelp_content.setText(_translate("MainWindow", "QIdle Help"))
         self.actionPython_docs.setText(_translate("MainWindow", "Python docs"))
-        self.actionNew_file.setText(_translate("MainWindow", "New file"))
+        self.actionNew_file.setText(_translate("MainWindow", "New script"))
+        self.actionNew_file.setToolTip(_translate("MainWindow", "Create a new script, in a new window"))
         self.actionNew_project.setText(_translate("MainWindow", "New project"))
+        self.actionNew_project.setToolTip(_translate("MainWindow", "Create a new project"))
 
-from pyqode.python.widgets import PyOutlineTreeWidget, PyInteractiveConsole, PyCodeEdit
 from qidle.widgets import IPythonConsole
+from pyqode.python.widgets import PyInteractiveConsole, PyCodeEdit, PyOutlineTreeWidget
 from . import qidle_rc

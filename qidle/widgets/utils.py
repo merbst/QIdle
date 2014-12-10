@@ -1,4 +1,3 @@
-from pyqode.qt import QtGui
 from qidle import icons
 from qidle.python import detect_system_interpreters
 from qidle.preferences import Preferences

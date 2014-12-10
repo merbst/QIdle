@@ -3,6 +3,7 @@ This module contains the editor modes confifuration widget.
 """
 from pyqode.qt import QtCore, QtWidgets
 from pyqode.python.widgets import PyCodeEdit
+from qidle import commons
 from qidle.forms.settings_page_panels_ui import Ui_Form
 from qidle.preferences import Preferences
 from qidle.widgets.preferences.base import Page
@@ -22,8 +23,10 @@ class PageEditorPanels(Page):
 
     def _get_installed_panels(self):
         code_edit = PyCodeEdit()
-        modes = [(m.name, self.extract_doc(m))
-                 for m in code_edit.panels if m.name != 'SymbolBrowserPanel']
+        modes = [
+            (m.name, self.extract_doc(m)) for m in code_edit.panels
+            if m.name not in commons.DYNAMIC_PANELS
+        ]
         code_edit.close()
         code_edit.delete()
         del code_edit

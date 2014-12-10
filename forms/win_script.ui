@@ -19,6 +19,12 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
      <widget class="PyCodeEdit" name="codeEdit"/>
     </item>
@@ -194,7 +200,10 @@
      <normaloff>:/icons/document-open.png</normaloff>:/icons/document-open.png</iconset>
    </property>
    <property name="text">
-    <string>Open file</string>
+    <string>Open script</string>
+   </property>
+   <property name="toolTip">
+    <string>Open an exisiting script in a new window</string>
    </property>
   </action>
   <action name="actionOpen_directory">
@@ -204,6 +213,11 @@
    </property>
    <property name="text">
     <string>Open directory</string>
+   </property>
+   <property name="toolTip">
+    <string>Open/import an existing project.
+
+You can open any directory, even if the project directory was created by another IDE.</string>
    </property>
   </action>
   <action name="actionSave">
@@ -310,7 +324,10 @@
      <normaloff>:/icons/document-new.png</normaloff>:/icons/document-new.png</iconset>
    </property>
    <property name="text">
-    <string>New file</string>
+    <string>New script</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new script, in a new window</string>
    </property>
   </action>
   <action name="actionNew_project">
@@ -321,14 +338,12 @@
    <property name="text">
     <string>New project</string>
    </property>
+   <property name="toolTip">
+    <string>Create a new project</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>PyCodeEdit</class>
-   <extends>QPlainTextEdit</extends>
-   <header>pyqode.python.widgets</header>
-  </customwidget>
   <customwidget>
    <class>PyInteractiveConsole</class>
    <extends>QTextEdit</extends>
@@ -342,6 +357,11 @@
   <customwidget>
    <class>PyOutlineTreeWidget</class>
    <extends>QTreeWidget</extends>
+   <header>pyqode.python.widgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PyCodeEdit</class>
+   <extends>QPlainTextEdit</extends>
    <header>pyqode.python.widgets</header>
   </customwidget>
  </customwidgets>
