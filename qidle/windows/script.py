@@ -315,7 +315,7 @@ class ScriptWindow(WindowBase):
             except KeyError:
                 pass
             else:
-                if name not in commons.DYNAMIC_PANELS:
+                if name not in commons.DYNAMIC_PANELS and show_panels:
                     panel.setEnabled(state)
                     panel.setVisible(state)
 
