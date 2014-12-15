@@ -31,6 +31,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>0</height>
+        </size>
+       </property>
        <attribute name="headerVisible">
         <bool>false</bool>
        </attribute>
@@ -50,16 +56,6 @@
        </item>
        <item>
         <property name="text">
-         <string>Appearance</string>
-        </property>
-        <property name="icon">
-         <iconset theme="applications-graphics">
-          <normaloff/>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Editor</string>
         </property>
         <property name="icon">
@@ -69,12 +65,17 @@
         </property>
         <item>
          <property name="text">
-          <string>Modes</string>
+          <string>Appearance</string>
+         </property>
+         <property name="icon">
+          <iconset theme="applications-graphics">
+           <normaloff/>
+          </iconset>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Panels</string>
+          <string>Extensions</string>
          </property>
         </item>
        </item>

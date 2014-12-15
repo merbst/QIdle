@@ -13,17 +13,13 @@
     },
     {
         "env_vars": {
-            "PYTHONUNBUFFERED": "1",
-            "QT_API": "pyqt5"
+            "PYTHONUNBUFFERED": "1"
         },
         "interpreter": "/usr/bin/python3.4",
         "interpreter_options": "",
         "name": "bootstrap",
         "script": "bootstrap.py",
-        "script_parameters": [
-            "--qt",
-            "5"
-        ],
+        "script_parameters": "",
         "working_dir": "."
     }
 ]

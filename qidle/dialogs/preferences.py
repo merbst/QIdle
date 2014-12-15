@@ -7,7 +7,7 @@ from qidle import icons
 from qidle.forms.dlg_preferences_ui import Ui_Dialog
 from qidle.widgets.preferences import (
     PageAppearance, PageGeneral, PageInterpreters, PageEditor,
-    PageEditorModes, PageEditorPanels
+    PageEditorExtensions
 )
 
 
@@ -28,15 +28,6 @@ class DlgPreferences(QtWidgets.QDialog):
         self.ui.pages.setCurrentIndex(0)
         general.setIcon(0, icons.preferences)
 
-        # appearance
-        page = PageAppearance(self.ui.pages)
-        self.ui.pages.addWidget(page)
-        appearance = self.ui.categories.findItems(
-            'Appearance', QtCore.Qt.MatchExactly)[0]
-        appearance.setData(0, QtCore.Qt.UserRole, page)
-        self.appearance = page
-        appearance.setIcon(0, icons.appearance)
-
         # editor
         page = PageEditor(self.ui.pages)
         self.ui.pages.addWidget(page)
@@ -45,19 +36,21 @@ class DlgPreferences(QtWidgets.QDialog):
         editor.setData(0, QtCore.Qt.UserRole, page)
         editor.setIcon(0, icons.text_edit)
 
+        # appearance
+        page = PageAppearance(self.ui.pages)
+        self.ui.pages.addWidget(page)
+        appearance = self.ui.categories.findItems(
+            'Appearance', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
+        appearance.setData(0, QtCore.Qt.UserRole, page)
+        self.appearance = page
+        appearance.setIcon(0, icons.appearance)
+
         # editor modes
-        page = PageEditorModes(self.ui.pages)
+        page = PageEditorExtensions(self.ui.pages)
         self.ui.pages.addWidget(page)
         editor_modes = self.ui.categories.findItems(
-            'Modes', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
+            'Extensions', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
         editor_modes.setData(0, QtCore.Qt.UserRole, page)
-
-        # editor panels
-        page = PageEditorPanels(self.ui.pages)
-        self.ui.pages.addWidget(page)
-        editor_panels = self.ui.categories.findItems(
-            'Panels', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
-        editor_panels.setData(0, QtCore.Qt.UserRole, page)
 
         # interpreters
         page = PageInterpreters(self.ui.pages)
@@ -78,6 +71,8 @@ class DlgPreferences(QtWidgets.QDialog):
         self.ui.buttons.button(
             self.ui.buttons.RestoreDefaults).clicked.connect(
             self.restore_defaults)
+        self.ui.categories.expandAll()
+        self.ui.categories.adjustSize()
 
     def _on_category_changed(self, cat):
         page = cat.data(0, QtCore.Qt.UserRole)

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/colin/dev/QIdle/forms/dlg_preferences.ui'
+# Form implementation generated from reading ui file '/Users/renega_666/Documents/QIdle/forms/dlg_preferences.ui'
 #
-# Created: Wed Nov 26 13:26:39 2014
-#      by: PyQt5 UI code generator 5.3.2
+# Created: Fri Dec 12 22:26:16 2014
+#      by: PyQt5 UI code generator 5.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -27,17 +27,17 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.categories.sizePolicy().hasHeightForWidth())
         self.categories.setSizePolicy(sizePolicy)
+        self.categories.setMinimumSize(QtCore.QSize(250, 0))
         self.categories.setObjectName("categories")
         item_0 = QtWidgets.QTreeWidgetItem(self.categories)
         icon = QtGui.QIcon.fromTheme("preferences-system")
         item_0.setIcon(0, icon)
         item_0 = QtWidgets.QTreeWidgetItem(self.categories)
-        icon = QtGui.QIcon.fromTheme("applications-graphics")
-        item_0.setIcon(0, icon)
-        item_0 = QtWidgets.QTreeWidgetItem(self.categories)
         icon = QtGui.QIcon.fromTheme("accessories-text-editor")
         item_0.setIcon(0, icon)
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        icon = QtGui.QIcon.fromTheme("applications-graphics")
+        item_1.setIcon(0, icon)
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
         item_0 = QtWidgets.QTreeWidgetItem(self.categories)
         icon1 = QtGui.QIcon()
@@ -86,11 +86,10 @@ class Ui_Dialog(object):
         __sortingEnabled = self.categories.isSortingEnabled()
         self.categories.setSortingEnabled(False)
         self.categories.topLevelItem(0).setText(0, _translate("Dialog", "General"))
-        self.categories.topLevelItem(1).setText(0, _translate("Dialog", "Appearance"))
-        self.categories.topLevelItem(2).setText(0, _translate("Dialog", "Editor"))
-        self.categories.topLevelItem(2).child(0).setText(0, _translate("Dialog", "Modes"))
-        self.categories.topLevelItem(2).child(1).setText(0, _translate("Dialog", "Panels"))
-        self.categories.topLevelItem(3).setText(0, _translate("Dialog", "Interpreters"))
+        self.categories.topLevelItem(1).setText(0, _translate("Dialog", "Editor"))
+        self.categories.topLevelItem(1).child(0).setText(0, _translate("Dialog", "Appearance"))
+        self.categories.topLevelItem(1).child(1).setText(0, _translate("Dialog", "Extensions"))
+        self.categories.topLevelItem(2).setText(0, _translate("Dialog", "Interpreters"))
         self.categories.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Dialog", "This page does not exist yet"))
 

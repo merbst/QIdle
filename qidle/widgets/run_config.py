@@ -15,8 +15,8 @@ class RunConfigWidget(QtWidgets.QWidget):
         self._mode = mode
         self.ui = widget_run_cfg_ui.Ui_Form()
         self.ui.setupUi(self)
-        self.ui.tableWidgetEnvVars.horizontalHeader().setResizeMode(
-            QtWidgets.QHeaderView.ResizeToContents)
+        # self.ui.tableWidgetEnvVars.horizontalHeader().setResizeMode(
+        #     QtWidgets.QHeaderView.ResizeToContents)
         self.ui.toolButtonRemove.setDisabled(True)
         self.ui.pickerWorkingDir.pick_dirs = True
         self.ui.toolButtonAdd.clicked.connect(self._add_row)

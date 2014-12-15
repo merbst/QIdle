@@ -106,7 +106,8 @@ class PageInterpreters(Page):
         self.stop_backend()
         self.backend.start(
             server.__file__, interpreter=interpreter,
-            args=['-s',  get_library_zip_path()], error_callback=self._on_backend_error)
+            args=['-s',  get_library_zip_path()],
+            error_callback=self._on_backend_error)
 
     def _on_backend_error(self, *args):
         self._enable_buttons(True)

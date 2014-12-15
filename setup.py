@@ -17,7 +17,6 @@ except ImportError:
     build_ui = None
     cmdclass = {}
 
-
 # get long description
 with open('README.rst', 'r') as readme:
     long_desc = readme.read()
