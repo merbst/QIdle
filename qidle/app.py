@@ -160,6 +160,7 @@ class Application:
 
     def _on_window_closed(self, window):
         _logger().info('window closed: %s' % window.path)
+        self.remember_path(window.path)
         self.windows.remove(window)
         self.update_windows_menu()
 
