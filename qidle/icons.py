@@ -53,6 +53,7 @@ appearance = None
 text_edit = None
 folder = None
 file = None
+preferences_plugin = None
 
 
 def init():
@@ -85,6 +86,7 @@ def init():
     global text_edit
     global folder
     global file
+    global preferences_plugin
 
     new_file = icon(':/icons/document-new.png', 'document-new')
     open_file = icon(':/icons/document-open.png', 'document-open')
@@ -118,6 +120,7 @@ def init():
     folder = QtWidgets.QFileIconProvider().icon(
         QtWidgets.QFileIconProvider.Folder)
     file = QtWidgets.QFileIconProvider().icon(QtWidgets.QFileIconProvider.File)
+    preferences_plugin = icon(':/icons/preferences-plugin.png', 'network-wired')
 
 
 class IconProvider(QtWidgets.QFileIconProvider):

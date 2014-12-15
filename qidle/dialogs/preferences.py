@@ -51,6 +51,7 @@ class DlgPreferences(QtWidgets.QDialog):
         editor_modes = self.ui.categories.findItems(
             'Extensions', QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)[0]
         editor_modes.setData(0, QtCore.Qt.UserRole, page)
+        editor_modes.setIcon(0, icons.preferences_plugin)
 
         # interpreters
         page = PageInterpreters(self.ui.pages)

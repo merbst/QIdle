@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/renega_666/Documents/QIdle/forms/dlg_preferences.ui'
+# Form implementation generated from reading ui file '/home/colin/QIdle/forms/dlg_preferences.ui'
 #
-# Created: Fri Dec 12 22:26:16 2014
-#      by: PyQt5 UI code generator 5.3
+# Created: Mon Dec 15 23:23:18 2014
+#      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -39,6 +39,8 @@ class Ui_Dialog(object):
         icon = QtGui.QIcon.fromTheme("applications-graphics")
         item_1.setIcon(0, icon)
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        icon = QtGui.QIcon.fromTheme("network-wired")
+        item_1.setIcon(0, icon)
         item_0 = QtWidgets.QTreeWidgetItem(self.categories)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/interpreter-sys.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)

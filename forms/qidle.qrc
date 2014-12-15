@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>preferences-plugin.png</file>
     <file>application-x-text-edit.png</file>
     <file>applications-graphics.png</file>
     <file>QIdle.png</file>
