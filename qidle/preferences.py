@@ -21,6 +21,7 @@ class Preferences(QtCore.QSettings):
         super(Preferences, self).__init__(*self.names)
         self.script_window = ScriptWindow(self)
         self.project_window = ProjectWindow(self)
+        self.preferences_dialog = PreferencesDialog(self)
         self.key_bindings = KeyBindings(self)
         self.cache = Cache(self)
         self.interpreters = Interpreters(self)
@@ -47,25 +48,25 @@ class ScriptWindow(Section):
 
     @property
     def geometry(self):
-        v = self.get_value('script_window_geometry')
+        v = self.get_value('geometry')
         if v:
             return bytes(v)
         return b''
 
     @geometry.setter
     def geometry(self, value):
-        self.set_value('script_window_geometry', value)
+        self.set_value('geometry', value)
 
     @property
     def state(self):
-        v = self.get_value('script_window_state')
+        v = self.get_value('state')
         if v:
             return bytes(v)
         return b''
 
     @state.setter
     def state(self, value):
-        self.set_value('script_window_state', value)
+        self.set_value('state', value)
 
 
 class ProjectWindow(Section):
@@ -74,25 +75,61 @@ class ProjectWindow(Section):
 
     @property
     def geometry(self):
-        v = self.get_value('script_window_geometry')
+        v = self.get_value('geometry')
         if v:
             return bytes(v)
         return b''
 
     @geometry.setter
     def geometry(self, value):
-        self.set_value('script_window_geometry', value)
+        self.set_value('geometry', value)
 
     @property
     def state(self):
-        v = self.get_value('script_window_state')
+        v = self.get_value('state')
         if v:
             return bytes(v)
         return b''
 
     @state.setter
     def state(self, value):
-        self.set_value('script_window_state', value)
+        self.set_value('state', value)
+
+
+class PreferencesDialog(Section):
+    def __init__(self, settings):
+        super(PreferencesDialog, self).__init__(
+            settings, self.__class__.__name__)
+
+    @property
+    def index(self):
+        return int(self.get_value('index', '0'))
+
+    @index.setter
+    def index(self, value):
+        self.set_value('index', str(int(value)))
+
+    @property
+    def geometry(self):
+        v = self.get_value('geometry')
+        if v:
+            return bytes(v)
+        return b''
+
+    @geometry.setter
+    def geometry(self, value):
+        self.set_value('geometry', value)
+
+    @property
+    def state(self):
+        v = self.get_value('state')
+        if v:
+            return bytes(v)
+        return b''
+
+    @state.setter
+    def state(self, value):
+        self.set_value('state', value)
 
 
 class KeyBindings(Section):
