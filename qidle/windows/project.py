@@ -164,9 +164,11 @@ class ProjectWindow(WindowBase):
         self.ui.tabWidget.save_current()
 
     def configure_run(self):
-        DlgProjectRunConfig.edit_configs(self, self.path)
-        self.update_combo_run_configs()
-        self._update_backends()
+        if DlgProjectRunConfig.edit_configs(self, self.path):
+            self.update_combo_run_configs()
+            self._update_backends()
+            return True
+        return False
 
     def current_interpreter(self):
         return Preferences().cache.get_project_interpreter(
@@ -178,15 +180,13 @@ class ProjectWindow(WindowBase):
             self._restart_backend(w)
 
     def run_script(self):
-        self.ui.dockWidgetProgramOutput.show()
-        self.ui.tabWidget.save_all()
-        _logger().info('running script')
-        self.ui.actionRun.setText('Stop')
-        self.ui.actionRun.setIcon(icons.stop)
         configs = project.get_run_configurations(self.path)
+        cfg = None
         for cfg in configs:
             if cfg['name'] == self._combo_run_configs.currentText():
                 break
+        if cfg is None and not self.configure_run():
+            return
         _logger().info('run configuration: %r', cfg)
         opts = []
         if len(cfg['interpreter_options']):
@@ -198,6 +198,12 @@ class ProjectWindow(WindowBase):
             self.current_interpreter(), opts,
             cwd=cfg['working_dir'],
             env=cfg['env_vars'])
+        self.ui.dockWidgetProgramOutput.show()
+        self.ui.tabWidget.save_all()
+        _logger().info('running script')
+        self.ui.actionRun.setText('Stop')
+        self.ui.actionRun.setIcon(icons.stop)
+        self.ui.textEditPgmOutput.setFocus(True)
 
     def _on_script_finished(self):
         _logger().info('script finished')
@@ -215,8 +221,6 @@ class ProjectWindow(WindowBase):
             if Preferences().general.save_before_run:
                 self.save()
             self.run_script()
-            self.ui.dockWidgetProgramOutput.show()
-            self.ui.textEditPgmOutput.setFocus(True)
         elif 'Stop' in self.ui.actionRun.text():
             self.stop_script()
 

@@ -138,3 +138,5 @@ class DlgProjectRunConfig(QtWidgets.QDialog):
                 prj_path, dlg.ui.comboInterpreters.currentText())
             Preferences().cache.set_project_config(
                 prj_path, dlg.ui.listConfigs.currentItem().text())
+            return True
+        return False
