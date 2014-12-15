@@ -103,7 +103,6 @@ class PageInterpreters(Page):
         Starts the backend process for the specified interpreter
         :param interpreter: The python interpreter used to run the backend.
         """
-        self.stop_backend()
         self.backend.start(
             server.__file__, interpreter=interpreter,
             args=['-s',  get_library_zip_path()],
@@ -138,13 +137,15 @@ class PageInterpreters(Page):
         self._clear_packages()
         self._enable_buttons(False)
         self._start_backend(interpreter)
-        self._send_request()
+        # QtCore.QTimer.singleShot(1000, self._send_refesh_request)
+        self._send_refesh_request()
 
-    def _send_request(self):
+    def _send_refesh_request(self):
         """
         Sends the refresh package request to the backend
         """
         try:
+            print(self.backend.running)
             self.backend.send_request(
                 get_installed_packages, 'refresh_packages',
                 on_receive=self._on_refresh_finished)
@@ -162,7 +163,7 @@ class PageInterpreters(Page):
                 self._on_refresh_finished(None)
             else:
                 # waiting for the backend to start, retry in a few milliseconds
-                QtCore.QTimer.singleShot(100, self._send_request)
+                QtCore.QTimer.singleShot(100, self._send_refesh_request)
 
     def _stop_gif(self):
         """
