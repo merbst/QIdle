@@ -102,7 +102,7 @@ class ProjectWindow(WindowBase):
 
     def restore_state(self):
         prefs = Preferences()
-        if prefs.general.restore_scr_window_state:
+        if prefs.general.restore_window_state:
             self.restoreGeometry(prefs.project_window.geometry)
             self.restoreState(prefs.project_window.state)
 

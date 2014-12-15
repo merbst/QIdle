@@ -288,12 +288,12 @@ class General(Section):
         self.set_value('open_project_action', repr(value))
 
     @property
-    def restore_scr_window_state(self):
-        return eval(self.get_value('restore_scr_window_state', 'False'))
+    def restore_window_state(self):
+        return eval(self.get_value('restore_window_state', 'False'))
 
-    @restore_scr_window_state.setter
-    def restore_scr_window_state(self, value):
-        self.set_value('restore_scr_window_state', repr(value))
+    @restore_window_state.setter
+    def restore_window_state(self, value):
+        self.set_value('restore_window_state', repr(value))
 
     @property
     def save_before_run(self):

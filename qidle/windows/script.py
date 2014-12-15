@@ -105,7 +105,7 @@ class ScriptWindow(WindowBase):
 
     def restore_state(self):
         prefs = Preferences()
-        if prefs.general.restore_scr_window_state:
+        if prefs.general.restore_window_state:
             self.restoreGeometry(prefs.script_window.geometry)
             self.restoreState(prefs.script_window.state)
 
