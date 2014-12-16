@@ -41,9 +41,10 @@ Road-map
 
 Here is the expected list of milestones till version 1.0:
 
-- [x] 0.1: implement script window and application settings
-- [ ] 0.2: implement project window
-- [ ] 1.0: implement debugger interface
+- [x] 0.1: add script window and application settings
+- [x] 0.2: add project window
+- [0] 0.3: improve preferences: add a keyboard shortcuts page and an appearance tab
+- [ ] 1.0: add debugger interface
 - [ ] 1.x: add more features (such as refactoring, add editors for more
   languages (cython, json, html, c))
 
