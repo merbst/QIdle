@@ -96,10 +96,14 @@ class PageEditorExtensions(Page):
         self._restore_default_panels()
         self.reset()
 
-    def apply(self):
-        editor = Preferences().editor
+    def collect_modes_states(self, list_widget):
         d = {}
-        for i in range(self.ui.lw_modes.count()):
-            item = self.ui.lw_modes.item(i)
+        for i in range(list_widget.count()):
+            item = list_widget.item(i)
             d[item.text()] = item.checkState() == QtCore.Qt.Checked
-        editor.modes = d
+        return d
+
+    def apply(self):
+        editor_preferences = Preferences().editor
+        editor_preferences.modes = self.collect_modes_states(self.ui.lw_modes)
+        editor_preferences.panels = self.collect_modes_states(self.ui.lw_panels)

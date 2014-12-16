@@ -26,8 +26,8 @@ class Preferences(QtCore.QSettings):
         self.cache = Cache(self)
         self.interpreters = Interpreters(self)
         self.general = General(self)
-        self.appearance = Appearance(self)
         self.editor = Editor(self)
+        self.editor_appearance = EditorAppearance(self)
 
 
 class Section(object):
@@ -341,9 +341,9 @@ class General(Section):
         self.set_value('save_before_run', repr(value))
 
 
-class Appearance(Section):
+class EditorAppearance(Section):
     def __init__(self, settings):
-        super(Appearance, self).__init__(settings, self.__class__.__name__)
+        super(EditorAppearance, self).__init__(settings, self.__class__.__name__)
 
     @property
     def font(self):

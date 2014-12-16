@@ -3,17 +3,12 @@ import os
 import sys
 
 from pyqode.qt import QtGui, QtWidgets
+from pyqode.core.api import TextHelper
 
-from pyqode.core.api import TextHelper, ColorScheme
-from pyqode.core.modes import RightMarginMode, CodeCompletionMode
-from pyqode.core.panels import FoldingPanel
-from pyqode.python.backend import server
-
-from qidle import icons, commons
+from qidle import icons
 from qidle.dialogs import DlgScriptRunConfig
 from qidle.forms import win_script_ui
 from qidle.preferences import Preferences
-from qidle.system import get_library_zip_path
 from qidle.windows.base import WindowBase
 
 
@@ -268,56 +263,7 @@ class ScriptWindow(WindowBase):
         widget.setFocus(True)
 
     def apply_preferences(self, show_panels=True):
-        _logger().info('applying preferences on editor: %s' %
-                       self.ui.codeEdit.file.path)
-        prefs = Preferences()
-        # appearance
-        self.ui.codeEdit.font_name = prefs.appearance.font
-        self.ui.codeEdit.font_size = prefs.appearance.font_size
-        self.ui.codeEdit.show_whitespaces = prefs.appearance.show_whitespaces
-        scheme = ColorScheme(prefs.appearance.color_scheme)
-        self.ui.codeEdit.syntax_highlighter.color_scheme = scheme
-        self.ui.textEditPgmOutput.apply_color_scheme(scheme)
-        # editor settings
-        self.ui.codeEdit.panels.get(FoldingPanel).highlight_caret_scope = \
-            prefs.editor.highlight_caret_scope
-        self.ui.codeEdit.use_spaces_instead_of_tabs = \
-            prefs.editor.use_spaces_instead_of_tabs
-        self.ui.codeEdit.modes.get(RightMarginMode).position = \
-            prefs.editor.margin_pos
-        self.ui.codeEdit.tab_length = prefs.editor.tab_len
-        self.ui.codeEdit.file.replace_tabs_by_spaces = \
-            prefs.editor.convert_tabs_to_spaces
-        self.ui.codeEdit.file.clean_trailing_whitespaces = \
-            prefs.editor.clean_trailing
-        self.ui.codeEdit.file.fold_imports = prefs.editor.fold_imports
-        self.ui.codeEdit.file.fold_docstrings = prefs.editor.fold_docstrings
-        self.ui.codeEdit.file.restore_cursor = prefs.editor.restore_cursor
-        self.ui.codeEdit.file.safe_save = prefs.editor.safe_save
-        mode = self.ui.codeEdit.modes.get(CodeCompletionMode)
-        mode.trigger_length = prefs.editor.cc_trigger_len
-        mode.show_tooltips = prefs.editor.cc_show_tooltips
-        mode.case_sensitive = prefs.editor.cc_case_sensitive
-
-        self.ui.codeEdit.setCenterOnScroll(prefs.editor.center_on_scroll)
-
-        # modes
-        for m in self.ui.codeEdit.modes:
-            if m.name in prefs.editor.modes:
-                m.enabled = prefs.editor.modes[m.name]
-            else:
-                m.enabled = True
-
-        # disable unwanted panels
-        for name, state in prefs.editor.panels.items():
-            try:
-                panel = self.ui.codeEdit.panels.get(name)
-            except KeyError:
-                pass
-            else:
-                if name not in commons.DYNAMIC_PANELS and show_panels:
-                    panel.setEnabled(state)
-                    panel.setVisible(state)
+        self._apply_editor_preferences(self.ui.codeEdit, show_panels)
 
     def setFocus(self, reason=None):
         _logger().debug('setFocus: %r', reason)

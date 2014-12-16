@@ -118,7 +118,6 @@ except ImportError:
 else:
     logger.info('06. Imported virtualenv %s' % __version__)
 
-
 # ------ check setupools
 try:
     from setuptools import __version__

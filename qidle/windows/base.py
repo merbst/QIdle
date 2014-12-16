@@ -5,11 +5,11 @@ import logging
 import os
 import sys
 import weakref
-from pyqode.core.backend import server
+from pyqode.core.api import ColorScheme
 from pyqode.core.modes import CheckerMode
 from pyqode.qt import QtCore, QtGui, QtWidgets
 from pyqode.core.widgets import MenuRecentFiles
-from qidle import icons
+from qidle import icons, commons
 from qidle.dialogs.ask_open import DlgAskOpenScript
 from qidle.icons import IconProvider
 from qidle.preferences import Preferences
@@ -323,6 +323,59 @@ class WindowBase(QtWidgets.QMainWindow):
     def _close(self):
         # not sure why but if we don't do that using a timer we get a segfault
         self.close()
+
+    def _apply_editor_preferences(self, editor, show_panels):
+        _logger(self).info('applying preferences on editor: %s' %
+                       editor.file.path)
+        prefs = Preferences()
+        # appearance
+        editor.font_name = prefs.editor_appearance.font
+        editor.font_size = prefs.editor_appearance.font_size
+        editor.show_whitespaces = prefs.editor_appearance.show_whitespaces
+        scheme = ColorScheme(prefs.editor_appearance.color_scheme)
+        editor.syntax_highlighter.color_scheme = scheme
+        self.ui.textEditPgmOutput.apply_color_scheme(scheme)
+        # editor settings
+        editor.panels.get('FoldingPanel').highlight_caret_scope = \
+            prefs.editor.highlight_caret_scope
+        editor.use_spaces_instead_of_tabs = \
+            prefs.editor.use_spaces_instead_of_tabs
+        editor.modes.get('RightMarginMode').position = \
+            prefs.editor.margin_pos
+        editor.tab_length = prefs.editor.tab_len
+        editor.file.replace_tabs_by_spaces = \
+            prefs.editor.convert_tabs_to_spaces
+        editor.file.clean_trailing_whitespaces = \
+            prefs.editor.clean_trailing
+        editor.file.fold_imports = prefs.editor.fold_imports
+        editor.file.fold_docstrings = prefs.editor.fold_docstrings
+        editor.file.restore_cursor = prefs.editor.restore_cursor
+        editor.file.safe_save = prefs.editor.safe_save
+        mode = editor.modes.get('CodeCompletionMode')
+        mode.trigger_length = prefs.editor.cc_trigger_len
+        mode.show_tooltips = prefs.editor.cc_show_tooltips
+        mode.case_sensitive = prefs.editor.cc_case_sensitive
+        editor.setCenterOnScroll(prefs.editor.center_on_scroll)
+        # modes
+        for m in editor.modes:
+            if m.name in prefs.editor.modes:
+                m.enabled = prefs.editor.modes[m.name]
+            else:
+                m.enabled = True
+
+        # disable unwanted panels
+        for name, state in prefs.editor.panels.items():
+            try:
+                panel = editor.panels.get(name)
+            except KeyError:
+                _logger().exception('failed to retrieve mode by name: %r' % name)
+            else:
+                if name not in commons.DYNAMIC_PANELS:
+                    if not show_panels and state is True:
+                        continue
+                    panel.setEnabled(state)
+                    panel.setVisible(state)
+
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self.path)

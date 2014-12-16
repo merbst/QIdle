@@ -2,6 +2,7 @@ import logging
 import os
 from pyqode.core.api import TextHelper
 from pyqode.python.backend import server
+from pyqode.python.managers import PyFileManager
 from pyqode.qt import QtGui, QtWidgets, QtCore
 from pyqode.python.widgets import PyCodeEdit
 import sys
@@ -225,13 +226,13 @@ class ProjectWindow(WindowBase):
             self.stop_script()
 
     def _goto_requested(self, path, line):
-        pass
+        self._open_document(path, line)
 
-    def apply_preferences(self, show_panels=True):
-        pass
-
-    def _open_document(self, path):
-        tab = self.ui.tabWidget.open_document(path)
+    def _open_document(self, path, line=None):
+        if line is not None:
+            PyFileManager.restore_cursor = False
+        tab = self.ui.tabWidget.open_document(
+            path, color_scheme=Preferences().editor_appearance.color_scheme)
         self._restart_backend(tab)
         try:
             mode = tab.modes.get('GoToAssignmentsMode')
@@ -239,6 +240,10 @@ class ProjectWindow(WindowBase):
             pass
         else:
             mode.out_of_doc.connect(self._on_go_out_of_document)
+        self._apply_editor_preferences(tab, False)
+        if line is not None:
+            TextHelper(tab).goto_line(line)
+            PyFileManager.restore_cursor = Preferences().editor.restore_cursor
         return tab
 
     def _on_tv_activated(self, index):
@@ -281,3 +286,9 @@ class ProjectWindow(WindowBase):
     def _on_file_created(self, path):
         if os.path.isfile(path):
             self.ui.tabWidget.open_document(path)
+
+    def apply_preferences(self, show_panels=True):
+        PyFileManager.fold_imports = Preferences().editor.fold_imports
+        PyFileManager.fold_docstrings = Preferences().editor.fold_docstrings
+        for editor in self.ui.tabWidget.widgets(include_clones=True):
+            self._apply_editor_preferences(editor, show_panels=show_panels)

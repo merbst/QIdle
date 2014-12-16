@@ -59,9 +59,9 @@ else:
 
         def apply_preferences(self):
             prefs = Preferences()
-            self.font_family = prefs.appearance.font
-            self.font_size = prefs.appearance.font_size
-            self.syntax_style = prefs.appearance.color_scheme
+            self.font_family = prefs.editor_appearance.font
+            self.font_size = prefs.editor_appearance.font_size
+            self.syntax_style = prefs.editor_appearance.color_scheme
             scheme = ColorScheme(self.syntax_style)
             foreground = scheme.formats['normal'].foreground().color()
             background = scheme.background

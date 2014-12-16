@@ -63,7 +63,7 @@ print(f.__doc__)
         self.ui.edit_preview.font_name = font.family()
 
     def reset(self):
-        appearance = Preferences().appearance
+        appearance = Preferences().editor_appearance
         self.ui.line_edit_font.setText(appearance.font)
         self.ui.spinbox_font_size.setValue(appearance.font_size)
         self.ui.checkbox_whitespaces.setChecked(appearance.show_whitespaces)
@@ -77,15 +77,15 @@ print(f.__doc__)
 
         # update preview
         prefs = Preferences()
-        self.ui.edit_preview.font_name = prefs.appearance.font
-        self.ui.edit_preview.font_size = prefs.appearance.font_size
+        self.ui.edit_preview.font_name = prefs.editor_appearance.font
+        self.ui.edit_preview.font_size = prefs.editor_appearance.font_size
         self.ui.edit_preview.show_whitespaces = \
-            prefs.appearance.show_whitespaces
-        scheme = ColorScheme(prefs.appearance.color_scheme)
+            prefs.editor_appearance.show_whitespaces
+        scheme = ColorScheme(prefs.editor_appearance.color_scheme)
         self.ui.edit_preview.syntax_highlighter.color_scheme = scheme
 
     def restore_defaults(self):
-        appearance = Preferences().appearance
+        appearance = Preferences().editor_appearance
         appearance.font = 'Source Code Pro'
         appearance.font_size = 10
         appearance.show_whitespaces = False
@@ -93,7 +93,7 @@ print(f.__doc__)
         self.reset()
 
     def apply(self):
-        appearance = Preferences().appearance
+        appearance = Preferences().editor_appearance
         appearance.font = self.ui.line_edit_font.text()
         appearance.font_size = self.ui.spinbox_font_size.value()
         appearance.color_scheme = \
